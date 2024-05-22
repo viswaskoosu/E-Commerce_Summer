@@ -1,0 +1,16 @@
+.home{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.home_row{
+    display: flex;
+    z-index: 1;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.product {
+    flex: 1;
+    margin: 10px;
+}

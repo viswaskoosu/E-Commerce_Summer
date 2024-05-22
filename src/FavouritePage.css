@@ -1,0 +1,13 @@
+.favoritesPage {
+    padding: 20px;
+  }
+  
+  .favoritesPage h1 {
+    margin-bottom: 20px;
+  }
+  
+  .favoritesPage_products {
+    display: flex;
+    flex-direction: column;
+  }
+  

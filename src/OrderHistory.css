@@ -1,0 +1,38 @@
+.orderHistory {
+    padding: 20px;
+  }
+  
+  .orderHistory h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .orderHistory_order {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .orderHistory_items {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .orderHistory_item {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .orderHistory_item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .orderHistory_item div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  

@@ -1,0 +1,28 @@
+.productDetail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .productDetail_image {
+    width: 100%;
+    max-width: 500px;
+    object-fit: contain;
+  }
+  
+  .productDetail_info {
+    text-align: left;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+  }
+  
+  .productDetail_price {
+    color: #DB4444;
+  }
+  
+  .productDetail_rating {
+    display: flex;
+  }
+  
