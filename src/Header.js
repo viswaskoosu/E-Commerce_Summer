@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import Badge from '@mui/material/Badge';
-import Hidden from '@mui/material/Hidden';
 import { useStateValue } from './StateProvider';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Menu, MenuItem, TextField } from '@mui/material';
@@ -22,7 +21,6 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [pincode, setPincode] = useState('');
   const [enteredPincode, setEnteredPincode] = useState('');
-  const [isValidPincode, setIsValidPincode] = useState(false);
 
   // Function to check screen size on resize
   const handleResize = () => {
@@ -54,22 +52,12 @@ function Header() {
   };
 
   // Handle pincode submit
-// Handle pincode submit
-const handlePincodeSubmit = async (event) => {
-  if (event.key === 'Enter') {
-    const response = await fetch(`https://api.zippopotam.us/us/${pincode}`);
-    if (response.ok) {
-      setIsValidPincode(true);
+  const handlePincodeSubmit = (event) => {
+    if (event.key === 'Enter') {
       setEnteredPincode(pincode);
-    } else {
-      setIsValidPincode(false);
-      setEnteredPincode('');
+      handleMenuClose(); // Close the menu
     }
-    setAnchorEl(null); // Close the menu
-    console.log(pincode);
-  }
-};
-
+  };
 
   return (
     <nav className='header'>
@@ -78,14 +66,14 @@ const handlePincodeSubmit = async (event) => {
         <img className='header_logo' src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="logo" />
       </Link>
 
-      <Hidden smDown>
-        <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }} onClick={handleMenuOpen}>
-          <LocationOnIcon />
+      <Box sx={{ display: 'flex', alignItems: 'center', mr: 1, cursor: 'pointer' }} onClick={handleMenuOpen}>
+        <LocationOnIcon />
+        {!isSmallScreen && (
           <Typography variant="body1" sx={{ ml: 1 }}>
-            {isValidPincode ? enteredPincode : 'Location'}
+            {enteredPincode || 'Location'}
           </Typography>
-        </Box>
-      </Hidden>
+        )}
+      </Box>
 
       <Menu
         anchorEl={anchorEl}

@@ -49,8 +49,18 @@ const reducer = (state, action) => {
             item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
           )
         };
-    default:
-      return state;
+        case 'ADD_ORDER':
+          return {
+            ...state,
+            orders: [...state.orders, action.order],
+          };
+        case 'EMPTY_BASKET':
+          return {
+            ...state,
+            basket: [],
+          };
+        default:
+          return state;
   }
 };
 

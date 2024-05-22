@@ -1,14 +1,12 @@
 import React from 'react';
 import { useStateValue } from './StateProvider';
-import './Checkout.css'; // Import your CSS file
+import './Checkout.css';
 import CheckoutProduct from './CheckoutProduct';
-import Subtotal from './Subtotal'; // Import Subtotal component
+import Subtotal from './Subtotal';
 
 function Checkout() {
-  const [{ basket }, dispatch] = useStateValue();
-  // Get unique items from the basket
+  const [{ basket }] = useStateValue();
   const uniqueItems = [...new Map(basket.map(item => [item.id, item])).values()];
-
 
   return (
     <div className='checkout'>
@@ -28,7 +26,7 @@ function Checkout() {
             <h2 className='checkout_title'>Your Cart</h2>
             {uniqueItems.map((item) => (
               <CheckoutProduct
-                key={item.id} // Ensure each item has a unique key
+                key={item.id}
                 id={item.id}
                 title={item.title}
                 image={item.image}
