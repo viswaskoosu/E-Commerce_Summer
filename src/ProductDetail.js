@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductDetail.css';
 import { useStateValue } from './StateProvider';
+import { Products } from './data'; // Import your products data
 
 function ProductDetail() {
   const { id } = useParams();
@@ -11,27 +12,14 @@ function ProductDetail() {
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
 
-  // Placeholder product object (replace with actual product fetching logic)
-  const initialProduct = {
-    id: "12345",
-    title: "Cement",
-    price: 2344,
-    rating: 5,
-    image: "https://5.imimg.com/data5/SELLER/Default/2024/1/377873071/ZU/IQ/TK/118436259/ultratech-cement-500x500.jpg",
-  };
-
+  // Fetch the product based on the id from the URL
   useEffect(() => {
-    // Simulate fetching product details based on id (replace with actual fetching logic)
-    // For demo purpose, initially set product to initialProduct
-    setProduct(initialProduct);
-
-    // Check if product is already in basket
-    const foundInBasket = basket.find(item => item.id === id);
-    setIsInBasket(!!foundInBasket);
-
-    // Check if product is already in favourites
-    const foundInFavourites = favouriteItems.some(item => item.id === id);
-    setIsInFavourites(foundInFavourites);
+    const fetchedProduct = Products.find(product => product.id === id);
+    if (fetchedProduct) {
+      setProduct(fetchedProduct);
+      setIsInBasket(basket.some(item => item.id === id));
+      setIsInFavourites(favouriteItems.some(item => item.id === id));
+    }
   }, [id, basket, favouriteItems]);
 
   const addToBasket = () => {
@@ -83,18 +71,15 @@ function ProductDetail() {
   };
 
   if (!product) {
-    return <h2>Loading...</h2>;
+    return <h2>Product not found</h2>;
   }
 
   return (
     <div className="productDetail">
-      <img src={product.image} alt={product.title} />
+      <img src={product.image} alt={product.title} className="productDetail_image" />
+      <div className='productDetailExceptImage'> 
       <div className="productDetail_info">
         <p className="productDetail_title">{product.title}</p>
-        <p className="productDetail_price">
-          <small>₹</small>
-          <strong>{product.price}</strong>
-        </p>
         <div className="productDetail_rating">
           {Array(product.rating)
             .fill()
@@ -102,6 +87,10 @@ function ProductDetail() {
               <p key={index}>⭐</p>
             ))}
         </div>
+        <p className="productDetail_price">
+          <small>₹</small>
+          <strong>{product.price}</strong>
+        </p>
         <div className="productDetail_buttons">
           <button className="productDetail_favouriteButton" onClick={addToFavourites}>
             {isInFavourites ? 'Remove from Favorites' : 'Add to Favorites'}
@@ -121,6 +110,7 @@ function ProductDetail() {
             </button>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

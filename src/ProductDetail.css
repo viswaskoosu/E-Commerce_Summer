@@ -1,28 +1,68 @@
 .productDetail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif; /* Set font-family to Poppins */
+}
+
+.productDetail_image {
+  width: 100%;
+  max-width: 500px;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.productDetail_info {
+  text-align: left;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;
+  font-family: 'Poppins', sans-serif; /* Set font-family to Poppins */
+}
+
+.productDetail_title {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif; /* Specify the font family */
+}
+
+.productDetail_price {
+  color: #DB4444;
+  font-size: 18px;
+}
+
+.productDetail_rating {
+  display: flex;
+}
+.productDetailExceptImage{
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  /* margin-top: -30px; */
+}
+.productDetail_buttons {
+  margin-top: 10px;
   
-  .productDetail_image {
-    width: 100%;
-    max-width: 500px;
-    object-fit: contain;
-  }
-  
-  .productDetail_info {
-    text-align: left;
-    width: 100%;
-    max-width: 500px;
-    margin-top: 20px;
-  }
-  
-  .productDetail_price {
-    color: #DB4444;
-  }
-  
-  .productDetail_rating {
-    display: flex;
-  }
-  
+}
+.productDetail_favouriteButton,
+.productDetail_quantityControl button,
+.productDetail_removeFromBasketButton,
+.productDetail_addToBasketButton {
+  font-family: 'Poppins', sans-serif; /* Set font-family to Poppins */
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: #f0f0f0;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.productDetail_favouriteButton:hover,
+.productDetail_quantityControl button:hover,
+.productDetail_removeFromBasketButton:hover,
+.productDetail_addToBasketButton:hover {
+  background-color: #e0e0e0;
+}
