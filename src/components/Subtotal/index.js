@@ -1,10 +1,10 @@
 import React from 'react';
 import './Subtotal.css';
-import CurrencyFormat from 'react-currency-format';
-import { useStateValue } from '../../Context/StateProvider';
+import { useStateValue } from './StateProvider';
 
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();
+
     const placeOrder = () => {
         const order = {
           id: Date.now().toString(),
@@ -21,27 +21,25 @@ function Subtotal() {
         dispatch({
           type: 'EMPTY_BASKET',
         });
-      };
+    };
+
     // Calculate the subtotal
     const getBasketTotal = (basket) => 
         basket?.reduce((amount, item) => (item.price * item.quantity) + amount, 0);
 
+    // Function to format currency
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR'
+        }).format(amount);
+    };
+
     return (
         <div className='subtotal'>
-            <CurrencyFormat 
-                renderText={(value) => (
-                    <>
-                        <p>
-                            Subtotal ({basket.length} items): <strong>{value}</strong>
-                        </p>
-                    </>
-                )}
-                decimalScale={2}
-                value={getBasketTotal(basket)} // Calculate the subtotal dynamically
-                displayType={'text'}
-                thousandSeparator={true}
-                prefix={'₹'}
-            />
+            <p>
+                Subtotal ({basket.length} items): <strong>{formatCurrency(getBasketTotal(basket))}</strong>
+            </p>
             <button onClick={placeOrder}>Proceed to checkout</button>
         </div>
     );
