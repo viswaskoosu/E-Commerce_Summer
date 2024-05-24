@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { createTheme, ThemeProvider } from '@mui/material/styles'; // Import from @mui/material/styles
 import { Link as RouterLink } from 'react-router-dom'; // Import Link from react-router-dom
-import Footer from '../../Components/Footer'
+import Footer from '../../Components/Footer';
 
 
 // Create a custom theme with the desired color scheme

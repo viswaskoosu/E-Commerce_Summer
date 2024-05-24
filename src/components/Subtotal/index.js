@@ -1,6 +1,6 @@
 import React from 'react';
 import './Subtotal.css';
-import { useStateValue } from './StateProvider';
+import { useStateValue } from '../../Context/StateProvider';
 
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();

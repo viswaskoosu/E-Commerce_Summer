@@ -3,7 +3,6 @@ import './Home.css';
 import Product from '../../Components/Product';
 import Carousel from '../../Components/carousel/carousel';
 import { Products } from '../../data';
-
 function Home() {
   const [randomProducts, setRandomProducts] = useState([]);
 
