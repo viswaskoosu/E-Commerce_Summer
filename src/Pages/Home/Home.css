@@ -9,8 +9,57 @@
     margin-left: 5px;
     margin-right: 5px;
 }
-
-.product {
-    flex: 1;
-    margin: 10px;
-}
+  .product-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .arrow-prev,
+  .arrow-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .arrow-prev {
+    left: 10px;
+  }
+  
+  .arrow-next {
+    right: 10px;
+  }
+  
+  .arrow-prev:hover,
+  .arrow-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .product-row>image{
+    height: 200px;
+  }
+  .product {
+    width: calc(100% / 3); /* Adjust based on the number of products per row */
+    margin: 0 5px; /* Add margin between products */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  }
+  
+  .product > .product_info {
+    padding: 10px; /* Add padding to the product info */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  }
+  
+  .product > .product_info > .product_title {
+    font-size: 16px; /* Adjust the font size of the product title */
+    margin-bottom: 5px; /* Add spacing between the title and other elements */
+    height: 40px; /* Limit the height of the title */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+    white-space: nowrap; /* Prevent wrapping of text */
+  }
+  

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 import Product from '../../Components/Product';
-import Carousel from '../../Components/carousel/carousel';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { Products } from '../../data';
+import Carousel from '../../Components/carousel/carousel';
 
 function Home() {
   const [randomProducts, setRandomProducts] = useState([]);
@@ -22,14 +25,23 @@ function Home() {
     const shuffledProducts = shuffleArray(Products);
     const randomProducts = [];
 
-    // Generate random numbers to determine number of products per row
-    const numProductsPerRow = [2, 3, 1];
+    // Determine number of products per row based on window size
+    const windowWidth = window.innerWidth;
+    let numProductsPerRow;
+    if (windowWidth >= 1024) {
+      numProductsPerRow = 3;
+    } else if (windowWidth >= 600) {
+      numProductsPerRow = 2;
+    } else {
+      numProductsPerRow = 1;
+    }
 
-    // Loop through numProductsPerRow to generate randomProducts array
-    numProductsPerRow.forEach((num) => {
-      const products = shuffledProducts.splice(0, num);
-      randomProducts.push(products);
-    });
+    // Loop to generate randomProducts array
+    let index = 0;
+    while (index < shuffledProducts.length) {
+      randomProducts.push(shuffledProducts.slice(index, index + numProductsPerRow));
+      index += numProductsPerRow;
+    }
 
     return randomProducts;
   };
@@ -40,24 +52,88 @@ function Home() {
     setRandomProducts(randomProducts);
   }, []);
 
+  // Settings for the carousel
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3, // Initial value, will be adjusted based on window width
+    slidesToScroll: 3, // Initial value, will be adjusted based on window width
+    autoplay: false, // Disable automatic scrolling
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        }
+      }
+    ],
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+  };
+
+  // Custom arrow component for next navigation
+  function NextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div className={`${className} arrow-next`} style={{ ...style }} onClick={onClick}>
+        <i className="fas fa-chevron-right"></i>
+      </div>
+    );
+  }
+
+  // Custom arrow component for previous navigation
+  function PrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div className={`${className} arrow-prev`} style={{ ...style }} onClick={onClick}>
+        <i className="fas fa-chevron-left"></i>
+      </div>
+    );
+  }
+
+  // Custom function to render products in a row
+  const renderProductRow = (products) => (
+    <div className="product-row">
+      {products.map((product) => (
+        <Product
+          key={product.id}
+          id={product.id}
+          title={product.title}
+          price={product.price}
+          rating={product.rating}
+          image={product.images[0]} // Use the first image as the product image
+        />
+      ))}
+    </div>
+  );
+
   return (
     <div className="home">
       <Carousel />
-      {/* Render random products */}
-      {randomProducts.map((row, index) => (
-        <div key={index} className="home_row">
-          {row.map(product => (
-            <Product
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              price={product.price}
-              rating={product.rating}
-              image={product.images[0]} // Pass the first image from the images array
-            />
-          ))}
-        </div>
-      ))}
+      <Slider {...settings}>
+        {/* Render each row of products */}
+        {randomProducts.map((row, index) => (
+          <div key={index}>
+            {renderProductRow(row)}
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 }

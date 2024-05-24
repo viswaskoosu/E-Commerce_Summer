@@ -16,7 +16,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Menu, MenuItem, TextField } from '@mui/material';
 
 function Header() {
-  const [{ basket }] = useStateValue();
+  const [{ basket, favouriteItems }] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [pincode, setPincode] = useState('');
@@ -61,11 +61,12 @@ function Header() {
 
   return (
     <nav className='header'>
-      {/* logo at left */}
+      {/* Logo */}
       <Link to="/">
         <img className='header_logo' src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="logo" />
       </Link>
 
+      {/* Location and Pincode */}
       <Box sx={{ display: 'flex', alignItems: 'center', mr: 1, cursor: 'pointer' }} onClick={handleMenuOpen}>
         <LocationOnIcon />
         {!isSmallScreen && (
@@ -75,6 +76,7 @@ function Header() {
         )}
       </Box>
 
+      {/* Menu for Pincode */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -98,7 +100,7 @@ function Header() {
         </MenuItem>
       </Menu>
 
-      {/* searchbar */}
+      {/* Search Bar */}
       <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', ml: 1, minWidth: 0 }}>
         <InputBase
           placeholder="Search for Products, Brands and More"
@@ -117,7 +119,7 @@ function Header() {
         </IconButton>
       </Box>
 
-      {/* Navigation links */}
+      {/* Navigation Links */}
       <div className="header_nav">
         {/* Account Link */}
         <Link to="/signin" className="header_Link">
@@ -151,38 +153,47 @@ function Header() {
           </div>
         </Link>
 
+        {/* Favorites and Cart Links */}
         <div className='fav_cart'>
           {/* Favorites Link */}
           <Link to="/favourites" className="header_Link">
             {isSmallScreen ? (
               <IconButton color="inherit">
-                <FavoriteBorderIcon />
+                <Badge
+                  badgeContent={favouriteItems?.length}
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                >
+                  <FavoriteBorderIcon />
+                </Badge>
               </IconButton>
             ) : (
               <div className="header_option_fav">
-                <FavoriteBorderIcon />
                 <Typography sx={{ ml: 1 }}>Favorites</Typography>
+                <IconButton color="inherit">
+                  <Badge
+                    badgeContent={favouriteItems?.length}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                  >
+                    <FavoriteBorderIcon />
+                  </Badge>
+                </IconButton>
               </div>
             )}
           </Link>
 
           {/* Cart Link */}
           <Link to="/checkout" className="header_Link">
-            {isSmallScreen ? (
-              <IconButton color="inherit">
-                <Badge badgeContent={basket?.length} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}>
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            ) : (
-              <div className="header_option_fav">
+            <IconButton color="inherit">
+              <Badge
+                badgeContent={basket?.length}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+              >
                 <ShoppingCartIcon />
-                <Typography sx={{ ml: 1, mr: 2 }}>Cart</Typography>
-                <Badge badgeContent={basket?.length} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }} />
-              </div>
-            )}
+              </Badge>
+            </IconButton>
           </Link>
         </div>
       </div>

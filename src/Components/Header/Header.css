@@ -8,9 +8,11 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Ensure no horizontal scrollbar */
   box-sizing: border-box;
+  min-width: 0; /* Ensure it can shrink below its content width */
 }
+
 .header_badge {
   margin-left: 5px; /* Adjust this value as needed */
 background-color: rgb(30, 23, 16);

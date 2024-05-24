@@ -53,12 +53,21 @@ function Product({ id, title, image, price, rating }) {
     }
   };
 
+  // Function to truncate title if it exceeds a certain length
+  const truncateTitle = (title, maxLength) => {
+    if (title.length > maxLength) {
+      return title.substring(0, maxLength) + '...';
+    }
+    return title;
+  };
+
   return (
     <div className="product">
       <Link to={`/product/${id}`} className="product_link">
-        <img src={image} alt={title} /> {/* Use the image prop here */}
+        <img src={image} alt={title} />
         <div className="product_info">
-          <p>{title}</p>
+          <p className="product_title">{truncateTitle(title, 25)}</p>
+          {/* Adjust the maxLength parameter as needed */}
           <p className="product_price">
             <small>₹</small>
             <strong>{price}</strong>
