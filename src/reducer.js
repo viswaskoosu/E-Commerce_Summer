@@ -1,10 +1,67 @@
+// export const initialState = {
+//   basket: [],
+//   favouriteItems: [],
+//   user: {
+//     displayName: null,
+//     email: null,
+//     address: null,
+//     phoneNumber: null,
+//     paymentMethods: [],
+//     isAdmin: false,
+//   },
+//   orders: [],
+//   products: [],
+// };
+
 export const initialState = {
   basket: [],
   favouriteItems: [],
-  user: null,
+  user: {
+    displayName: 'Viswas',
+    email: 'viswas@example.com',
+    addresses: [
+      {
+        id: '1',
+        street: '123 Main Street',
+        city: 'Bengaluru',
+        state: 'Karnataka',
+        zip: '560001',
+        country: 'India',
+        isDefault: true,
+      },
+      {
+        id: '2',
+        street: '456 Park Avenue',
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        zip: '400001',
+        country: 'India',
+        isDefault: false,
+      },
+    ],
+    phoneNumber: '+91 9876543210',
+    paymentMethods: [
+      {
+        id: '1',
+        type: 'Credit Card',
+        last4: '1234',
+        expiration: '12/25',
+      },
+      {
+        id: '2',
+        type: 'UPI',
+        last4: '9876',
+        expiration: 'N/A',
+      },
+    ],
+    isAdmin: false,
+  },
   orders: [],
   products: [],
 };
+
+
+
 
 const reducer = (state, action) => {
   switch (action.type) {

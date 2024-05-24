@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './Components/Header';
+import Footer from './Components/Footer';
 import Home from './Pages/Home';
 import { StateProvider, useStateValue } from './Context/StateProvider';
 import reducer, { initialState } from './reducer';
@@ -9,12 +10,13 @@ import Checkout from './Pages/Checkout';
 import SignUp from './Pages/SignUp';
 import SignIn from './Pages/SignIn';
 import ForgotPassword from './Pages/ForgotPassword';
-import Footer from './Components/Footer';
 import FavoritesPage from './Pages/FavouritePage';
 import OrderHistory from './Pages/OrderHistory';
 import ProductDetail from './Pages/ProductDetail';
-import { Products } from './data';
-
+import AccountPage from './Pages/Account';
+import ContactInfo from './Pages/ContactInfo';
+import PaymentMethods from './Pages/PaymentMethods'; // Import the new page component
+import Products from './data';
 function App() {
   console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
@@ -30,41 +32,26 @@ function App() {
     <StateProvider initialState={initialState} reducer={reducer}>
       <Router>
         <div className="app">
+          <Header />
           <Switch>
-            <Route path="/checkout">
-              <Header />
-              <Checkout />
-            </Route>
-            <Route path="/signin">
-              <SignIn />
-            </Route>
-            <Route path="/signup">
-              <SignUp />
-            </Route>
-            <Route path="/forgotpassword">
-              <ForgotPassword />
-            </Route>
-            <Route path="/favourites">
-              <Header />
-              <FavoritesPage />
-              <Footer />
-            </Route>
-            <Route path="/orderhistory">
-              <Header />
-              <OrderHistory />
-              <Footer />
-            </Route>
-            <Route path="/product/:id">
-              <Header />
-              <ProductDetail />
-              <Footer />
-            </Route>
-            <Route path="/">
-              <Header />
-              <Home />
-              <Footer />
-            </Route>
+            {/* Public Routes */}
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/favourites" component={FavoritesPage} />
+            <Route path="/orderhistory" component={OrderHistory} />
+            <Route path="/product/:id" component={ProductDetail} />
+            <Route exact path="/" component={Home} />
+
+            {/* Restricted Routes */}
+            <Route path="/signin" component={SignIn} />
+            <Route path="/signup" component={SignUp} />
+            <Route path="/forgotpassword" component={ForgotPassword} />
+
+            {/* Protected Routes */}
+            <Route path="/account" component={AccountPage} />
+            <Route path="/contactinfo" component={ContactInfo} />
+            <Route path="/paymentmethods" component={PaymentMethods} /> {/* Route for PaymentMethodsPage */}
           </Switch>
+          <Footer />
         </div>
       </Router>
     </StateProvider>

@@ -16,7 +16,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Menu, MenuItem, TextField } from '@mui/material';
 
 function Header() {
-  const [{ basket, favouriteItems }] = useStateValue();
+  const [{ basket, favouriteItems, user }] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [pincode, setPincode] = useState('');
@@ -60,10 +60,10 @@ function Header() {
   };
 
   return (
-    <nav className='header'>
+    <nav className="header">
       {/* Logo */}
       <Link to="/">
-        <img className='header_logo' src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="logo" />
+        <img className="header_logo" src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="logo" />
       </Link>
 
       {/* Location and Pincode */}
@@ -122,7 +122,7 @@ function Header() {
       {/* Navigation Links */}
       <div className="header_nav">
         {/* Account Link */}
-        <Link to="/signin" className="header_Link">
+        <Link to={user ? '/account' : '/signin'} className="header_Link">
           <div className="header_option">
             {isSmallScreen ? (
               <IconButton color="inherit">
@@ -130,8 +130,8 @@ function Header() {
               </IconButton>
             ) : (
               <>
-                <span className="header_optionLineOne">Hello Viswas</span>
-                <span className="header_optionLineTwo">Your Account</span>
+                <span className="header_optionLineOne">{user ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
+                <span className="header_optionLineTwo">{user ? 'Your Account' : 'Sign In'}</span>
               </>
             )}
           </div>
