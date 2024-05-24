@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductDetail.css';
-import { useStateValue } from './StateProvider';
-import { Products } from './data'; // Import your products data
+import { useStateValue } from '../../Context/StateProvider';
+import { Products } from '../../data'; // Import your products data
 
 function ProductDetail() {
   const { id } = useParams();

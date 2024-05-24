@@ -1,7 +1,7 @@
 // FavoritesPage.js
 import React from 'react';
-import { useStateValue } from './StateProvider';
-import FavoriteProduct from './FavouriteProduct';
+import { useStateValue } from '../../Context/StateProvider';
+import FavoriteProduct from '../../Components/FavouriteProduct';
 import './FavouritePage.css';
 
 function FavoritesPage() {

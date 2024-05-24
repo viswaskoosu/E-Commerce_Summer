@@ -1,6 +1,6 @@
 import React from 'react';
 import './Product.css';
-import { useStateValue } from './StateProvider';
+import { useStateValue } from '../../Context/StateProvider';
 import { Link } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';

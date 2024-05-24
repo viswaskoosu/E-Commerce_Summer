@@ -1,7 +1,7 @@
 // FavoriteProduct.js
 import React from 'react';
 import './FavouriteProduct.css';
-import { useStateValue } from './StateProvider';
+import { useStateValue } from '../../Context/StateProvider';
 
 function FavoriteProduct({ id, title, image, price, rating }) {
   const [{ favouriteItems }, dispatch] = useStateValue();

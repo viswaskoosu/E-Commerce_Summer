@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStateValue } from './StateProvider';
+import { useStateValue } from '../../Context/StateProvider';
 import './OrderHistory.css';
 
 function OrderHistory() {

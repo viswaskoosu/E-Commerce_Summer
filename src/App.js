@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Header from './Header';
-import Home from './Home';
-import { StateProvider, useStateValue } from './StateProvider';
+import Header from './Components/Header';
+import Home from './Pages/Home';
+import { StateProvider, useStateValue } from './Context/StateProvider';
 import reducer, { initialState } from './reducer';
-import Checkout from './Checkout';
-import SignUp from './SignUp';
-import SignIn from './SignIn';
-import ForgotPassword from './ForgotPassword';
-import Footer from './Footer';
-import FavoritesPage from './FavouritePage';
-import OrderHistory from './OrderHistory';
-import ProductDetail from './ProductDetail';
+import Checkout from './Pages/Checkout';
+import SignUp from './Pages/SignUp';
+import SignIn from './Pages/SignIn';
+import ForgotPassword from './Pages/ForgotPassword';
+import Footer from './Components/Footer';
+import FavoritesPage from './Pages/FavouritePage';
+import OrderHistory from './Pages/OrderHistory';
+import ProductDetail from './Pages/ProductDetail';
 import { Products } from './data';
 
 function App() {

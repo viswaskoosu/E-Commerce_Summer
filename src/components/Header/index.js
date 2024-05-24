@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import Badge from '@mui/material/Badge';
-import { useStateValue } from './StateProvider';
+import { useStateValue } from '../../Context/StateProvider';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Menu, MenuItem, TextField } from '@mui/material';
 
