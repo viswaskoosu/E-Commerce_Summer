@@ -3,6 +3,7 @@ import './Home.css';
 import Product from '../../Components/Product';
 import Carousel from '../../Components/carousel/carousel';
 import { Products } from '../../data';
+
 function Home() {
   const [randomProducts, setRandomProducts] = useState([]);
 
@@ -52,8 +53,7 @@ function Home() {
               title={product.title}
               price={product.price}
               rating={product.rating}
-              image={product.image}
-              className="product"
+              image={product.images[0]} // Pass the first image from the images array
             />
           ))}
         </div>

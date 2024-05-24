@@ -56,7 +56,7 @@ function Product({ id, title, image, price, rating }) {
   return (
     <div className="product">
       <Link to={`/product/${id}`} className="product_link">
-        <img src={image} alt={title} />
+        <img src={image} alt={title} /> {/* Use the image prop here */}
         <div className="product_info">
           <p>{title}</p>
           <p className="product_price">

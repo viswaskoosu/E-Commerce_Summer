@@ -3,10 +3,8 @@ export const initialState = {
   favouriteItems: [],
   user: null,
   orders: [],
-  products: [], // Initialize with an empty array
+  products: [],
 };
-
-
 
 const reducer = (state, action) => {
   switch (action.type) {
