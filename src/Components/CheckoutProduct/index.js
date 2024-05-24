@@ -1,3 +1,4 @@
+// CheckoutProduct.js
 import React from 'react';
 import './CheckoutProduct.css';
 import { useStateValue } from '../../Context/StateProvider';
@@ -29,12 +30,20 @@ function CheckoutProduct({ id, title, image, price, rating }) {
   };
 
   const toggleFavourite = () => {
+    const isInBasket = basket.some(item => item.id === id);
+    
     if (favouriteItems.some(item => item.id === id)) {
       dispatch({
         type: 'REMOVE_FROM_FAVOURITES',
         id: id,
       });
     } else {
+      if (isInBasket) {
+        dispatch({
+          type: 'REMOVE_FROM_BASKET',
+          id: id,
+        });
+      }
       dispatch({
         type: 'ADD_TO_FAVOURITES',
         item: {
@@ -47,6 +56,7 @@ function CheckoutProduct({ id, title, image, price, rating }) {
       });
     }
   };
+
   const basketItem = basket.find(item => item.id === id);
 
   return (
@@ -71,8 +81,8 @@ function CheckoutProduct({ id, title, image, price, rating }) {
           <button onClick={increaseQuantity}>+</button>
         </div>
         <div className="checkoutProduct_actions">
-          <button onClick={removeFromBasket}>Remove from Cart</button>
-          <button onClick={toggleFavourite}>
+          <button className="checkoutProduct_removeButton" onClick={removeFromBasket}>Remove from Cart</button>
+          <button className="checkoutProduct_favouriteButton" onClick={toggleFavourite}>
             {favouriteItems.some(item => item.id === id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </button>
         </div>

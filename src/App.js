@@ -16,6 +16,7 @@ import ProductDetail from './Pages/ProductDetail';
 import { Products } from './data';
 
 function App() {
+  console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
 
   useEffect(() => {

@@ -1,45 +1,118 @@
+/* CheckoutProduct.css */
+
 .checkoutProduct {
-    display: flex;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .checkoutProduct_image {
-    object-fit: contain;
-    width: 180px;
-    height: 180px;
-  }
-  
-  .checkoutProduct_info {
-    padding-left: 20px;
-  }
-  
-  .checkoutProduct_title {
-    font-size: 17px;
-    font-weight: 800; 
-  }
-  
-  .checkoutProduct_rating {
-    display: flex;
-  }
-  
-  .checkoutProduct_info > button {
-    background-color: #f0c14b;
-    border: 1px solid;
-    border-color: #a88734 #9c7e31 #846829;
-    margin-bottom: 10px;
-    color: #111;
-  }
-  
-  .checkoutProduct_details {
-    margin-top: 10px;
-  }
-  
-  .checkoutProduct_details p {
-    margin-bottom: 5px;
-  }
-  
-  .checkoutProduct_details strong {
-    font-weight: bold;
-  }
-  
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #fff; /* Set background color */
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease; /* Add transition for box-shadow */
+}
+
+.checkoutProduct:hover {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow effect on hover */
+}
+
+.checkoutProduct_imageContainer {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* Add transition for transform */
+}
+
+.checkoutProduct_imageContainer:hover img {
+  transform: scale(2); /* Scale up image on hover */
+  z-index: 1;
+}
+
+.checkoutProduct_image {
+  object-fit: contain;
+  width: 180px;
+  height: 180px;
+  transition: transform 0.3s ease; /* Add transition for transform */
+}
+
+.checkoutProduct_info {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.checkoutProduct_title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.checkoutProduct_price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.checkoutProduct_rating {
+  display: flex;
+  color: #f8bd58;
+}
+
+.checkoutProduct_quantityControl {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.checkoutProduct_quantityControl button {
+  background-color: #f0c14b;
+  color: #111;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 18px;
+  border-radius: 4px;
+  margin: 0 5px;
+}
+
+.checkoutProduct_quantityControl span {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.checkoutProduct_actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.checkoutProduct_actions button {
+  background-color: #f0c14b;
+  color: #111;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.checkoutProduct_actions button.checkoutProduct_favouriteButton {
+  background-color: transparent;
+  border: none;
+}
+
+.checkoutProduct_actions button.checkoutProduct_favouriteButton:hover {
+  background-color: rgba(240, 193, 75, 0.2);
+}
+
+.checkoutProduct_actions button.checkoutProduct_removeButton:hover {
+  background-color: #f0c14b;
+}
+
+.checkoutProduct_actions button.checkoutProduct_removeButton:focus,
+.checkoutProduct_actions button.checkoutProduct_favouriteButton:focus {
+  outline: none;
+}
