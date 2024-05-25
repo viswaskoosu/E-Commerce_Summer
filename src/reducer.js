@@ -1,18 +1,3 @@
-// export const initialState = {
-//   basket: [],
-//   favouriteItems: [],
-//   user: {
-//     displayName: null,
-//     email: null,
-//     address: null,
-//     phoneNumber: null,
-//     paymentMethods: [],
-//     isAdmin: false,
-//   },
-//   orders: [],
-//   products: [],
-// };
-
 export const initialState = {
   basket: [],
   favouriteItems: [],
@@ -22,6 +7,7 @@ export const initialState = {
     addresses: [
       {
         id: '1',
+        name: 'Viswas',
         street: '123 Main Street',
         city: 'Bengaluru',
         state: 'Karnataka',
@@ -31,6 +17,7 @@ export const initialState = {
       },
       {
         id: '2',
+        name: 'Viswas',
         street: '456 Park Avenue',
         city: 'Mumbai',
         state: 'Maharashtra',
@@ -60,11 +47,18 @@ export const initialState = {
   products: [],
 };
 
-
-
-
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'COMPLETE_ORDER':
+      return {
+        ...state,
+        orders: [...state.orders, action.order],
+      };
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.user
+      };
     case 'SET_PRODUCTS':
       return {
         ...state,
@@ -90,31 +84,31 @@ const reducer = (state, action) => {
         ...state,
         favouriteItems: state.favouriteItems.filter(item => item.id !== action.id)
       };
-      case 'INCREASE_QUANTITY':
-        return {
-          ...state,
-          basket: state.basket.map(item =>
-            item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
-          )
-        };
-      case 'DECREASE_QUANTITY':
-        return {
-          ...state,
-          basket: state.basket.map(item =>
-            item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
-          )
-        };
-        case 'ADD_ORDER':
-          return {
-            ...state,
-            orders: [...state.orders, action.order],
-          };
-        case 'EMPTY_BASKET':
-          return {
-            ...state,
-            basket: [],
-          };
-          case 'ADD_ADDRESS':
+    case 'INCREASE_QUANTITY':
+      return {
+        ...state,
+        basket: state.basket.map(item =>
+          item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      };
+    case 'DECREASE_QUANTITY':
+      return {
+        ...state,
+        basket: state.basket.map(item =>
+          item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
+        )
+      };
+    case 'ADD_ORDER':
+      return {
+        ...state,
+        orders: [...state.orders, action.order],
+      };
+    case 'EMPTY_BASKET':
+      return {
+        ...state,
+        basket: [],
+      };
+    case 'ADD_ADDRESS':
       return {
         ...state,
         user: {
@@ -144,9 +138,19 @@ const reducer = (state, action) => {
           addresses: filteredAddresses,
         },
       };
-        default:
-          return state;
+      case 'UPDATE_USER_INFO':
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            [action.field]: action.value,
+          },
+        };
+    default:
+      return state;
   }
 };
 
 export default reducer;
+export const getBasketTotal = (basket) =>
+  basket?.reduce((amount, item) => item.price + amount, 0);

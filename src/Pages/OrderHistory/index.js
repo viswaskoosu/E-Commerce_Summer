@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStateValue } from '../../Context/StateProvider';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 import './OrderHistory.css';
 
 function OrderHistory() {
@@ -75,7 +75,7 @@ function OrderHistory() {
           <div key={order.id} className="orderHistory_order">
             <h3>Order {index + 1}</h3>
             <p>ORDER PLACED: {new Date(order.date).toLocaleDateString()}</p>
-            <p>TOTAL: ₹{order.total.toFixed(2)}</p>
+            <p>TOTAL: ₹{(order.total || 0).toFixed(2)}</p>
             <p>SHIP TO: {order.recipient}</p>
             <p>ORDER #: {order.id}</p>
             <p>Delivered: {order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString() : 'Pending'}</p>

@@ -111,7 +111,7 @@ const PaymentMethods = () => {
       return 'visa.png';
     } else if (mastercardRegex.test(cardNumber)) {
       return 'mastercard.png';
-    } else if (amexRegex.test(cardNumber)) {
+    } else if (amexRegex.test(cardNumber)) {  
       return 'amex.png';
     } else {
       return 'default-card.png'; // Default logo

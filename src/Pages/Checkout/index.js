@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStateValue } from '../../Context/StateProvider';
-import './Checkout.css';
 import CheckoutProduct from '../../Components/CheckoutProduct';
 import Subtotal from '../../Components/Subtotal';
+import './Checkout.css';
 
 function Checkout() {
   const [{ basket }] = useStateValue();
@@ -47,3 +47,4 @@ function Checkout() {
 }
 
 export default Checkout;
+  

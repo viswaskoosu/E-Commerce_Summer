@@ -104,7 +104,7 @@ function Product({ id, title, image, price, rating }) {
         {basket.some(item => item.id === id) ? (
           <button onClick={removeFromBasket}>Remove from cart</button>
         ) : (
-          <button onClick={addToBasket}>Add to Basket</button>
+          <button onClick={addToBasket}>Add to Cart</button>
         )}
       </div>
     </div>

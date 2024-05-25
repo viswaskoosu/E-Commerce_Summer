@@ -66,11 +66,11 @@ function Addresses() {
     setNewAddress({ ...address }); // Copy address to edit
   };
 
-  const handleDelete = (address) => {
-    const updatedAddresses = user.addresses.filter(a => a !== address);
+  const handleDelete = (addressId) => {
+    const updatedAddresses = user.addresses.filter(a => a.id !== addressId);
     dispatch({
-      type: 'UPDATE_USER_ADDRESSES',
-      addresses: updatedAddresses,
+      type: 'DELETE_ADDRESS',
+      addressId,
     });
   };
 
@@ -83,11 +83,11 @@ function Addresses() {
 
     if (currentAddress) {
       const updatedAddresses = user.addresses.map(a =>
-        a === currentAddress ? newAddress : a
+        a.id === currentAddress.id ? newAddress : a
       );
       dispatch({
-        type: 'UPDATE_USER_ADDRESSES',
-        addresses: updatedAddresses,
+        type: 'EDIT_ADDRESS',
+        address: newAddress,
       });
     } else {
       // Generate a unique ID for the new address
@@ -136,7 +136,11 @@ function Addresses() {
     <div className="addresses">
       <div className="text_addButton">
         <h2>Manage Your Addresses</h2>
-        <button className="add_address" onClick={() => setEditMode(true)}>Add New Address</button>
+        <button className="add_address" onClick={() => {
+          setEditMode(true);
+          setCurrentAddress(null);
+          setNewAddress({ name: '', street: '', city: '', state: '', zip: '', country: 'India' });
+        }}>Add New Address</button>
       </div>
 
       {editMode ? (
@@ -188,6 +192,14 @@ function Addresses() {
             ))}
             <option value="Manual">Enter Manually</option>
           </select>
+          {manualCountry && (
+            <input
+              type="text"
+              placeholder="Country"
+              value={newAddress.country}
+              onChange={(e) => setNewAddress({ ...newAddress, country: e.target.value })}
+            />
+          )}
           {errors.country && <span className="error">{errors.country}</span>}
           <button className="save_button" onClick={handleSave}>Save</button>
           <button className="cancel_button" onClick={() => setEditMode(false)}>Cancel</button>
@@ -195,14 +207,14 @@ function Addresses() {
       ) : (
         <>
           {user.addresses && user.addresses.length > 0 ? (
-            user.addresses.map((address, index) => (
-              <div key={index} className="address_item">
+            user.addresses.map((address) => (
+              <div key={address.id} className="address_item">
                 <p>{address.name}</p>
                 <p>{address.street}</p>
                 <p>{address.city}, {address.state} {address.zip}</p>
                 <p>{address.country}</p>
                 <button className="edit_button" onClick={() => handleEdit(address)}>Edit</button>
-                <button className="delete_button" onClick={() => handleDelete(address)}>Delete</button>
+                <button className="delete_button" onClick={() => handleDelete(address.id)}>Delete</button>
               </div>
             ))
           ) : (
