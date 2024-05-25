@@ -17,6 +17,8 @@ import AccountPage from './Pages/Account';
 import ContactInfo from './Pages/ContactInfo';
 import PaymentMethods from './Pages/PaymentMethods';
 import Products from './data';
+import LoginSecurity from './Pages/LoginSecurity';
+import Addresses from './Pages/Addresses';
 
 function App() {
   console.log('Window width: ' + window.innerWidth + 'px');
@@ -52,9 +54,11 @@ function App() {
               <Route path="/account" component={AccountPage} />
               <Route path="/contactinfo" component={ContactInfo} />
               <Route path="/paymentmethods" component={PaymentMethods} />
+              <Route path="/loginSecurity" component={LoginSecurity} /> 
+              <Route path="/addresses" component={Addresses} />
             </Switch>
           </div>
-          <Footer className="footer" />
+          <Footer />
         </div>
       </Router>
     </StateProvider>

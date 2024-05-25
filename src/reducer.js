@@ -114,6 +114,36 @@ const reducer = (state, action) => {
             ...state,
             basket: [],
           };
+          case 'ADD_ADDRESS':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          addresses: [...state.user.addresses, action.address],
+        },
+      };
+    case 'EDIT_ADDRESS':
+      const updatedAddresses = state.user.addresses.map((address) =>
+        address.id === action.address.id ? action.address : address
+      );
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          addresses: updatedAddresses,
+        },
+      };
+    case 'DELETE_ADDRESS':
+      const filteredAddresses = state.user.addresses.filter(
+        (address) => address.id !== action.addressId
+      );
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          addresses: filteredAddresses,
+        },
+      };
         default:
           return state;
   }

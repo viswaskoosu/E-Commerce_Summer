@@ -35,14 +35,8 @@ function AccountPage() {
           )}
         </Link>
 
-        {/* Your Orders Section */}
-        <Link to="/orders" className="accountPage_section">
-          <h3>Your Orders</h3>
-          <p>Track, return, or buy things again</p>
-        </Link>
-
         {/* Login & Security Section */}
-        <Link to="/login-security" className="accountPage_section">
+        <Link to="/loginSecurity" className="accountPage_section">
           <h3>Login & Security</h3>
           <p>Edit login, name, and mobile number</p>
         </Link>
