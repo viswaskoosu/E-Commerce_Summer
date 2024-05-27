@@ -1,3 +1,4 @@
+// CheckoutProduct.js
 import React from 'react';
 import './CheckoutProduct.css';
 import { useStateValue } from '../../Context/StateProvider';
@@ -6,7 +7,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function CheckoutProduct({ id, title, image, price, rating }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
-
+  
   const removeFromBasket = () => {
     dispatch({
       type: 'REMOVE_FROM_BASKET',
@@ -29,12 +30,20 @@ function CheckoutProduct({ id, title, image, price, rating }) {
   };
 
   const toggleFavourite = () => {
+    const isInBasket = basket.some(item => item.id === id);
+    
     if (favouriteItems.some(item => item.id === id)) {
       dispatch({
         type: 'REMOVE_FROM_FAVOURITES',
         id: id,
       });
     } else {
+      if (isInBasket) {
+        dispatch({
+          type: 'REMOVE_FROM_BASKET',
+          id: id,
+        });
+      }
       dispatch({
         type: 'ADD_TO_FAVOURITES',
         item: {
@@ -48,7 +57,6 @@ function CheckoutProduct({ id, title, image, price, rating }) {
     }
   };
 
-  // Find the item in the basket
   const basketItem = basket.find(item => item.id === id);
 
   return (
@@ -57,7 +65,7 @@ function CheckoutProduct({ id, title, image, price, rating }) {
       <div className='checkoutProduct_info'>
         <p className='checkoutProduct_title'>{title}</p>
         <p className='checkoutProduct_price'>
-          <small>$</small>
+          <small>₹</small>
           <strong>{price}</strong>
         </p>
         <div className='checkoutProduct_rating'>
@@ -73,8 +81,8 @@ function CheckoutProduct({ id, title, image, price, rating }) {
           <button onClick={increaseQuantity}>+</button>
         </div>
         <div className="checkoutProduct_actions">
-          <button onClick={removeFromBasket}>Remove from Cart</button>
-          <button onClick={toggleFavourite}>
+          <button className="checkoutProduct_removeButton" onClick={removeFromBasket}>Remove from Cart</button>
+          <button className="checkoutProduct_favouriteButton" onClick={toggleFavourite}>
             {favouriteItems.some(item => item.id === id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </button>
         </div>

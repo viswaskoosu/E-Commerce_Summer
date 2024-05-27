@@ -1,3 +1,4 @@
+// Product.js
 import React from 'react';
 import './Product.css';
 import { useStateValue } from '../../Context/StateProvider';
@@ -9,7 +10,17 @@ function Product({ id, title, image, price, rating }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
 
   const addToBasket = () => {
-    if (!basket.some(item => item.id === id)) {
+    const isInBasket = basket.some(item => item.id === id);
+    const isInFavourites = favouriteItems.some(item => item.id === id);
+
+    if (isInFavourites) {
+      dispatch({
+        type: 'REMOVE_FROM_FAVOURITES',
+        id: id,
+      });
+    }
+
+    if (!isInBasket) {
       dispatch({
         type: 'ADD_TO_BASKET',
         item: {
@@ -33,7 +44,13 @@ function Product({ id, title, image, price, rating }) {
 
   const addToFavourites = () => {
     const isInFavourites = favouriteItems.some(item => item.id === id);
-
+    const isInBasket = basket.some(item => item.id===id);
+    if(isInBasket){
+      dispatch({
+        type: 'REMOVE_FROM_BASKET',
+        id:id,
+      })
+    }
     if (!isInFavourites) {
       dispatch({
         type: 'ADD_TO_FAVOURITES',
@@ -53,12 +70,20 @@ function Product({ id, title, image, price, rating }) {
     }
   };
 
+  // Function to truncate title if it exceeds a certain length
+  const truncateTitle = (title, maxLength) => {
+    if (title.length > maxLength) {
+      return title.substring(0, maxLength) + '...';
+    }
+    return title;
+  };
+
   return (
     <div className="product">
       <Link to={`/product/${id}`} className="product_link">
         <img src={image} alt={title} />
         <div className="product_info">
-          <p>{title}</p>
+          <p className="product_title">{truncateTitle(title, 50)}</p>
           <p className="product_price">
             <small>₹</small>
             <strong>{price}</strong>
@@ -79,7 +104,7 @@ function Product({ id, title, image, price, rating }) {
         {basket.some(item => item.id === id) ? (
           <button onClick={removeFromBasket}>Remove from cart</button>
         ) : (
-          <button onClick={addToBasket}>Add to Basket</button>
+          <button onClick={addToBasket}>Add to Cart</button>
         )}
       </div>
     </div>

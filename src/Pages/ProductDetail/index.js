@@ -11,14 +11,15 @@ function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for managing current image index
 
   // Fetch the product based on the id from the URL
   useEffect(() => {
-    const fetchedProduct = Products.find(product => product.id === id);
+    const fetchedProduct = Products.find(product => product.id === parseInt(id));
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      setIsInBasket(basket.some(item => item.id === id));
-      setIsInFavourites(favouriteItems.some(item => item.id === id));
+      setIsInBasket(basket.some(item => item.id === parseInt(id)));
+      setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
     }
   }, [id, basket, favouriteItems]);
 
@@ -28,7 +29,7 @@ function ProductDetail() {
       item: {
         id: product.id,
         title: product.title,
-        image: product.image,
+        image: product.images[0], // Use the first image as the product image in the basket
         price: product.price,
         rating: product.rating,
         quantity: quantity,
@@ -40,7 +41,7 @@ function ProductDetail() {
   const removeFromBasket = () => {
     dispatch({
       type: 'REMOVE_FROM_BASKET',
-      id: id,
+      id: product.id,
     });
     setIsInBasket(false);
   };
@@ -58,16 +59,24 @@ function ProductDetail() {
   const addToFavourites = () => {
     dispatch({
       type: isInFavourites ? 'REMOVE_FROM_FAVOURITES' : 'ADD_TO_FAVOURITES',
-      id: id,
+      id: product.id,
       item: {
-        id: product.id,
-        title: product.title,
-        image: product.image,
-        price: product.price,
-        rating: product.rating,
+        ...product,
       },
     });
     setIsInFavourites(!isInFavourites);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex(prevIndex => (prevIndex - 1 + product.images.length) % product.images.length);
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex(prevIndex => (prevIndex + 1) % product.images.length);
+  };
+
+  const handleImageClick = index => {
+    setCurrentImageIndex(index);
   };
 
   if (!product) {
@@ -75,9 +84,33 @@ function ProductDetail() {
   }
 
   return (
-    <div className="productDetail">
-      <img src={product.image} alt={product.title} className="productDetail_image" />
-      <div className='productDetailExceptImage'> 
+      <div className='product_description'>
+      <div className="productDetail">
+      <div className="imagePreviews">
+        {product.images.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt={`Preview ${index}`}
+            className={`imagePreview ${index === currentImageIndex ? 'active' : ''}`}
+            onClick={() => handleImageClick(index)}
+          />
+        ))}
+      </div>
+      <div className="productDetail_imageContainer">
+        <button className="imageNavButton" onClick={handlePrevImage}>
+          {"<"}
+        </button>
+        <img
+          src={product.images[currentImageIndex]}
+          alt={product.title}
+          className="productDetail_image"
+        />
+        <button className="imageNavButton" onClick={handleNextImage}>
+          {">"}
+        </button>
+      </div>
+
       <div className="productDetail_info">
         <p className="productDetail_title">{product.title}</p>
         <div className="productDetail_rating">
@@ -89,15 +122,39 @@ function ProductDetail() {
         </div>
         <p className="productDetail_price">
           <small>₹</small>
-          <strong>{product.price}</strong>
+          <strong>{product.mrp}</strong>{" "}
+          <strong
+            style={{
+              textDecoration: "line-through",
+              color: "grey",
+              fontWeight: "normal",
+              marginLeft: "10px",
+              fontSize: "18px",
+            }}
+          >
+            {product.price}
+          </strong>
         </p>
+        
+        <div className="specifications">
+          <p className="specifications_title">Specifications:</p>
+          <ul>
+            {Object.keys(product.specifications).map((key, index) => (
+              <li key={index}>
+                <strong>{key}:</strong> {product.specifications[key]}
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="productDetail_buttons">
           <button className="productDetail_favouriteButton" onClick={addToFavourites}>
-            {isInFavourites ? 'Remove from Favorites' : 'Add to Favorites'}
+            {isInFavourites ? "Remove from Favorites" : "Add to Favorites"}
           </button>
           <div className="productDetail_quantityControl">
             <button onClick={decreaseQuantity}>-</button>
-            <span>{quantity}</span>
+            <span style={{ marginLeft: "15px", marginRight: "15px", fontWeight: "bold" }}>
+              {quantity}
+            </span>
             <button onClick={increaseQuantity}>+</button>
           </div>
           {isInBasket ? (
@@ -110,7 +167,18 @@ function ProductDetail() {
             </button>
           )}
         </div>
+    </div>
       </div>
+      <div>
+      <p className="productDetail_description">{product.description}</p>
+        <div className="keyFeatures">
+          <p className="keyFeatures_title">Key Features:</p>
+          <ul>
+            {product.keyFeatures.map((feature, index) => (
+              <li key={index}>{feature}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

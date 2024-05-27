@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -13,14 +13,14 @@ import Box from '@mui/material/Box';
 import Badge from '@mui/material/Badge';
 import { useStateValue } from '../../Context/StateProvider';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import { Menu, MenuItem, TextField } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 
 function Header() {
-  const [{ basket }] = useStateValue();
+  const [{ basket, favouriteItems, user }] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [pincode, setPincode] = useState('');
-  const [enteredPincode, setEnteredPincode] = useState('');
+  const [selectedAddress, setSelectedAddress] = useState(null); // Define selectedAddress state
+  const history = useHistory();
 
   // Function to check screen size on resize
   const handleResize = () => {
@@ -46,35 +46,44 @@ function Header() {
     setAnchorEl(null);
   };
 
-  // Handle pincode input change
-  const handlePincodeChange = (event) => {
-    setPincode(event.target.value);
+  // Handle address change
+  const handleAddressChange = (address) => {
+    setSelectedAddress(address);
+    handleMenuClose();
   };
 
-  // Handle pincode submit
-  const handlePincodeSubmit = (event) => {
-    if (event.key === 'Enter') {
-      setEnteredPincode(pincode);
-      handleMenuClose(); // Close the menu
-    }
+  // Redirect to addresses page
+  const handleAddNewAddress = () => {
+    history.push('/addresses');
+    handleMenuClose();
   };
+
+  // Render address with name in one row and city, pincode in the next row
+  const renderAddress = (address) => (
+    <div>
+      <Typography variant="body1">{address.name}</Typography>
+      <Typography variant="body2">{`${address.city}, ${address.zip}`}</Typography>
+    </div>
+  );
 
   return (
-    <nav className='header'>
-      {/* logo at left */}
+    <nav className="header">
+      {/* Logo */}
       <Link to="/">
-        <img className='header_logo' src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="logo" />
+        <img className="header_logo" src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="logo" />
       </Link>
 
+      {/* Location and Address Selection */}
       <Box sx={{ display: 'flex', alignItems: 'center', mr: 1, cursor: 'pointer' }} onClick={handleMenuOpen}>
         <LocationOnIcon />
         {!isSmallScreen && (
           <Typography variant="body1" sx={{ ml: 1 }}>
-            {enteredPincode || 'Location'}
+            {selectedAddress ? renderAddress(selectedAddress) : 'Select Address'}
           </Typography>
         )}
       </Box>
 
+      {/* Menu for Address Selection */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -86,19 +95,22 @@ function Header() {
           },
         }}
       >
-        <MenuItem>
-          <TextField
-            label="Enter Pincode"
-            variant="outlined"
-            fullWidth
-            value={pincode}
-            onChange={handlePincodeChange}
-            onKeyDown={handlePincodeSubmit}
-          />
+        {user?.addresses?.slice(0, 3).map((address, index) => (
+          <MenuItem key={index} onClick={() => handleAddressChange(address)}>
+            {renderAddress(address)}
+          </MenuItem>
+        ))}
+        {user?.addresses?.length > 3 && (
+          <MenuItem onClick={handleAddNewAddress}>
+            View All Addresses
+          </MenuItem>
+        )}
+        <MenuItem onClick={handleAddNewAddress}>
+          Add New Address
         </MenuItem>
       </Menu>
 
-      {/* searchbar */}
+      {/* Search Bar */}
       <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', ml: 1, minWidth: 0 }}>
         <InputBase
           placeholder="Search for Products, Brands and More"
@@ -117,10 +129,10 @@ function Header() {
         </IconButton>
       </Box>
 
-      {/* Navigation links */}
+      {/* Navigation Links */}
       <div className="header_nav">
         {/* Account Link */}
-        <Link to="/signin" className="header_Link">
+        <Link to={user ? '/account' : '/signin'} className="header_Link">
           <div className="header_option">
             {isSmallScreen ? (
               <IconButton color="inherit">
@@ -128,8 +140,8 @@ function Header() {
               </IconButton>
             ) : (
               <>
-                <span className="header_optionLineOne">Hello Viswas</span>
-                <span className="header_optionLineTwo">Your Account</span>
+                <span className="header_optionLineOne">{user ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
+                <span className="header_optionLineTwo">{user ? 'Your Account' : 'Sign In'}</span>
               </>
             )}
           </div>
@@ -151,38 +163,47 @@ function Header() {
           </div>
         </Link>
 
+        {/* Favorites and Cart Links */}
         <div className='fav_cart'>
           {/* Favorites Link */}
           <Link to="/favourites" className="header_Link">
             {isSmallScreen ? (
               <IconButton color="inherit">
-                <FavoriteBorderIcon />
+                <Badge
+                  badgeContent={favouriteItems?.length}
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                >
+                  <FavoriteBorderIcon />
+                </Badge>
               </IconButton>
             ) : (
               <div className="header_option_fav">
-                <FavoriteBorderIcon />
                 <Typography sx={{ ml: 1 }}>Favorites</Typography>
+                <IconButton color="inherit">
+                  <Badge
+                    badgeContent={favouriteItems?.length}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                  >
+                    <FavoriteBorderIcon />
+                  </Badge>
+                </IconButton>
               </div>
             )}
           </Link>
 
           {/* Cart Link */}
           <Link to="/checkout" className="header_Link">
-            {isSmallScreen ? (
-              <IconButton color="inherit">
-                <Badge badgeContent={basket?.length} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}>
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            ) : (
-              <div className="header_option_fav">
+            <IconButton color="inherit">
+              <Badge
+                badgeContent={basket?.length}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+              >
                 <ShoppingCartIcon />
-                <Typography sx={{ ml: 1, mr: 2 }}>Cart</Typography>
-                <Badge badgeContent={basket?.length} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }} />
-              </div>
-            )}
+              </Badge>
+            </IconButton>
           </Link>
         </div>
       </div>

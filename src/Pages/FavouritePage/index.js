@@ -1,23 +1,26 @@
 // FavoritesPage.js
 import React from 'react';
 import { useStateValue } from '../../Context/StateProvider';
-import FavoriteProduct from '../../Components/FavouriteProduct';
+import Product from '../../Components/Product';
 import './FavouritePage.css';
 
 function FavoritesPage() {
   const [{ favouriteItems }] = useStateValue();
 
+  // Reverse the favouriteItems array to display latest items first
+  const reversedFavourites = [...favouriteItems].reverse();
+
   return (
     <div className='favoritesPage'>
-      <h1>Your Favourites</h1>
-      {favouriteItems.length === 0 ? (
-        <div>
-          <h2>No favourite items</h2>
+      <h1>Your Favorites</h1>
+      {reversedFavourites.length === 0 ? (
+        <div className='favoritesPage_empty'>
+          <h2>No favorite items yet</h2>
         </div>
       ) : (
         <div className='favoritesPage_products'>
-          {favouriteItems.map(item => (
-            <FavoriteProduct
+          {reversedFavourites.map(item => (
+            <Product
               key={item.id}
               id={item.id}
               title={item.title}

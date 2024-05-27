@@ -1,92 +1,63 @@
-// components/Footer.js
-
-import React from "react";
+import React from 'react';
+import './Footer.css';
 import {
-  Box,
-  FooterContainer,
-  Row,
-  Column,
-  FooterLink,
-  Heading,
-  SocialIcon,
-  SocialText
-} from "./FooterStyles";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFacebookF,
-  faInstagram,
-  faTwitter,
-  faYoutube
-} from '@fortawesome/free-brands-svg-icons';
+  Facebook,
+  Instagram,
+  Twitter,
+  YouTube,
+  Info,
+  Visibility,
+  Create,
+  MenuBook,
+  Phone,
+  Room,
+} from '@mui/icons-material';
 
-const Footer = () => {
+function Footer() {
   return (
-    <Box>
-      <h1
-        style={{
-          color: "white",
-          textAlign: "center",
-          marginTop: "10px",
-          marginBottom: "10px",
-          fontFamily: 'Poppins', // Added font-family
-          fontWeight: 'medium' // Added font-weight
-        }}
-      >
-        E-Commerce Company Name
-      </h1>
-      <FooterContainer>
-        <Row>
-          <Column>
-            <Heading>About Us</Heading>
-            <FooterLink href="#">Aim</FooterLink>
-            <FooterLink href="#">Vision</FooterLink>
-            <FooterLink href="#">Testimonials</FooterLink>
-          </Column>
-          <Column>
-            <Heading>Services</Heading>
-            <FooterLink href="#">Writing</FooterLink>
-            <FooterLink href="#">Internships</FooterLink>
-            <FooterLink href="#">Coding</FooterLink>
-            <FooterLink href="#">Teaching</FooterLink>
-          </Column>
-          <Column>
-            <Heading>Contact Us</Heading>
-            <FooterLink href="#">Uttar Pradesh</FooterLink>
-            <FooterLink href="#">Ahmedabad</FooterLink>
-            <FooterLink href="#">Indore</FooterLink>
-            <FooterLink href="#">Mumbai</FooterLink>
-          </Column>
-          <Column>
-            <Heading>Social Media</Heading>
-            <FooterLink href="#">
-              <SocialIcon>
-                <FontAwesomeIcon icon={faFacebookF} />
-              </SocialIcon>
-              <SocialText>Facebook</SocialText>
-            </FooterLink>
-            <FooterLink href="#">
-              <SocialIcon>
-                <FontAwesomeIcon icon={faInstagram} />
-              </SocialIcon>
-              <SocialText>Instagram</SocialText>
-            </FooterLink>
-            <FooterLink href="#">
-              <SocialIcon>
-                <FontAwesomeIcon icon={faTwitter} />
-              </SocialIcon>
-              <SocialText>Twitter</SocialText>
-            </FooterLink>
-            <FooterLink href="#">
-              <SocialIcon>
-                <FontAwesomeIcon icon={faYoutube} />
-              </SocialIcon>
-              <SocialText>Youtube</SocialText>
-            </FooterLink>
-          </Column>
-        </Row>
-      </FooterContainer>
-    </Box>
+    <div className="footer">
+      <div className="footer_company">
+        Commerce Company Name
+      </div>
+      <div className="footer_sections">
+        <div className="footer_section">
+          <h2>About Us</h2>
+          <ul className="footer_about">
+            <li><a href="#">Aim</a></li>
+            <li><a href="#">Vision</a></li>
+            <li><a href="#">Testimonials</a></li>
+          </ul>
+        </div>
+        <div className="footer_section">
+          <h2>Services</h2>
+          <ul className="footer_services">
+            <li><a href="#">Writing</a></li>
+            <li><a href="#">Internships</a></li>
+            <li><a href="#">Coding</a></li>
+            <li><a href="#">Teaching</a></li>
+          </ul>
+        </div>
+        <div className="footer_section">
+          <h2>Contact Us</h2>
+          <ul className="footer_contact">
+            <li><a href="#"><Phone className="icon" /> Uttar Pradesh</a></li>
+            <li><a href="#"><Phone className="icon" /> Ahmedabad</a></li>
+            <li><a href="#"><Phone className="icon" /> Indore</a></li>
+            <li><a href="#"><Phone className="icon" /> Mumbai</a></li>
+          </ul>
+        </div>
+        <div className="footer_section">
+          <h2>Social Media</h2>
+          <ul className="footer_social">
+            <li><a href="#"><Facebook className="social_icon" />Facebook</a></li>
+            <li><a href="#"><Instagram className="social_icon" />Instagram</a></li>
+            <li><a href="#"><Twitter className="social_icon" />Twitter</a></li>
+            <li><a href="#"><YouTube className="social_icon" />YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
 export default Footer;

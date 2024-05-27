@@ -19,7 +19,7 @@ function FavoriteProduct({ id, title, image, price, rating }) {
       <div className='favoriteProduct_info'>
         <p className='favoriteProduct_title'>{title}</p>
         <p className='favoriteProduct_price'>
-          <small>$</small>
+          <small>₹</small>
           <strong>{price}</strong>
         </p>
         <div className='favoriteProduct_rating'>

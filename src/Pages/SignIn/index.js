@@ -18,6 +18,7 @@ import { Link as RouterLink } from 'react-router-dom'; // Import Link from react
 import Footer from '../../Components/Footer'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Footer from '../../Components/Footer';
 // Create a custom theme with the desired color scheme
 const theme = createTheme({
   palette: {
