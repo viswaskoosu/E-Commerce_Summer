@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,8 +16,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { createTheme, ThemeProvider } from '@mui/material/styles'; // Import from @mui/material/styles
 import { Link as RouterLink } from 'react-router-dom'; // Import Link from react-router-dom
 import Footer from '../../Components/Footer'
-
-
+import axios from 'axios'
+import Cookies from 'js-cookie'
 // Create a custom theme with the desired color scheme
 const theme = createTheme({
   palette: {
@@ -31,19 +31,69 @@ const theme = createTheme({
 });
 
 function SignIn() {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
 
+  const removeErrorMessage = (e) => {
+    if (e.target.id==="email"){
+      setEmailError(false)
+    }
+    if (e.target.id==="password"){
+      setPasswordError(false)
+    }
+}
+
+  const checkForm = (data) => {
+    let check = false
+    console.log(data.get('email'))
+    const emailregex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (!emailregex.test(data.get('email'))){
+      setEmailError('Invalid email')
+      check = check || true
+    }else{
+      setEmailError(false)
+    }
+    if (data.get('password').length===0){
+      check = check || true
+      setPasswordError('Invalid password')
+    }else{
+      setPasswordError(false)
+    }
+    return check
+  }
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    if (checkForm(data)) return 
+
+    const userData = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }
+
+    let responseData = {}
+    await axios.post('http://localhost:4000/user/login', userData)
+    .then(response => {
+      if (response.data.success){
+        Cookies.set("token", response.data.token)
+        // console.log(response.data.token)
+        alert("signed in successfully")
+      }
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.error) { alert("Couldn't sign in "+ error.response.data.error) }
+      else alert("Couldn't sign in (Server error)")
+    })
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
+
   };
 
   return (
@@ -88,8 +138,14 @@ function SignIn() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                // autoComplete="email"
                 autoFocus
+                inputProps={{
+                    type: "email",
+                  }}
+                  error={emailError}
+                  helperText={emailError}
+                  onChange={removeErrorMessage}
               />
               <TextField
                 margin="normal"
@@ -113,6 +169,9 @@ function SignIn() {
                     </InputAdornment>
                   ),
                 }}
+                error={passwordError}
+                helperText={passwordError}
+                onChange={removeErrorMessage}
               />
               <Button
                 type="submit"
