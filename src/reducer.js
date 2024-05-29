@@ -1,50 +1,51 @@
 export const initialState = {
   basket: [],
   favouriteItems: [],
-  user: {
-    displayName: 'Viswas',
-    email: 'viswas@example.com',
-    addresses: [
-      {
-        id: '1',
-        name: 'Viswas',
-        street: '123 Main Street',
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        zip: '560001',
-        country: 'India',
-        isDefault: true,
-      },
-      {
-        id: '2',
-        name: 'Viswas',
-        street: '456 Park Avenue',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        zip: '400001',
-        country: 'India',
-        isDefault: false,
-      },
-    ],
-    phoneNumber: '+91 9876543210',
-    paymentMethods: [
-      {
-        id: '1',
-        type: 'Credit Card',
-        last4: '1234',
-        expiration: '12/25',
-      },
-      {
-        id: '2',
-        type: 'UPI',
-        last4: '9876',
-        expiration: 'N/A',
-      },
-    ],
-    isAdmin: false,
-  },
+  // user: {
+  //   displayName: 'Viswas',
+  //   email: 'viswas@example.com',
+  //   addresses: [
+  //     {
+  //       id: '1',
+  //       name: 'Viswas',
+  //       street: '123 Main Street',
+  //       city: 'Bengaluru',
+  //       state: 'Karnataka',
+  //       zip: '560001',
+  //       country: 'India',
+  //       isDefault: true,
+  //     },
+  //     {
+  //       id: '2',
+  //       name: 'Viswas',
+  //       street: '456 Park Avenue',
+  //       city: 'Mumbai',
+  //       state: 'Maharashtra',
+  //       zip: '400001',
+  //       country: 'India',
+  //       isDefault: false,
+  //     },
+  //   ],
+  //   phoneNumber: '+91 9876543210',
+  //   paymentMethods: [
+  //     {
+  //       id: '1',
+  //       type: 'Credit Card',
+  //       last4: '1234',
+  //       expiration: '12/25',
+  //     },
+  //     {
+  //       id: '2',
+  //       type: 'UPI',
+  //       last4: '9876',
+  //       expiration: 'N/A',
+  //     },
+  //   ],
+  //   isAdmin: false,
+  // },
   orders: [],
   products: [],
+  
 };
 
 const reducer = (state, action) => {
@@ -55,6 +56,7 @@ const reducer = (state, action) => {
         orders: [...state.orders, action.order],
       };
     case 'SET_USER':
+      // console.log("KKKKKK",action.user)
       return {
         ...state,
         user: action.user

@@ -4,7 +4,7 @@ export const StateContext = createContext();
 
 export const StateProvider = ({ reducer, initialState, children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  console.log("fuck")
   return (
     <StateContext.Provider value={[state, dispatch]}>
       {children}

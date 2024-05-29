@@ -5,14 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { StateProvider } from './Context/StateProvider';
 import reducer, { initialState } from './reducer';
-
+// console.log(process.env.REACT_APP_API_URL)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <>
     <StateProvider initialState={initialState} reducer={reducer}>
       <App />
     </StateProvider>
-  </React.StrictMode>
+  </>
+  /* <React.StrictMode>
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <App />
+    </StateProvider>
+  </React.StrictMode> */
 );
 
 // If you want to start measuring performance in your app, pass a function

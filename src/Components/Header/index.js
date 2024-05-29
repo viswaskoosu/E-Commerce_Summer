@@ -17,6 +17,8 @@ import { Menu, MenuItem } from '@mui/material';
 
 function Header() {
   const [{ basket, favouriteItems, user }] = useStateValue();
+  const [state, dispatch] = useStateValue();
+  // console.log(state)
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null); // Define selectedAddress state

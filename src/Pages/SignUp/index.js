@@ -11,8 +11,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, Experimental_CssVarsProvider, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom'; // Import Link from react-router-dom
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as RouterLink, useHistory} from 'react-router-dom'; // Import Link from react-router-dom
 import axios from 'axios'
 import Cookies from 'js-cookie'
 // Create a custom theme with the desired color scheme
@@ -33,6 +33,7 @@ const signUpTheme = createTheme({
 
 // }
 export default function SignUp() {
+  const history = useHistory()
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
   // const [email, setEmail] = useState('');
@@ -61,7 +62,7 @@ export default function SignUp() {
     if (!emailregex.test(data.get('email'))){
       setEmailError('Invalid email')
       check = check || true
-      console.log(emailError)
+      // console.log(emailError)
     }else{
       setEmailError(false)
     }
@@ -98,13 +99,14 @@ export default function SignUp() {
       allowExtraEmails: data.get('allowExtraEmails') === 'on',
     }
     // console.log(userData);
-    let responseData = {}
     await axios.post('http://localhost:4000/user/signup', userData)
     .then(response => {
-      console.log(response.data)
+      // console.log(response.data)
       if (response.data.success)
-        Cookies.set("token", response.data.token)
+        // Cookies.set("token", response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
         alert("Signed up successfully")
+        history.push('/')
     })
     .catch((error) => {
       if (error.response && error.response.data && error.response.data.error) { alert("Couldn't signup "+ error.response.data.error) }

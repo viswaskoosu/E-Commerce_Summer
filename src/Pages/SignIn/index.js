@@ -14,11 +14,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { createTheme, ThemeProvider } from '@mui/material/styles'; // Import from @mui/material/styles
-import { Link as RouterLink } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link as RouterLink, useHistory} from 'react-router-dom'; // Import Link from react-router-dom
 import Footer from '../../Components/Footer'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import Footer from '../../Components/Footer';
 // Create a custom theme with the desired color scheme
 const theme = createTheme({
   palette: {
@@ -35,7 +34,7 @@ function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
-
+  const history = useHistory()
   const removeErrorMessage = (e) => {
     if (e.target.id==="email"){
       setEmailError(false)
@@ -47,7 +46,7 @@ function SignIn() {
 
   const checkForm = (data) => {
     let check = false
-    console.log(data.get('email'))
+    // console.log(data.get('email'))
     const emailregex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (!emailregex.test(data.get('email'))){
       setEmailError('Invalid email')
@@ -81,9 +80,10 @@ function SignIn() {
     await axios.post('http://localhost:4000/user/login', userData)
     .then(response => {
       if (response.data.success){
-        Cookies.set("token", response.data.token)
-        // console.log(response.data.token)
-        alert("signed in successfully")
+        // Cookies.set("token", response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        alert("Signed in successfully")
+        history.push('/')
       }
     })
     .catch((error) => {
