@@ -5,7 +5,7 @@ import './Subtotal.css';
 
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();
-    const history = useHistory(); // Initialize useHistory
+    const history = useHistory(); 
 
     const placeOrder = () => {
         const order = {
@@ -14,6 +14,7 @@ function Subtotal() {
           items: basket,
           total: basket.reduce((amount, item) => item.price * item.quantity + amount, 0),
         };
+        // console.log(order.id);
     
         dispatch({
           type: 'ADD_ORDER',

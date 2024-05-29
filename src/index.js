@@ -4,20 +4,30 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { StateProvider } from './Context/StateProvider';
-import reducer, { initialState } from './reducer';
-// import dotenv from 'dotenv'
-// dotenv.config({path: __dirname + "./env"})
-console.log(process.env.REACT_APP_API_URL, "ggggggggggggg")
+import reducer, { initialState } from './reducer'; // Ensure correct import
+
+// Initialize localStorage for application state
+const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
+const savedFavourites = localStorage.getItem('favouriteItems') ? JSON.parse(localStorage.getItem('favouriteItems')) : [];
+const savedAddresses = localStorage.getItem('addresses') ? JSON.parse(localStorage.getItem('addresses')) : [];
+const savedOrders = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [];
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
+    <StateProvider initialState={{ 
+      ...initialState,
+      basket: savedBasket,
+      favouriteItems: savedFavourites,
+      user: {
+        ...initialState.user,
+        addresses: savedAddresses,
+      },
+      orders: savedOrders,
+    }} reducer={reducer}>
       <App />
     </StateProvider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Other code...

@@ -26,6 +26,7 @@ function App() {
   const [, dispatch] = useStateValue();
 
   useEffect(() => {
+    // Load products initially
     dispatch({
       type: 'SET_PRODUCTS',
       products: Products,
@@ -55,7 +56,6 @@ function App() {
               <Route path="/account" component={AccountPage} />
               <Route path="/contactinfo" component={ContactInfo} />
               <Route path="/paymentmethods" component={PaymentMethods} />
-              <Route path="/loginSecurity" component={LoginSecurity} /> 
               <Route path="/loginSecurity" component={LoginSecurity} /> 
               <Route path="/payments" component={Payment} />
               <Route path='/addresses' component={Addresses}/>
