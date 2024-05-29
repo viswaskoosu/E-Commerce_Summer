@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import './Addresses.css'; // Import your CSS file for styling
+import './Addresses.css'; // Ensure this CSS file is in the correct path
 import { useStateValue } from '../../Context/StateProvider';
 
-const countries = ['India', 'United States', 'Canada', 'Australia', 'United Kingdom', 'Germany', 'France', 'Japan', 'China', 'Brazil', 'South Africa'];
+const countries = [
+  'India', 'United States', 'Canada', 'Australia', 'United Kingdom', 'Germany',
+  'France', 'Japan', 'China', 'Brazil', 'South Africa'
+];
 
 function Addresses() {
   const [{ user }, dispatch] = useStateValue();
@@ -18,28 +21,16 @@ function Addresses() {
   });
   const [errors, setErrors] = useState({});
   const [pinTimeout, setPinTimeout] = useState(null);
-  const [manualCountry, setManualCountry] = useState(false); // State to track manual entry of country
+  const [manualCountry, setManualCountry] = useState(false);
 
   const validate = () => {
     let validationErrors = {};
-    if (!newAddress.name) {
-      validationErrors.name = 'Name is required';
-    }
-    if (!newAddress.street) {
-      validationErrors.street = 'Street is required';
-    }
-    if (!newAddress.city) {
-      validationErrors.city = 'City is required';
-    }
-    if (!newAddress.state) {
-      validationErrors.state = 'State is required';
-    }
-    if (!newAddress.zip.match(/^\d{6}$/)) {
-      validationErrors.zip = 'Invalid PIN code';
-    }
-    if (!newAddress.country && !manualCountry) {
-      validationErrors.country = 'Country is required';
-    }
+    if (!newAddress.name) validationErrors.name = 'Name is required';
+    if (!newAddress.street) validationErrors.street = 'Street is required';
+    if (!newAddress.city) validationErrors.city = 'City is required';
+    if (!newAddress.state) validationErrors.state = 'State is required';
+    if (!newAddress.zip.match(/^\d{6}$/)) validationErrors.zip = 'Invalid PIN code';
+    if (!newAddress.country && !manualCountry) validationErrors.country = 'Country is required';
     return validationErrors;
   };
 
@@ -63,7 +54,7 @@ function Addresses() {
   const handleEdit = (address) => {
     setEditMode(true);
     setCurrentAddress(address);
-    setNewAddress({ ...address }); // Copy address to edit
+    setNewAddress({ ...address });
   };
 
   const handleDelete = (addressId) => {
@@ -82,15 +73,11 @@ function Addresses() {
     }
 
     if (currentAddress) {
-      const updatedAddresses = user.addresses.map(a =>
-        a.id === currentAddress.id ? newAddress : a
-      );
       dispatch({
         type: 'EDIT_ADDRESS',
-        address: newAddress,
+        address: { ...newAddress, id: currentAddress.id },
       });
     } else {
-      // Generate a unique ID for the new address
       const newAddressWithId = { ...newAddress, id: Date.now().toString() };
       dispatch({
         type: 'ADD_ADDRESS',
@@ -100,7 +87,7 @@ function Addresses() {
     setEditMode(false);
     setNewAddress({ name: '', street: '', city: '', state: '', zip: '', country: 'India' });
     setErrors({});
-    setManualCountry(false); // Reset manual country entry flag
+    setManualCountry(false);
   };
 
   const handlePinChange = (e) => {
@@ -134,7 +121,7 @@ function Addresses() {
 
   return (
     <div className="addresses">
-      <div className="text_addButton">
+      <div className="header">
         <h2>Manage Your Addresses</h2>
         <button className="add_address" onClick={() => {
           setEditMode(true);

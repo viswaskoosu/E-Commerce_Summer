@@ -100,6 +100,8 @@ export default function SignUp() {
     }
     // console.log(userData);
     await axios.post('http://localhost:4000/user/signup', userData)
+    let responseData = {}
+    await axios.post(`${process.env.REACT_APP_API_URL}/user/signup`, userData)
     .then(response => {
       // console.log(response.data)
       if (response.data.success)

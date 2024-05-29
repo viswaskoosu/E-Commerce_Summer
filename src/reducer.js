@@ -44,6 +44,51 @@ export const initialState = {
   //   isAdmin: false,
   // },
   orders: [],
+  basket: localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [],
+  favouriteItems: localStorage.getItem('favouriteItems') ? JSON.parse(localStorage.getItem('favouriteItems')) : [],
+  user: {
+    displayName: 'Viswas',
+    email: 'viswas@example.com',
+    addresses: localStorage.getItem('addresses') ? JSON.parse(localStorage.getItem('addresses')) : [
+      {
+        id: '1',
+        name: 'Viswas',
+        street: '123 Main Street',
+        city: 'Bengaluru',
+        state: 'Karnataka',
+        zip: '560001',
+        country: 'India',
+        isDefault: true,
+      },
+      {
+        id: '2',
+        name: 'Viswas',
+        street: '456 Park Avenue',
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        zip: '400001',
+        country: 'India',
+        isDefault: false,
+      },
+    ],
+    phoneNumber: '+91 9876543210',
+    paymentMethods: [
+      {
+        id: '1',
+        type: 'Credit Card',
+        last4: '1234',
+        expiration: '12/25',
+      },
+      {
+        id: '2',
+        type: 'UPI',
+        last4: '9876',
+        expiration: 'N/A',
+      },
+    ],
+    isAdmin: false,
+  },
+  orders: localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [],
   products: [],
   
 };
@@ -66,62 +111,84 @@ const reducer = (state, action) => {
         ...state,
         products: action.products,
       };
+    // Basket Actions
     case 'ADD_TO_BASKET':
+      const newBasket = [...state.basket, action.item];
+      localStorage.setItem('basket', JSON.stringify(newBasket));
       return {
         ...state,
-        basket: [...state.basket, action.item]
+        basket: newBasket
       };
+
     case 'REMOVE_FROM_BASKET':
+      const updatedBasket = state.basket.filter(item => item.id !== action.id);
+      localStorage.setItem('basket', JSON.stringify(updatedBasket));
       return {
         ...state,
-        basket: state.basket.filter(item => item.id !== action.id)
+        basket: updatedBasket
       };
-    case 'ADD_TO_FAVOURITES':
-      return {
-        ...state,
-        favouriteItems: [...state.favouriteItems, action.item]
-      };
-    case 'REMOVE_FROM_FAVOURITES':
-      return {
-        ...state,
-        favouriteItems: state.favouriteItems.filter(item => item.id !== action.id)
-      };
+
     case 'INCREASE_QUANTITY':
+      const increasedBasket = state.basket.map(item =>
+        item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+      localStorage.setItem('basket', JSON.stringify(increasedBasket));
       return {
         ...state,
-        basket: state.basket.map(item =>
-          item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
+        basket: increasedBasket
       };
+
     case 'DECREASE_QUANTITY':
+      const decreasedBasket = state.basket.map(item =>
+        item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
+      );
+      localStorage.setItem('basket', JSON.stringify(decreasedBasket));
       return {
         ...state,
-        basket: state.basket.map(item =>
-          item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
-        )
+        basket: decreasedBasket
       };
-    case 'ADD_ORDER':
-      return {
-        ...state,
-        orders: [...state.orders, action.order],
-      };
+
     case 'EMPTY_BASKET':
+      localStorage.removeItem('basket');
       return {
         ...state,
-        basket: [],
+        basket: []
       };
+
+    // Favourites Actions
+    case 'ADD_TO_FAVOURITES':
+      const newFavourites = [...state.favouriteItems, action.item];
+      localStorage.setItem('favouriteItems', JSON.stringify(newFavourites));
+      return {
+        ...state,
+        favouriteItems: newFavourites
+      };
+
+    case 'REMOVE_FROM_FAVOURITES':
+      const updatedFavourites = state.favouriteItems.filter(item => item.id !== action.id);
+      localStorage.setItem('favouriteItems', JSON.stringify(updatedFavourites));
+      return {
+        ...state,
+        favouriteItems: updatedFavourites
+      };
+
+    // Address Actions
     case 'ADD_ADDRESS':
+      const newAddresses = [...state.user.addresses, action.address];
+      localStorage.setItem('addresses', JSON.stringify(newAddresses));
       return {
         ...state,
         user: {
           ...state.user,
-          addresses: [...state.user.addresses, action.address],
+          addresses: newAddresses,
         },
       };
+
     case 'EDIT_ADDRESS':
       const updatedAddresses = state.user.addresses.map((address) =>
         address.id === action.address.id ? action.address : address
       );
+      localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
       return {
         ...state,
         user: {
@@ -129,10 +196,12 @@ const reducer = (state, action) => {
           addresses: updatedAddresses,
         },
       };
+
     case 'DELETE_ADDRESS':
       const filteredAddresses = state.user.addresses.filter(
         (address) => address.id !== action.addressId
       );
+      localStorage.setItem('addresses', JSON.stringify(filteredAddresses));
       return {
         ...state,
         user: {
@@ -140,14 +209,40 @@ const reducer = (state, action) => {
           addresses: filteredAddresses,
         },
       };
-      case 'UPDATE_USER_INFO':
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            [action.field]: action.value,
-          },
-        };
+
+    // Order Actions
+    case 'ADD_ORDER':
+      const newOrders = [...state.orders, action.order];
+      localStorage.setItem('orders', JSON.stringify(newOrders));
+      return {
+        ...state,
+        orders: newOrders,
+      };
+
+    case 'COMPLETE_ORDER':
+      return {
+        ...state,
+        orders: [...state.orders, action.order],
+      };
+
+    // User Actions
+    case 'UPDATE_USER_INFO':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          [action.field]: action.value,
+        },
+      };
+
+    // Product Actions
+    case 'SET_PRODUCTS':
+      return {
+        ...state,
+        products: action.products,
+      };
+
+    // Default case
     default:
       return state;
   }

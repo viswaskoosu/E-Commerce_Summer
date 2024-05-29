@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginSecurity.css'; // Import your CSS file for styling
 import { useStateValue } from '../../Context/StateProvider';
 
@@ -6,6 +6,24 @@ function LoginSecurity() {
   const [{ user }, dispatch] = useStateValue();
   const [editField, setEditField] = useState(null);
   const [editValue, setEditValue] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [selectedCountryCode, setSelectedCountryCode] = useState('');
+
+  // Fetch country codes on component mount
+  useEffect(() => {
+    fetch('https://restcountries.com/v3.1/all')
+      .then((response) => response.json())
+      .then((data) => {
+        const countryData = data
+          .filter((country) => country.idd?.root)
+          .map((country) => ({
+            name: country.name.common,
+            code: `${country.idd.root}${country.idd.suffixes ? country.idd.suffixes[0] : ''}`,
+          }));
+        setCountries(countryData);
+      })
+      .catch((error) => console.error('Error fetching countries:', error));
+  }, []);
 
   const handleEditClick = (field, value) => {
     setEditField(field);
@@ -19,6 +37,11 @@ function LoginSecurity() {
       value: editValue,
     });
     setEditField(null);
+  };
+
+  const handleCountryChange = (e) => {
+    const selectedCountry = countries.find((country) => country.name === e.target.value);
+    setSelectedCountryCode(selectedCountry ? selectedCountry.code : '');
   };
 
   return (
@@ -64,11 +87,22 @@ function LoginSecurity() {
         {editField === 'phoneNumber' ? (
           <div className="loginSecurity_item">
             <h3>Mobile Number</h3>
-            <input
-              type="tel"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
-            />
+            <div className="loginSecurity_phone">
+              <select onChange={handleCountryChange}>
+                <option value="">Select Country</option>
+                {countries.map((country) => (
+                  <option key={country.code} value={country.name}>
+                    {country.name} ({country.code})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="tel"
+                value={editValue.replace(selectedCountryCode, '')}
+                onChange={(e) => setEditValue(selectedCountryCode + e.target.value)}
+                placeholder="Phone Number"
+              />
+            </div>
             <button onClick={handleSave}>Save</button>
             <button onClick={() => setEditField(null)}>Cancel</button>
           </div>

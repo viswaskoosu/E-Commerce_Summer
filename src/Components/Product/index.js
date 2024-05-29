@@ -70,7 +70,7 @@ function Product({ id, title, image, price, rating }) {
     }
   };
 
-  // Function to truncate title if it exceeds a certain length
+  // Function to truncate title like in amazon
   const truncateTitle = (title, maxLength) => {
     if (title.length > maxLength) {
       return title.substring(0, maxLength) + '...';

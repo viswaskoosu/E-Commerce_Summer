@@ -4,7 +4,7 @@ import { useStateValue } from '../../Context/StateProvider';
 import Product from '../../Components/Product';
 import './FavouritePage.css';
 
-function FavoritesPage() {
+function FavouritesPage() {
   const [{ favouriteItems }] = useStateValue();
 
   // Reverse the favouriteItems array to display latest items first
@@ -35,4 +35,4 @@ function FavoritesPage() {
   );
 }
 
-export default FavoritesPage;
+export default FavouritesPage;
