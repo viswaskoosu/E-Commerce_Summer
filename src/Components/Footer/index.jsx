@@ -5,12 +5,7 @@ import {
   Instagram,
   Twitter,
   YouTube,
-  Info,
-  Visibility,
-  Create,
-  MenuBook,
   Phone,
-  Room,
 } from '@mui/icons-material';
 
 function Footer() {

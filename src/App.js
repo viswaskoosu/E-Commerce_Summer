@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Home from './Pages/Home';
@@ -20,6 +20,7 @@ import Products from './data';
 import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
+import Error from './Pages/Error';
 
 function App() {
   console.log('Window width: ' + window.innerWidth + 'px');
@@ -38,28 +39,29 @@ function App() {
         <div className="app">
           <Header />
           <div className="main-content">
-            <Switch>
+            <Routes>
               {/* Public Routes */}
-              <Route path="/checkout" component={Checkout} />
-              <Route path="/favourites" component={FavoritesPage} />
-              <Route path="/orderhistory" component={OrderHistory} />
-              <Route path="/product/:id" component={ProductDetail} />
-              <Route exact path="/" component={Home} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/favourites" element={<FavoritesPage />} />
+              <Route path="/orderhistory" element={<OrderHistory />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route exact path="/" element={<Home />} />
 
               {/* Restricted Routes */}
-              <Route path="/signin" component={SignIn} />
-              <Route path="/signup" component={SignUp} />
-              <Route path="/forgotpassword" component={ForgotPassword} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
 
               {/* Protected Routes */}
-              <Route path="/account" component={AccountPage} />
-              <Route path="/contactinfo" component={ContactInfo} />
-              <Route path="/paymentmethods" component={PaymentMethods} />
-              <Route path="/loginSecurity" component={LoginSecurity} /> 
-              <Route path="/loginSecurity" component={LoginSecurity} /> 
-              <Route path="/payments" component={Payment} />
-              <Route path='/addresses' component={Addresses}/>
-            </Switch>
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/contactinfo" element={<ContactInfo />} />
+              <Route path="/paymentmethods" element={<PaymentMethods />} />
+              <Route path="/loginSecurity" element={<LoginSecurity />} />
+              <Route path="/payments" element={<Payment />} />
+              <Route path="/addresses" element={<Addresses />} />
+
+              <Route path="/error" element={<Error />} />
+            </Routes>
           </div>
           <Footer />
         </div>

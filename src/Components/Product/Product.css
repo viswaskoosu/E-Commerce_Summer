@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  max-width: 250px; /* Default maximum width */
+  max-width: 250px;
   min-width: 200px;
   margin: 10px;
   padding: 20px;
@@ -12,20 +12,12 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Ensure children don't overflow */
 }
 
-/* Responsive Styles using Media Queries */
-@media screen and (max-width: 768px) {
-  .product {
-    max-width: 200px; /* Adjust maximum width for smaller screens */
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .product {
-    max-width: 100px; /* Full width on smaller screens */
-    padding: 10px; /* Adjust padding for smaller screens */
-  }
+.product:hover {
+  transform: translateY(-5px); /* Move product up slightly on hover */
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2); /* Add a shadow on hover */
 }
 
 .product_link {
@@ -37,20 +29,13 @@
 .product img {
   width: 100%;
   height: 150px;
-  object-fit: contain;
+  object-fit: cover; /* Ensure image covers the space */
   margin-bottom: 15px;
   transition: transform 0.3s ease;
 }
 
 .product:hover img {
-  transform: scale(1.05);
-}
-
-.product_price {
-  margin-top: 5px;
-  color: #DB4444;
-  font-size: 18px;
-  font-weight: bold;
+  transform: scale(1.1); /* Enlarge image on hover */
 }
 
 .product_info {
@@ -65,24 +50,34 @@
 
 .product_actions {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-top: 10px;
 }
 
-.product button {
+.product_actions p,
+.product_actions button {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.product_actions p:hover,
+.product_actions button:hover {
+  color: #ff5722; /* Change color on hover */
+}
+
+.product_actions button {
   background-color: #f0c14b;
   border: 1px solid #a88734;
-  margin-top: 10px;
   width: 100%;
-  cursor: pointer;
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
-.product button:hover {
-  background-color: #e0ac24;
+.product_actions button:hover {
+  background-color: #e0ac24; /* Change background color on hover */
 }
 
 .favouriteIcon {
@@ -91,11 +86,12 @@
   right: 10px;
   cursor: pointer;
   z-index: 100;
-  transition: color 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .favouriteIcon:hover {
-  color: #ff5722;
+  transform: scale(1.2); /* Enlarge icon on hover */
+  color: #ff5722; /* Change color on hover */
 }
 
 .product_info > p {
@@ -103,7 +99,6 @@
   font-weight: 500;
 }
 
-/* Responsive Title Length */
 @media screen and (max-width: 480px) {
   .product_title {
     font-size: 14px; /* Decrease font size for smaller screens */
