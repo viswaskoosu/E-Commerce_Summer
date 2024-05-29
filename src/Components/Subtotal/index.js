@@ -24,7 +24,7 @@ function Subtotal() {
           type: 'EMPTY_BASKET',
         });
 
-        history.push('/payments'); // Redirect to the payments page
+        history.push('/payments');
     };
 
     // Calculate the subtotal

@@ -58,6 +58,7 @@ function App() {
               <Route path="/loginSecurity" component={LoginSecurity} /> 
               <Route path="/loginSecurity" component={LoginSecurity} /> 
               <Route path="/payments" component={Payment} />
+              <Route path='/addresses' component={Addresses}/>
             </Switch>
           </div>
           <Footer />

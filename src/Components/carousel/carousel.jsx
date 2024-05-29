@@ -34,11 +34,11 @@ const Carousel = () => {
     <Box
       sx={{
         position: "relative",
-        width: "100%", // Set width to 100% of the viewport width
-        overflowX: "hidden", // Hide horizontal scrollbar
-        maxHeight: "60vh", // Set maximum height to 60% of the viewport height
-        margin: 0, // Remove any margin
-        padding: 0, // Remove any padding
+        width: "100%", 
+        overflowX: "hidden", 
+        maxHeight: "60vh",
+        margin: 0, 
+        padding: 0,
       }}
     >
       <img
