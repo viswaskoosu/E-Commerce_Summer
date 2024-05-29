@@ -99,14 +99,13 @@ export default function SignUp() {
       allowExtraEmails: data.get('allowExtraEmails') === 'on',
     }
     // console.log(userData);
-    await axios.post('http://localhost:4000/user/signup', userData)
-    let responseData = {}
     await axios.post(`${process.env.REACT_APP_API_URL}/user/signup`, userData)
     .then(response => {
       // console.log(response.data)
       if (response.data.success)
         // Cookies.set("token", response.data.token)
         localStorage.setItem('user', JSON.stringify(response.data.user))
+        localStorage.setItem('basket', JSON.stringify(response.data.basket))
         alert("Signed up successfully")
         history.push('/')
     })

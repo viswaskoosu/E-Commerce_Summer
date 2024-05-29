@@ -25,7 +25,7 @@ import Cookies from 'js-cookie'
 import ReactLoading from 'react-loading'
 function App() {
   // console.log('Window width: ' + window.innerWidth + 'px');
-  const [state, dispatch] = useStateValue();
+  const [, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     // Load products initially
@@ -41,12 +41,13 @@ function App() {
       <ReactLoading type="spin" color="#FFAD33"
           height={200} width={100} />
     </div>:
-    <StateProvider initialState={initialState} reducer={reducer}>
+    // <StateProvider initialState={initialState} reducer={reducer}>
+    <div>
+
       <Router>
         <div className="app">
-        {/* <div>
-        {state.user?.displayName ?? "hi"}
-        </div> */}
+          <Route exact path="/" component={Home} />
+
           <Header />
           <div className="main-content">
             <Switch>
@@ -55,7 +56,6 @@ function App() {
               <Route path="/favourites" component={FavoritesPage} />
               <Route path="/orderhistory" component={OrderHistory} />
               <Route path="/product/:id" component={ProductDetail} />
-              <Route exact path="/" component={Home} />
 
               {/* Restricted Routes */}
               <Route path="/signin" component={SignIn} />
@@ -74,7 +74,8 @@ function App() {
           <Footer />
         </div>
       </Router>
-    </StateProvider>
+      </div>
+    // </StateProvider>
   );
 }
 

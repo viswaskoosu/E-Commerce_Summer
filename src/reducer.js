@@ -1,6 +1,6 @@
 export const initialState = {
-  basket: [],
-  favouriteItems: [],
+  // basket: [],
+  // favouriteItems: [],
   // user: {
   //   displayName: 'Viswas',
   //   email: 'viswas@example.com',
@@ -43,7 +43,7 @@ export const initialState = {
   //   ],
   //   isAdmin: false,
   // },
-  orders: [],
+  // orders: [],
   basket: localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [],
   favouriteItems: localStorage.getItem('favouriteItems') ? JSON.parse(localStorage.getItem('favouriteItems')) : [],
   user: {

@@ -4,44 +4,36 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { StateProvider } from './Context/StateProvider';
-<<<<<<< HEAD
-import reducer, { initialState } from './reducer';
-// console.log(process.env.REACT_APP_API_URL)
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <>
-    <StateProvider initialState={initialState} reducer={reducer}>
-=======
 import reducer, { initialState } from './reducer'; // Ensure correct import
-
+import { getReq } from './getReq';
 // Initialize localStorage for application state
 const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
-const savedFavourites = localStorage.getItem('favouriteItems') ? JSON.parse(localStorage.getItem('favouriteItems')) : [];
-const savedAddresses = localStorage.getItem('addresses') ? JSON.parse(localStorage.getItem('addresses')) : [];
-const savedOrders = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [];
-
+const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];
+const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
+const savedOrders = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).orders : [];
+const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
+console.log(user)
+// console.log(savedBasket,savedFavourites, savedAddresses, savedOrders)
+if (localStorage.getItem('token') && !localStorage.getItem('user')){
+  localStorage.removeItem('token')
+}
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <StateProvider initialState={{ 
-      ...initialState,
+      // ...initialState,
       basket: savedBasket,
       favouriteItems: savedFavourites,
       user: {
         ...initialState.user,
         addresses: savedAddresses,
+        ...user
       },
       orders: savedOrders,
     }} reducer={reducer}>
->>>>>>> 7421957f8ff9f85dda530c1b6a0671f667f1bf3b
       <App />
     </StateProvider>
-  </>
-  /* <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
-      <App />
-    </StateProvider>
-  </React.StrictMode> */
+  </React.StrictMode>
 );
 
 // Other code...

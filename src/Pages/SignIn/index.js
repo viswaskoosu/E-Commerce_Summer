@@ -67,6 +67,7 @@ function SignIn() {
   };
 
   const handleSubmit = async (event) => {
+    // console.log('submit')
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (checkForm(data)) return 
@@ -79,9 +80,11 @@ function SignIn() {
     let responseData = {}
     await axios.post(`${process.env.REACT_APP_API_URL}/user/login`, userData)
     .then(response => {
+      console.log("succ")
       if (response.data.success){
         // Cookies.set("token", response.data.token)
         localStorage.setItem('user', JSON.stringify(response.data.user))
+        localStorage.setItem('basket', JSON.stringify(response.data.basket))
         alert("Signed in successfully")
         history.push('/')
       }
@@ -98,6 +101,8 @@ function SignIn() {
   };
 
   return (
+    <div>
+    
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -200,6 +205,7 @@ function SignIn() {
       </Grid>
     <Footer />
     </ThemeProvider>
+    </div>
   );
 }
 

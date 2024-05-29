@@ -16,6 +16,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Menu, MenuItem } from '@mui/material';
 
 function Header() {
+  // console.log('header')
   const [{ basket, favouriteItems, user }] = useStateValue();
   const [state, dispatch] = useStateValue();
   // console.log(state)
@@ -68,6 +69,9 @@ function Header() {
     </div>
   );
 
+  const userExists = () =>{
+    return localStorage.getItem('user')
+  }
   return (
     <nav className="header">
       {/* Logo */}
@@ -134,7 +138,7 @@ function Header() {
       {/* Navigation Links */}
       <div className="header_nav">
         {/* Account Link */}
-        <Link to={user ? '/account' : '/signin'} className="header_Link">
+        <Link to={userExists() ? '/account' : '/signin'} className="header_Link">
           <div className="header_option">
             {isSmallScreen ? (
               <IconButton color="inherit">
@@ -142,8 +146,8 @@ function Header() {
               </IconButton>
             ) : (
               <>
-                <span className="header_optionLineOne">{user ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
-                <span className="header_optionLineTwo">{user ? 'Your Account' : 'Sign In'}</span>
+                <span className="header_optionLineOne">{userExists() ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
+                <span className="header_optionLineTwo">{userExists() ? 'Your Account' : 'Sign In'}</span>
               </>
             )}
           </div>
