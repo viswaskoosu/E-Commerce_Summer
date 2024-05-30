@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../../Context/StateProvider';
 import './PaymentMethods.css';
+import Header from '../../Components/Header';
 
 // Dummy data for payment methods
 const initialPaymentMethods = [
@@ -120,6 +121,8 @@ const PaymentMethods = () => {
   };
 
   return (!userLoggedIn? <div>404 not found</div> : 
+    <>
+      <Header/>
     <div className="payment-methods">
       <h2>Welcome, {user.displayName}!</h2>
       <h3>Payment Methods</h3>
@@ -208,6 +211,8 @@ const PaymentMethods = () => {
         </button>
       </div>
     </div>
+    </>
+
   );
 };
 
