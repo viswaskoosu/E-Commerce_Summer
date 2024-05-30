@@ -1,11 +1,15 @@
 import React from 'react';
 import { useStateValue } from '../../Context/StateProvider';
-import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import './Subtotal.css';
 
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();
+<<<<<<< HEAD
     const history = useHistory(); 
+=======
+    const navigate = useNavigate(); // Initialize useNavigate
+>>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
 
     const placeOrder = () => {
         const order = {
@@ -25,7 +29,7 @@ function Subtotal() {
           type: 'EMPTY_BASKET',
         });
 
-        history.push('/payments');
+        navigate('/payments');
     };
 
     // Calculate the subtotal

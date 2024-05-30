@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink, useHistory } from 'react-router-dom'; // Import Link and useHistory from react-router-dom
+import { Link as RouterLink, useNavigate } from 'react-router-dom'; // Import Link and useNavigate from react-router-dom
 
 // Create a custom theme with the desired color scheme
 const forgotPasswordTheme = createTheme({
@@ -22,7 +22,7 @@ const forgotPasswordTheme = createTheme({
 });
 
 export default function ForgotPassword() {
-  const history = useHistory();
+  const navigate = useNavigate(); // Use lowercase 'navigate' to avoid naming conflict
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,10 +31,6 @@ export default function ForgotPassword() {
       email: data.get('email'),
     });
     // Handle form submission logic here (e.g., send reset password email)
-  };
-
-  const handleSignInClick = () => {
-    history.push('/signin'); // Navigate to the '/signin' route
   };
 
   return (

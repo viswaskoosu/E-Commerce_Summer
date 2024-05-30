@@ -1,10 +1,10 @@
-// Product.js
 import React from 'react';
 import './Product.css';
 import { useStateValue } from '../../Context/StateProvider';
 import { Link } from 'react-router-dom';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { BsFillCartFill } from 'react-icons/bs';
+import { IconContext } from 'react-icons';
 
 function Product({ id, title, image, price, rating }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
@@ -44,13 +44,15 @@ function Product({ id, title, image, price, rating }) {
 
   const addToFavourites = () => {
     const isInFavourites = favouriteItems.some(item => item.id === id);
-    const isInBasket = basket.some(item => item.id===id);
-    if(isInBasket){
+    const isInBasket = basket.some(item => item.id === id);
+
+    if (isInBasket) {
       dispatch({
         type: 'REMOVE_FROM_BASKET',
-        id:id,
-      })
+        id: id,
+      });
     }
+
     if (!isInFavourites) {
       dispatch({
         type: 'ADD_TO_FAVOURITES',
@@ -70,7 +72,6 @@ function Product({ id, title, image, price, rating }) {
     }
   };
 
-  // Function to truncate title like in amazon
   const truncateTitle = (title, maxLength) => {
     if (title.length > maxLength) {
       return title.substring(0, maxLength) + '...';
@@ -81,14 +82,14 @@ function Product({ id, title, image, price, rating }) {
   return (
     <div className="product">
       <Link to={`/product/${id}`} className="product_link">
-        <img src={image} alt={title} />
+        <img src={image} alt={title} className="item-img"/>
         <div className="product_info">
-          <p className="product_title">{truncateTitle(title, 50)}</p>
-          <p className="product_price">
+          <p className="item-title">{truncateTitle(title, 50)}</p>
+          <p className="product_price product-actual-price">
             <small>₹</small>
             <strong>{price}</strong>
           </p>
-          <div className="product_rating">
+          <div className="product_rating item-rating">
             {Array(rating)
               .fill()
               .map((_, index) => (
@@ -98,14 +99,20 @@ function Product({ id, title, image, price, rating }) {
         </div>
       </Link>
       <div className="product_actions">
-        <p className="favouriteIcon" onClick={addToFavourites}>
-          {favouriteItems.some(item => item.id === id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-        </p>
-        {basket.some(item => item.id === id) ? (
-          <button onClick={removeFromBasket}>Remove from cart</button>
-        ) : (
-          <button onClick={addToBasket}>Add to Cart</button>
-        )}
+        <IconContext.Provider value={{ size: '1.5rem' }}>
+          <p className="favouriteIcon" onClick={addToFavourites}>
+            {favouriteItems.some(item => item.id === id) ? <AiFillHeart /> : <AiOutlineHeart />}
+          </p>
+          {basket.some(item => item.id === id) ? (
+            <button onClick={removeFromBasket} className="add-cart-btn">
+              <BsFillCartFill /> Remove from cart
+            </button>
+          ) : (
+            <button onClick={addToBasket} className="add-cart-btn">
+              <BsFillCartFill /> Add to Cart
+            </button>
+          )}
+        </IconContext.Provider>
       </div>
     </div>
   );
