@@ -63,6 +63,8 @@ const ResponsiveSlider = () => {
               image={product.images[0]} // Use the first image as the product image
               price={product.price}
               rating={product.rating}
+              mrp={product.mrp}
+              reviews={product.reviews}
             />
           </div>
         ))}
