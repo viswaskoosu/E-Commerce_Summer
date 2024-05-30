@@ -2,25 +2,26 @@ import React from 'react';
 import { useStateValue } from '../../Context/StateProvider';
 import CheckoutProduct from '../../Components/CheckoutProduct';
 import Subtotal from '../../Components/Subtotal';
-import './Checkout.css';
+import './Checkout.css'; // Ensure your CSS file is imported for styling
 import { Link } from 'react-router-dom';
-import image from './emptycart.png';
+import image from './emptycart.png'; // Assuming this is your empty cart image
 
 function Checkout() {
   const [{ basket }] = useStateValue();
+
+  // Filter unique items based on item.id to avoid duplicates
   const uniqueItems = [...new Map(basket.map(item => [item.id, item])).values()];
 
   return (
     <div className='checkout'>
       <div className="checkout_left">
-        
+        {/* Conditionally render based on basket length */}
         {basket?.length === 0 ? (
-          <div>
-            <div className="empty-list">
+          <div className="empty-list">
             <img src={image} className="empty-img" alt='' />
             <div className="empty-text">
               <p className="empty-head">It's empty here!</p>
-              <p className="empty-desc" >
+              <p className="empty-desc">
                 "Don't let your wishlist collect dust. Add some items that bring
                 joy to your life and watch as they become a reality with just a
                 few clicks."
@@ -30,33 +31,33 @@ function Checkout() {
               </Link>
             </div>
           </div>
-          </div>
         ) : (
           <div>
             <h2 className='checkout_title'>Your Cart</h2>
+            {/* Map through uniqueItems array and render CheckoutProduct component */}
             {uniqueItems.map((item) => (
               <CheckoutProduct
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                image={item.image}
-                price={item.price}
-                rating={item.rating}
+                  id={item.id}
+                  title={item.title}
+                  image={item.image}
+                  price={item.price}
+                  rating={item.rating}
+                  mrp={item.mrp} // Pass each additional property individually
+                  category={item.category}
+                  reviews={item.reviews}
               />
             ))}
           </div>
         )}
       </div>
-      <div>
+      {/* Render Subtotal component only if basket is not empty */}
       {basket.length > 0 && (
         <div className="checkout_right">
           <Subtotal />
         </div>
       )}
-      </div>
     </div>
   );
 }
 
 export default Checkout;
-  

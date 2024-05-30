@@ -36,7 +36,7 @@ function Home() {
           </div>
           <img src={Delivery} className="delivery" alt=''/>
         </div>
-      {/* <Carousel /> */}
+      <Carousel />
       <ResponsiveSlider/>
     </div>
   );

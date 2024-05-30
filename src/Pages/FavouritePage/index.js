@@ -8,8 +8,8 @@ import image from './empty.png';
 
 function FavoritesPage() {
   const [{ favouriteItems }] = useStateValue();
-  const reversedFavourites = [...favouriteItems].reverse();
-
+  const reversedFavourites = favouriteItems ? [...favouriteItems].reverse() : [];
+  
   return (
     <div className='favoritesPage'>
       <div className='lists animate'>
@@ -33,13 +33,16 @@ function FavoritesPage() {
           <div className='favoritesPage_products'>
             {reversedFavourites.map(item => (
               <Product
-                key={item.id}
                 id={item.id}
                 title={item.title}
                 image={item.image}
                 price={item.price}
                 rating={item.rating}
+                mrp={item.mrp}
+                category={item.category}
+                reviews={item.reviews} // Ensure reviews is passed correctly
               />
+
             ))}
           </div>
         )}

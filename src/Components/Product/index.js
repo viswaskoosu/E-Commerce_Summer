@@ -1,13 +1,12 @@
 import React from 'react';
 import './Product.css';
 import { useStateValue } from '../../Context/StateProvider';
-import { Link } from 'react-router-dom';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
-function Product({ id, title, image, price, rating, category, mrp,reviews }) {
+function Product({ id, title, image, price, rating, category, mrp, reviews }) {
   const [{ favouriteItems }, dispatch] = useStateValue();
 
   const addToFavourites = () => {
@@ -22,6 +21,8 @@ function Product({ id, title, image, price, rating, category, mrp,reviews }) {
           image: image,
           price: price,
           rating: rating,
+          mrp:mrp,
+          
         },
       });
     } else {
@@ -48,9 +49,9 @@ function Product({ id, title, image, price, rating, category, mrp,reviews }) {
       <div className="card-img-data">
           <img src={image} alt={title} className="card-img" />
           <p className="price-off">({discountPercentage}% OFF)</p>
-        <Link to={`/product/${id}`} className="product_link">
-          <button className="view">View product</button>
-        </Link>
+          <a href={`/product/${id}`} className="product_link">
+            <button className="view">View product</button>
+          </a>
         <IconContext.Provider value={{ size: '1.5rem' }}>
           <p className="add-list" onClick={addToFavourites}>
             {favouriteItems.some(item => item.id === id) ? <AiFillHeart /> : <AiOutlineHeart />}
@@ -64,7 +65,7 @@ function Product({ id, title, image, price, rating, category, mrp,reviews }) {
           <Stack spacing={1}>
             <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
           </Stack>
-          <p className="rating-text">{reviews.length}</p>
+          <p className="rating-text">{reviews ? reviews.length : 0}</p>
         </div>
         <div className="card-price">
           <p className="discount">₹{price}</p>

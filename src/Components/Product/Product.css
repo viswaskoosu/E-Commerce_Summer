@@ -29,12 +29,10 @@
   font-weight: 700;
   color: rgb(172, 0, 0);
 }
-
-.view {
+.view{
   position: absolute;
-  top: 0%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: -60%;
+  left: 100%;
   border: none;
   background-color: white;
   text-align: center;
@@ -47,15 +45,10 @@
   visibility: hidden;
 }
 
-.view:hover {
-  transform: scale(1.06);
-}
-
 .card-img-data:hover .view {
   opacity: 1;
   visibility: visible;
 }
-
 
 .card-img-data:hover .card-img {
   filter: brightness(75%);
