@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 import axios from "axios";
 import Header from "../../Components/Header";
+import { useStateValue } from "../../Context/StateProvider";
 
 // Create a custom theme with the desired color scheme
 const signUpTheme = createTheme({
@@ -35,6 +36,10 @@ const signUpTheme = createTheme({
 // }
 export default function SignUp() {
   const navigate = useNavigate();
+  const [{ userLoggedIn }] = useStateValue();
+  if (userLoggedIn){
+    navigate('/accounts')
+  }
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
   // const [email, setEmail] = useState('');

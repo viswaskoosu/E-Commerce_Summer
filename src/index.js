@@ -12,7 +12,7 @@ const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.g
 const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
 const savedOrders = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).orders : [];
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
-console.log(user)
+// console.log(user)
 // console.log(savedBasket,savedFavourites, savedAddresses, savedOrders)
 if (localStorage.getItem('token') && !localStorage.getItem('user')){
   localStorage.removeItem('token')

@@ -18,7 +18,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom"; // Import Li
 import Footer from "../../Components/Footer";
 import axios from "axios";
 import Header from "../../Components/Header";
-
+import { useStateValue } from "../../Context/StateProvider";
 // Create a custom theme with the desired color scheme
 const theme = createTheme({
   palette: {
@@ -32,10 +32,15 @@ const theme = createTheme({
 });
 
 function SignIn() {
+  const navigate = useNavigate();
+  const [{ userLoggedIn }] = useStateValue();
+  if (userLoggedIn){
+    navigate('/accounts')
+  }
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const navigate = useNavigate();
+
   const removeErrorMessage = (e) => {
     if (e.target.id === "email") {
       setEmailError(false);
@@ -107,7 +112,8 @@ function SignIn() {
     // });
   };
 
-  return (
+  return (userLoggedIn?
+  <>404 not found</>:
     <div>
       <Header />
       <ThemeProvider theme={theme}>

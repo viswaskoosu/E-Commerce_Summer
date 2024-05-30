@@ -86,7 +86,7 @@ export const initialState = {
         expiration: 'N/A',
       },
     ],
-    isAdmin: false,
+    // isAdmin: false,
   },
   orders: localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [],
   products: [],
