@@ -35,7 +35,7 @@ function SignIn() {
   const navigate = useNavigate();
   const [{ userLoggedIn }] = useStateValue();
   if (userLoggedIn){
-    navigate('/accounts')
+    navigate('/account')
   }
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);

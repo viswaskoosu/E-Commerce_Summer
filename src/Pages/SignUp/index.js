@@ -38,7 +38,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [{ userLoggedIn }] = useStateValue();
   if (userLoggedIn){
-    navigate('/accounts')
+    navigate('/account')
   }
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
