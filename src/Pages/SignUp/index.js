@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink, useHistory} from 'react-router-dom'; // Import Link from react-router-dom
+import { Link as RouterLink, useNavigate} from 'react-router-dom'; // Import Link from react-router-dom
 import axios from 'axios'
 import Cookies from 'js-cookie'
 // Create a custom theme with the desired color scheme
@@ -33,7 +33,7 @@ const signUpTheme = createTheme({
 
 // }
 export default function SignUp() {
-  const history = useHistory()
+  const navigate = useNavigate()
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
   // const [email, setEmail] = useState('');
@@ -107,7 +107,7 @@ export default function SignUp() {
         localStorage.setItem('user', JSON.stringify(response.data.user))
         localStorage.setItem('basket', JSON.stringify(response.data.basket))
         alert("Signed up successfully")
-        history.push('/')
+        navigate('/')
     })
     .catch((error) => {
       if (error.response && error.response.data && error.response.data.error) { alert("Couldn't signup "+ error.response.data.error) }

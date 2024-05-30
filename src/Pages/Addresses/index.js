@@ -8,7 +8,7 @@ const countries = [
 ];
 
 function Addresses() {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, userLoggedIn }, dispatch] = useStateValue();
   const [editMode, setEditMode] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(null);
   const [newAddress, setNewAddress] = useState({
@@ -119,7 +119,7 @@ function Addresses() {
     setErrors(prevErrors => ({ ...prevErrors, country: '' }));
   };
 
-  return (
+  return (!userLoggedIn? <div>404 not found</div> : 
     <div className="addresses">
       <div className="header">
         <h2>Manage Your Addresses</h2>

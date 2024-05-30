@@ -90,7 +90,7 @@ export const initialState = {
   },
   orders: localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [],
   products: [],
-  
+  userLoggedIn: false,
 };
 
 const reducer = (state, action) => {

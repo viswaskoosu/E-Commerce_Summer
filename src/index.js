@@ -25,10 +25,12 @@ root.render(
       basket: savedBasket,
       favouriteItems: savedFavourites,
       user: {
-        ...initialState.user,
+        // ...initialState.user,
         addresses: savedAddresses,
         ...user
       },
+      userLoggedIn: localStorage.getItem('user')? true: false,
+
       orders: savedOrders,
     }} reducer={reducer}>
       <App />

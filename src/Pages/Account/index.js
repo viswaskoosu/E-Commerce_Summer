@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'; // Import Link for navigation
 import { useStateValue } from '../../Context/StateProvider';
 
 function AccountPage() {
-  const [{ user }] = useStateValue();
-
-  return (
+  const [{ user, userLoggedIn }] = useStateValue();
+  console.log(userLoggedIn, user)
+  return (!userLoggedIn? <div>404 not found</div> : 
     <div className="accountPage">
       <div className="accountPage_info">
         <h2>Welcome, {user.displayName}!</h2>

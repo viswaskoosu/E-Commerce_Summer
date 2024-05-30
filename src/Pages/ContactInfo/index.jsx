@@ -3,9 +3,9 @@ import { useStateValue } from '../../Context/StateProvider';
 import './ContactInfo.css'; // Import the CSS file
 
 function ContactInfo() {
-  const [{ user }] = useStateValue();
+  const [{ user, userLoggedIn }] = useStateValue();
 
-  return (
+  return (!userLoggedIn? <div>404 not found</div> : 
     <div className="contactInfo">
       <h2>Welcome, {user.displayName}!</h2>
       <div className="infoContainer">

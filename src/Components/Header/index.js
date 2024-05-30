@@ -20,13 +20,9 @@ import {
 } from '@mui/icons-material';
 import { useStateValue } from '../../Context/StateProvider';
 
-<<<<<<< HEAD
-function Header() {
-  // console.log('header')
-=======
+
 const Header = () => {
->>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
-  const [{ basket, favouriteItems, user }] = useStateValue();
+  const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
   const [state, dispatch] = useStateValue();
   // console.log(state)
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -59,9 +55,9 @@ const Header = () => {
     </Box>
   );
 
-  const userExists = () =>{
-    return localStorage.getItem('user')
-  }
+  // const userExists = () =>{
+  //   return localStorage.getItem('user')
+  // }
   return (
     <nav className="header">
       <Link to="/">
@@ -114,12 +110,7 @@ const Header = () => {
       </Box>
 
       <div className="header_nav">
-<<<<<<< HEAD
-        {/* Account Link */}
-        <Link to={userExists() ? '/account' : '/signin'} className="header_Link">
-=======
-        <Link to={user ? '/account' : '/signin'} className="header_Link">
->>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
+        <Link to={userLoggedIn ? '/account' : '/signin'} className="header_Link">
           <div className="header_option">
             {isSmallScreen ? (
               <IconButton color="inherit">
@@ -127,8 +118,8 @@ const Header = () => {
               </IconButton>
             ) : (
               <>
-                <span className="header_optionLineOne">{userExists() ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
-                <span className="header_optionLineTwo">{userExists() ? 'Your Account' : 'Sign In'}</span>
+                <span className="header_optionLineOne">{userLoggedIn ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
+                <span className="header_optionLineTwo">{userLoggedIn ? 'Your Account' : 'Sign In'}</span>
               </>
             )}
           </div>

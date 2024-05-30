@@ -21,7 +21,7 @@ import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
 import Error from './Pages/Error';
-
+import ReactLoading from 'react-loading'
 function App() {
   // console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
@@ -45,13 +45,13 @@ function App() {
 
       <Router>
         <div className="app">
-          <Route exact path="/" component={Home} />
 
           <Header />
           <div className="main-content">
             <Routes>
+            
               {/* Public Routes */}
-
+              <Route exact path="/" element={<Home/>} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/favourites" element={<FavoritesPage />} />
               <Route path="/orderhistory" element={<OrderHistory />} />

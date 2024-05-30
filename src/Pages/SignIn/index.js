@@ -14,7 +14,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { createTheme, ThemeProvider } from '@mui/material/styles'; // Import from @mui/material/styles
-import { Link as RouterLink, useHistory} from 'react-router-dom'; // Import Link from react-router-dom
+import { Link as RouterLink, useNavigate} from 'react-router-dom'; // Import Link from react-router-dom
 import Footer from '../../Components/Footer'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -34,7 +34,7 @@ function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
-  const history = useHistory()
+  const navigate = useNavigate()
   const removeErrorMessage = (e) => {
     if (e.target.id==="email"){
       setEmailError(false)
@@ -86,7 +86,7 @@ function SignIn() {
         localStorage.setItem('user', JSON.stringify(response.data.user))
         localStorage.setItem('basket', JSON.stringify(response.data.basket))
         alert("Signed in successfully")
-        history.push('/')
+        navigate('/')
       }
     })
     .catch((error) => {

@@ -3,7 +3,7 @@ import './LoginSecurity.css'; // Import your CSS file for styling
 import { useStateValue } from '../../Context/StateProvider';
 
 function LoginSecurity() {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, userLoggedIn }, dispatch] = useStateValue();
   const [editField, setEditField] = useState(null);
   const [editValue, setEditValue] = useState('');
   const [countries, setCountries] = useState([]);
@@ -11,6 +11,7 @@ function LoginSecurity() {
 
   // Fetch country codes on component mount
   useEffect(() => {
+    //check user is there??
     fetch('https://restcountries.com/v3.1/all')
       .then((response) => response.json())
       .then((data) => {
@@ -44,7 +45,7 @@ function LoginSecurity() {
     setSelectedCountryCode(selectedCountry ? selectedCountry.code : '');
   };
 
-  return (
+  return (!userLoggedIn? <div>404 not found</div> : 
     <div className="loginSecurity">
       <h2>Login & Security</h2>
       <div className="loginSecurity_info">
