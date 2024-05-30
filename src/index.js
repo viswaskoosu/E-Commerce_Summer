@@ -9,7 +9,7 @@ import { getReq } from './getReq';
 // Initialize localStorage for application state
 const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
 const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];
-const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
+// const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
 const savedOrders = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).orders : [];
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
 // console.log(user)
@@ -26,11 +26,10 @@ root.render(
       favouriteItems: savedFavourites,
       user: {
         // ...initialState.user,
-        addresses: savedAddresses,
+        // addresses: savedAddresses,
         ...user
       },
       userLoggedIn: localStorage.getItem('user')? true: false,
-
       orders: savedOrders,
     }} reducer={reducer}>
       <App />
