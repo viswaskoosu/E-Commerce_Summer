@@ -20,14 +20,8 @@ import Products from './data';
 import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
-<<<<<<< HEAD
-import { getReq } from './getReq';
-import Cookies from 'js-cookie'
-import ReactLoading from 'react-loading'
-=======
 import Error from './Pages/Error';
 
->>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
 function App() {
   // console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
@@ -57,18 +51,12 @@ function App() {
           <div className="main-content">
             <Routes>
               {/* Public Routes */}
-<<<<<<< HEAD
-              <Route path="/checkout" component={Checkout} />
-              <Route path="/favourites" component={FavoritesPage} />
-              <Route path="/orderhistory" component={OrderHistory} />
-              <Route path="/product/:id" component={ProductDetail} />
-=======
+
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/favourites" element={<FavoritesPage />} />
               <Route path="/orderhistory" element={<OrderHistory />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route exact path="/" element={<Home />} />
->>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
 
               {/* Restricted Routes */}
               <Route path="/signin" element={<SignIn />} />
@@ -76,15 +64,6 @@ function App() {
               <Route path="/forgotpassword" element={<ForgotPassword />} />
 
               {/* Protected Routes */}
-<<<<<<< HEAD
-              <Route path="/account" component={AccountPage} />
-              <Route path="/contactinfo" component={ContactInfo} />
-              <Route path="/paymentmethods" component={PaymentMethods} />
-              <Route path="/loginSecurity" component={LoginSecurity} /> 
-              <Route path="/payments" component={Payment} />
-              <Route path='/addresses' component={Addresses}/>
-            </Switch>
-=======
               <Route path="/account" element={<AccountPage />} />
               <Route path="/contactinfo" element={<ContactInfo />} />
               <Route path="/paymentmethods" element={<PaymentMethods />} />
@@ -94,7 +73,6 @@ function App() {
 
               <Route path="/error" element={<Error />} />
             </Routes>
->>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
           </div>
           <Footer />
         </div>
