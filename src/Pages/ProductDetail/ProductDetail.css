@@ -3,6 +3,7 @@
   flex-direction: column;
   padding: 20px;
   font-family: 'Poppins', sans-serif;
+  background-color: #f6f5f5;
 }
 
 .productDetail {
@@ -31,6 +32,7 @@
   object-fit: contain;
   margin: 0 20px;
   transition: transform 0.3s ease;
+  border-radius: 10px;
 }
 
 .productDetail_image:hover {
@@ -146,4 +148,37 @@
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
   color: rgb(229, 216, 216);
+}
+.rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Align items vertically */
+  margin-top: 10px; /* Adjust margin as needed */
+}
+
+.rating p {
+  margin-left: 10px; /* Add some left margin for spacing */
+}
+.productDetail_price {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.productDetail_price small {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+.productDetail_price strong {
+  font-size: 22px;
+  margin-right: 10px;
+  color: #DB4444;
+}
+
+.productDetail_mrp {
+  font-size: 18px;
+  margin-left: 10px;
 }

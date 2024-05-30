@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import './ProductDetail.css';
 import { useStateValue } from '../../Context/StateProvider';
 import { Products } from '../../data'; // Import your products data
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 
 function ProductDetail() {
   const { id } = useParams();
@@ -112,29 +114,24 @@ function ProductDetail() {
       </div>
 
       <div className="productDetail_info">
-        <p className="productDetail_title">{product.title}</p>
-        <div className="productDetail_rating">
-          {Array(product.rating)
-            .fill()
-            .map((_, index) => (
-              <p key={index}>⭐</p>
-            ))}
-        </div>
-        <p className="productDetail_price">
-          <small>₹</small>
-          <strong>{product.mrp}</strong>{" "}
-          <strong
-            style={{
-              textDecoration: "line-through",
-              color: "grey",
-              fontWeight: "normal",
-              marginLeft: "10px",
-              fontSize: "18px",
-            }}
-          >
-            {product.price}
-          </strong>
-        </p>
+  <p className="productDetail_title">{product.title}</p>
+  <div className="rating">
+    <div className="product_rating item-rating">
+      <Stack spacing={1}>
+        <Rating name={`rating-${id}`} value={product.rating} precision={0.5} readOnly />
+      </Stack>
+    </div>
+    <p>({product.rating})</p>
+  </div>
+  <p className="productDetail_price">
+  Price: 
+  <small>₹</small>
+  <strong>{product.price}</strong>{" "}
+  <strong className="productDetail_mrp">
+    <span style={{ textDecoration: "line-through", color: "grey" }}>₹{product.mrp}</span>
+  </strong>
+</p>
+
         
         <div className="specifications">
           <p className="specifications_title">Specifications:</p>

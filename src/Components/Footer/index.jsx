@@ -1,57 +1,88 @@
-import React from 'react';
-import './Footer.css';
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  YouTube,
-  Phone,
-} from '@mui/icons-material';
+import React from "react";
+import "./Footer.css";
 
 function Footer() {
   return (
-    <div className="footer">
-      <div className="footer_company">
-        Commerce Company Name
-      </div>
-      <div className="footer_sections">
-        <div className="footer_section">
-          <h2>About Us</h2>
-          <ul className="footer_about">
-            <li><a href="#">Aim</a></li>
-            <li><a href="#">Vision</a></li>
-            <li><a href="#">Testimonials</a></li>
-          </ul>
-        </div>
-        <div className="footer_section">
-          <h2>Services</h2>
-          <ul className="footer_services">
-            <li><a href="#">Writing</a></li>
-            <li><a href="#">Internships</a></li>
-            <li><a href="#">Coding</a></li>
-            <li><a href="#">Teaching</a></li>
-          </ul>
-        </div>
-        <div className="footer_section">
-          <h2>Contact Us</h2>
-          <ul className="footer_contact">
-            <li><a href="#"><Phone className="icon" /> Uttar Pradesh</a></li>
-            <li><a href="#"><Phone className="icon" /> Ahmedabad</a></li>
-            <li><a href="#"><Phone className="icon" /> Indore</a></li>
-            <li><a href="#"><Phone className="icon" /> Mumbai</a></li>
-          </ul>
-        </div>
-        <div className="footer_section">
-          <h2>Social Media</h2>
-          <ul className="footer_social">
-            <li><a href="#"><Facebook className="social_icon" />Facebook</a></li>
-            <li><a href="#"><Instagram className="social_icon" />Instagram</a></li>
-            <li><a href="#"><Twitter className="social_icon" />Twitter</a></li>
-            <li><a href="#"><YouTube className="social_icon" />YouTube</a></li>
-          </ul>
+    <>
+      <div className="footer">
+        <div className="disclaimer-area">
+          <p className="disclaimer-desc">
+            <b>The best E-Commerce site for Construction</b>
+          </p>
         </div>
       </div>
-    </div>
+      <div className="extra-data">
+        <div className="link-section">
+          <div className="first-row">
+            <p className="bold">Get to Know Us</p>
+            <p>Make Money with Us</p>
+            <p>Amazon Payment</p>
+            <p>Let Us Help You</p>
+          </div>
+          <div className="second-row">
+            <p className="bold">About Amazon</p>
+            <p>Sell products on Amazon</p>
+            <p>Amazon Business Card</p>
+            <p>Amazon and COVID-19</p>
+          </div>
+          <div className="third-row">
+            <p className="bold">Connect with Us</p>
+            <p>Sell apps on Amazon</p>
+            <p>Shop with Points</p>
+            <p>Shipping Rates & Policies</p>
+          </div>
+          <div className="fourth-row">
+            <p className="bold">Amazon Cares</p>
+            <p>Become an Affiliate</p>
+            <p>Reload Your Balance</p>
+            <p>Returns & Replacements</p>
+          </div>
+        </div>
+        <div className="link-section2">
+          <div className="first-one">
+            <div className="first-row">
+              <p className="bold">Get to Know Us</p>
+              <p>Make Money with Us</p>
+              <p>Amazon Payment</p>
+              <p>Let Us Help You</p>
+            </div>
+            <div className="second-row">
+              <p className="bold">About Amazon</p>
+              <p>Sell products on Amazon</p>
+              <p>Amazon Business Card</p>
+              <p>Amazon and COVID-19</p>
+            </div>
+          </div>
+          <div className="second-one">
+            <div className="third-row">
+              <p className="bold">Connect with Us</p>
+              <p>Sell apps on Amazon</p>
+              <p>Shop with Points</p>
+              <p>Shipping Rates & Policies</p>
+            </div>
+            <div className="fourth-row">
+              <p className="bold">Amazon Cares</p>
+              <p>Become an Affiliate</p>
+              <p>Reload Your Balance</p>
+              <p>Returns & Replacements</p>
+            </div>
+          </div>
+        </div>
+        <div className="developer">
+          <img src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" className="amazon-img" />
+          <div className="dev-data">
+            <p>&copy; 2023 | Developed by </p>
+            <a
+              className="dev-link"
+              href="https://www.iitdh.ac.in/"
+              target="_blank" rel="noreferrer"
+            >
+              IIT Dharwad
+            </a>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

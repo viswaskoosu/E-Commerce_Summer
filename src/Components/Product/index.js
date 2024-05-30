@@ -3,8 +3,10 @@ import './Product.css';
 import { useStateValue } from '../../Context/StateProvider';
 import { Link } from 'react-router-dom';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-import { BsFillCartFill } from 'react-icons/bs';
 import { IconContext } from 'react-icons';
+import { RemoveShoppingCart, ShoppingCart } from '@mui/icons-material';
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 
 function Product({ id, title, image, price, rating }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
@@ -85,17 +87,17 @@ function Product({ id, title, image, price, rating }) {
         <img src={image} alt={title} className="item-img"/>
         <div className="product_info">
           <p className="item-title">{truncateTitle(title, 50)}</p>
+          <div className="product_rating item-rating">
+            <Stack spacing={1}>
+              <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
+            </Stack>
+          </div>
           <p className="product_price product-actual-price">
             <small>₹</small>
             <strong>{price}</strong>
           </p>
-          <div className="product_rating item-rating">
-            {Array(rating)
-              .fill()
-              .map((_, index) => (
-                <p key={index}>⭐</p>
-              ))}
-          </div>
+          
+
         </div>
       </Link>
       <div className="product_actions">
@@ -105,11 +107,15 @@ function Product({ id, title, image, price, rating }) {
           </p>
           {basket.some(item => item.id === id) ? (
             <button onClick={removeFromBasket} className="add-cart-btn">
-              <BsFillCartFill /> Remove from cart
+              <RemoveShoppingCart /> Remove from cart
             </button>
           ) : (
             <button onClick={addToBasket} className="add-cart-btn">
-              <BsFillCartFill /> Add to Cart
+            <div className='btn_flex'>
+            <div><ShoppingCart />
+            </div>
+            <div className='text_add'> Add to Cart</div>
+            </div>
             </button>
           )}
         </IconContext.Provider>

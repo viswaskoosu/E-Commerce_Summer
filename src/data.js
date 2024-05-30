@@ -4,7 +4,7 @@ export const Products = [
     title: "Electric Drill Machine 13mm",
     mrp: 2599,
     price: 2499,
-    rating: 4,
+    rating: 4.5,
     images: [
       "https://m.media-amazon.com/images/I/714rkFrqqXL._SX450_.jpg",
       "https://m.media-amazon.com/images/I/71O-Gj7PtcL._SX450_.jpg",

@@ -1,122 +1,158 @@
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.main-content {
-  flex: 1;
-}
-
 .footer {
-  background-color: #161515;
-  color: #efe6e6;
-  padding: 20px;
+  background-color: #1c2228; /* Set the background color of the entire footer */
+  color: white; /* Set default text color to white */
+}
+
+.disclaimer-area {
   display: flex;
-  flex-direction: column;
+  background-color: inherit; /* Inherit background color from parent */
+  font-family: "Poppins", sans-serif;
+  color: inherit; /* Inherit text color from parent */
+  justify-content: center;
   align-items: center;
-  flex-shrink: 0;
+  height: 60px;
+  padding: 8px;
+  text-align: center; /* Center text for better readability */
 }
 
-.footer_company {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  transition: font-size 0.3s ease;
+.disclaimer-head {
+  font-weight: bolder;
 }
 
-.footer_sections {
+.first-row,
+.second-row,
+.third-row,
+.fourth-row {
+  cursor: pointer;
   display: flex;
+  justify-content: flex-start;
+  font-family: "Poppins", sans-serif;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 15px; /* Add margin for better spacing */
+  color: white; /* Ensure text color is white */
+}
+p{
+  margin: 10px;
+}
+.link-section,
+.link-section2 {
+  display: flex;
+  align-items: flex-start;
   justify-content: space-around;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 14px;
+  color: gray; /* Adjusted text color */
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  gap: 20px; /* Add gap between columns */
+}
+
+.bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: bolder;
+  font-size: 27px;
+  color: white !important; /* Ensure text color is white */
+  margin-bottom: 10px; /* Add spacing below headers */
+}
+
+.amazon-img {
+  width: 100px;
+  margin-right: 15px; /* Add margin for spacing */
+}
+
+.extra-data {
+  background-color: #1c2228; /* Set background color to match the footer */
+  color: white; /* Ensure text color is white */
+}
+
+.developer {
+  display: flex;
   width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  position: relative;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  color: white; /* Ensure text color is white */
+  text-align: center; /* Center text for better readability */
 }
 
-.footer_section {
-  flex: 1;
-  margin-right: 20px;
+.dev-data {
+  display: flex;
+  position: relative;
+  bottom: 8px;
+  margin-left: 15px;
+  align-items: center;
+  color: white; /* Ensure text color is white */
 }
 
-.footer h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  transition: font-size 0.3s ease;
+.dev-link {
+  margin-left: 5px;
+  text-decoration: underline;
+  color: white; /* Ensure link color is white */
 }
 
-.footer_services ul,
-.footer_about ul,
-.footer_contact ul,
-.footer_social ul {
-  list-style-type: none;
-  padding-left: 0;
+.link-section2 {
+  display: none;
 }
 
-.footer_services ul li,
-.footer_about ul li,
-.footer_contact ul li,
-.footer_social ul li {
-  margin-bottom: 5px;
-  transition: font-size 0.3s ease;
-}
+/* MEDIA QUERIES  */
 
-.footer_services ul li a,
-.footer_about ul li a,
-.footer_contact ul li a,
-.footer_social ul li a {
-  color: #000;
-  text-decoration: none;
-  display: inline-block;
-  transition: color 0.3s ease;
-}
-
-.footer_services ul li a:hover,
-.footer_about ul li a:hover,
-.footer_contact ul li a:hover,
-.footer_social ul li a:hover {
-  color: #000; /* Change color on hover */
-  font-size: 20px; /* Increase font size on hover */
-}
-
-.social_icon {
-  vertical-align: middle;
-  margin-right: 5px;
-  font-size: 24px;
-  transition: transform 0.3s ease;
-}
-
-.social_icon:hover {
-  transform: translateY(-3px);
-}
-
-.icon {
-  vertical-align: middle;
-  margin-right: 5px;
-  font-size: 24px;
-  transition: transform 0.3s ease;
-}
-
-.icon:hover {
-  transform: translateY(-3px);
-}
-
-@media (max-width: 768px) {
-  .footer_sections {
-    flex-wrap: wrap;
-  }
-  
-  .footer_section {
-    flex-basis: calc(50% - 20px);
-    margin-right: 0;
-    margin-bottom: 20px;
+@media (max-width: 880px) {
+  .disclaimer-area {
+    padding-left: 35px;
+    padding-right: 35px;
+    height: 80px;
+    text-align: center; /* Center text for better readability */
   }
 }
 
-@media (max-width: 480px) {
-  .footer_section {
-    flex-basis: 100%;
+@media (max-width: 720px) {
+  .developer {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .link-section {
+    display: none;
+  }
+  .link-section2 {
+    display: flex;
+  }
+}
+
+@media (max-width: 420px) {
+  .disclaimer-area {
+    font-size: 14px;
+    height: 110px;
+    flex-direction: column; /* Stack items vertically */
+    text-align: center;
+  }
+  .extra-data {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+}
+
+@media (max-width: 360px) {
+  .link-section2 {
+    flex-direction: column;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    align-items: flex-start; /* Align items to start */
+    text-align: left; /* Align text to the left */
+    gap: 10px; /* Add gap between rows */
+  }
+  .developer {
+    padding: 0;
+    flex-direction: column;
+    text-align: center; /* Center text for better readability */
+  }
+  .dev-data {
+    margin: 0;
   }
 }

@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Global body font setup */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+.favoritesPage {
+  padding: 20px;
+  background-color: #f6f5f5;
+}
+
+.wishlist-head {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+/* Styles for the empty state */
+.empty-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.empty-img {
+  width: 410px;
+}
+
+.empty-text {
+  background-color: white;
+  padding: 40px;
+  text-align: left;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+.empty-head {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.empty-desc {
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+}
+
+.shopping {
+  cursor: pointer;
+  border: none;
+  background-color: rgb(255, 149, 0);
+  padding: 12px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  margin-top: 30px;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  font-size: 18px;
+  border-radius: 7px;
+  transition: all 0.13s;
+}
+
+.shopping:hover {
+  transform: scale(1.06);
+}
+
+.shopping:active {
+  transform: scale(1);
+}
+
+/* Styles for populated list of favorite products */
+.favoritesPage_products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Animation for list entry */
+.animate {
+  animation: floatzoom 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+@keyframes floatzoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .favoritesPage_products {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .empty-img {
+    width: 280px;
+  }
+}
+
+@media (max-width: 350px) {
+  .empty-img {
+    width: 230px;
+  }
+  .empty-desc,
+  .shopping {
+    font-size: 13px;
+  }
+}
