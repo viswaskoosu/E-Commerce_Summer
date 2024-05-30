@@ -32,7 +32,6 @@ function AccountPage() {
 
   return (
     <>
-      <Header />
       <div className="profile-section" style={{ height: user ? 'fit-content' : '70vh' }}>
         <div className={`account-section ${user ? 'animate' : ''}`}>
           <div className="top-section">
@@ -63,48 +62,56 @@ function AccountPage() {
                   </div>
                   <p className="users-name">{user ? `${user.displayName}` : ""}</p>
                 </div>
-                <div className="personal-mail">
-                  <div className="mail-section">
-                    <p className="mail-data">Contact</p>
-                    <img src={contact} className="mail-photo" alt="Contact Icon" />
+                <Link to="/loginSecurity" className="accountPage_section">
+                  <div>
+                    <h3>Login & Security</h3>
+                    <p>Edit login, name, and mobile number</p>
                   </div>
-                  <p className="users-mail">{user ? `${user.email.slice(0, 15) + "..."}` : ""}</p>
-                </div>
-              </div>
+                </Link>
+                <Link to='/contactinfo' className="accountPage_section"> {/* Add className="accountPage_section" to the Link */}
+                  <div className="contact-info">
+                    <div className="mail-section">
+                      <p className="mail-data">Contact Information</p>
+                      <img src={contact} className="mail-photo" alt="Contact Icon" />
+                    </div>
+                    <div>
+                      <p>{user ? `${user.email}` : ""}</p>
+                      <p> {user ? `${user.phoneNumber}` : ""}</p>
+                      <p>{user && user.addresses.length > 0 ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].state}, ${user.addresses[0].zip}, ${user.addresses[0].country}` : ""}</p>
+                    </div>
+                  </div>
+                </Link>
 
-              {/* Additional sections */}
-              <Link to="/contactInfo" className="accountPage_section">
-                <h3>Contact Information</h3>
-                <p>Email: {user.email}</p>
-                <p>Phone Number: {user.phoneNumber}</p>
-                <p>Address: {user.addresses[0].street}, {user.addresses[0].city}, {user.addresses[0].state}, {user.addresses[0].zip}, {user.addresses[0].country}</p>
-              </Link>
-              <Link to="/paymentmethods" className="accountPage_section">
-                <h3>Payment Methods</h3>
-                {user.paymentMethods.length > 0 ? (
-                  <ul className="accountPage_list">
-                    {user.paymentMethods.map((method) => (
-                      <li key={method.id}>
-                        {method.type} ending in {method.last4} (Expires {method.expiration})
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No payment methods saved.</p>
-                )}
-              </Link>
-              <Link to="/loginSecurity" className="accountPage_section">
-                <h3>Login & Security</h3>
-                <p>Edit login, name, and mobile number</p>
-              </Link>
-              <Link to="/addresses" className="accountPage_section">
-                <h3>Your Addresses</h3>
-                <p>Edit addresses and add</p>
-              </Link>
-              <Link to="/contactUs" className="accountPage_section">
-                <h3>Contact Us</h3>
-                <p>Get in touch with us</p>
-              </Link>
+                <Link to="/paymentmethods" className="accountPage_section">
+                  <div>
+                    <h3>Payment Methods</h3>
+                    {user && user.paymentMethods.length > 0 ? (
+                      <ul className="accountPage_list">
+                        {user.paymentMethods.map((method) => (
+                          <li key={method.id}>
+                            <p>{method.type} ending in {method.last4} (Expires {method.expiration})</p>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No payment methods saved.</p>
+                    )}
+                  </div>
+                </Link>
+                
+                <Link to="/addresses" className="accountPage_section">
+                  <div>
+                    <h3>Your Addresses</h3>
+                    <p>Edit addresses and add</p>
+                  </div>
+                </Link>
+                <Link to="/contactUs" className="accountPage_section">
+                  <div>
+                    <h3>Contact Us</h3>
+                    <p>Get in touch with us</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

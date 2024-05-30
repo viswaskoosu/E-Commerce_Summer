@@ -4,10 +4,15 @@ import { useStateValue } from '../../Context/StateProvider';
 
 function LoginSecurity() {
   const [{ user }, dispatch] = useStateValue();
-  const [editField, setEditField] = useState(null);
-  const [editValue, setEditValue] = useState('');
+  const [editMode, setEditMode] = useState(false);
+  const [editValues, setEditValues] = useState({
+    name: user.displayName,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    password: '',
+  });
   const [countries, setCountries] = useState([]);
-  const [selectedCountryCode, setSelectedCountryCode] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   // Fetch country codes on component mount
   useEffect(() => {
@@ -25,70 +30,86 @@ function LoginSecurity() {
       .catch((error) => console.error('Error fetching countries:', error));
   }, []);
 
-  const handleEditClick = (field, value) => {
-    setEditField(field);
-    setEditValue(value);
+  const handleEditToggle = () => {
+    setEditMode(!editMode);
+    // Reset edit values to current user values
+    setEditValues({
+      name: user.displayName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      password: '',
+    });
   };
 
   const handleSave = () => {
+    // Dispatch action to update user info with editValues
     dispatch({
       type: 'UPDATE_USER_INFO',
-      field: editField,
-      value: editValue,
+      field: 'all',
+      value: editValues,
     });
-    setEditField(null);
+    setEditMode(false); // Exit edit mode after saving
   };
 
   const handleCountryChange = (e) => {
     const selectedCountry = countries.find((country) => country.name === e.target.value);
-    setSelectedCountryCode(selectedCountry ? selectedCountry.code : '');
+    setSelectedCountry(selectedCountry);
+    if (selectedCountry) {
+      // Automatically update phone number with country code
+      setEditValues((prevValues) => ({
+        ...prevValues,
+        phoneNumber: `${selectedCountry.code} ${editValues.phoneNumber.replace(/^\+\d+\s/, '')}`,
+      }));
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setEditValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
   };
 
   return (
     <div className="loginSecurity">
-      <h2>Login & Security</h2>
+      <div className="loginSecurity_header">
+        <h2>Login & Security</h2>
+        {!editMode ? (
+          <button className="edit-button" onClick={handleEditToggle}>Edit</button>
+        ) : (
+          <button className="save-button" onClick={handleSave}>Save</button>
+        )}
+      </div>
       <div className="loginSecurity_info">
-        {editField === 'name' ? (
-          <div className="loginSecurity_item">
-            <h3>Name</h3>
+        <div className="loginSecurity_item">
+          <h3>Name</h3>
+          {editMode ? (
             <input
               type="text"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
+              value={editValues.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
             />
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => setEditField(null)}>Cancel</button>
-          </div>
-        ) : (
-          <div className="loginSecurity_item">
-            <h3>Name</h3>
+          ) : (
             <p>{user.displayName}</p>
-            <button onClick={() => handleEditClick('name', user.displayName)}>Edit</button>
-          </div>
-        )}
-        {editField === 'email' ? (
-          <div className="loginSecurity_item">
-            <h3>Email</h3>
+          )}
+        </div>
+        <div className="loginSecurity_item">
+          <h3>Email</h3>
+          {editMode ? (
             <input
               type="email"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
+              value={editValues.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
             />
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => setEditField(null)}>Cancel</button>
-          </div>
-        ) : (
-          <div className="loginSecurity_item">
-            <h3>Email</h3>
+          ) : (
             <p>{user.email}</p>
-            <button onClick={() => handleEditClick('email', user.email)}>Edit</button>
-          </div>
-        )}
-        {editField === 'phoneNumber' ? (
-          <div className="loginSecurity_item">
-            <h3>Mobile Number</h3>
+          )}
+        </div>
+        <div className="loginSecurity_item">
+          <h3>Mobile Number</h3>
+          {editMode ? (
             <div className="loginSecurity_phone">
-              <select onChange={handleCountryChange}>
+              <select className="select-country" onChange={handleCountryChange}>
                 <option value="">Select Country</option>
                 {countries.map((country) => (
                   <option key={country.code} value={country.name}>
@@ -98,39 +119,27 @@ function LoginSecurity() {
               </select>
               <input
                 type="tel"
-                value={editValue.replace(selectedCountryCode, '')}
-                onChange={(e) => setEditValue(selectedCountryCode + e.target.value)}
+                value={editValues.phoneNumber}
+                onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
                 placeholder="Phone Number"
               />
             </div>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => setEditField(null)}>Cancel</button>
-          </div>
-        ) : (
-          <div className="loginSecurity_item">
-            <h3>Mobile Number</h3>
+          ) : (
             <p>{user.phoneNumber}</p>
-            <button onClick={() => handleEditClick('phoneNumber', user.phoneNumber)}>Edit</button>
-          </div>
-        )}
-        {editField === 'password' ? (
-          <div className="loginSecurity_item">
-            <h3>Password</h3>
+          )}
+        </div>
+        <div className="loginSecurity_item">
+          <h3>Password</h3>
+          {editMode ? (
             <input
               type="password"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
+              value={editValues.password}
+              onChange={(e) => handleInputChange('password', e.target.value)}
             />
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => setEditField(null)}>Cancel</button>
-          </div>
-        ) : (
-          <div className="loginSecurity_item">
-            <h3>Password</h3>
+          ) : (
             <p>••••••••</p>
-            <button onClick={() => handleEditClick('password', '')}>Edit</button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
