@@ -1,12 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-/* Global body font setup */
-body {
-  font-family: 'Poppins', sans-serif;
-}
 .favoritesPage {
   padding: 20px;
   background-color: #f6f5f5;
+}
+
+.favoritesPage_products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.each_card {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+
+.each_card .Product {
+  width: 100%; /* Ensure Product component fills the width of each card */
 }
 
 .wishlist-head {
@@ -17,7 +31,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* Styles for the empty state */
 .empty-list {
   display: flex;
   flex-direction: row;
@@ -72,51 +85,4 @@ body {
 
 .shopping:active {
   transform: scale(1);
-}
-
-/* Styles for populated list of favorite products */
-.favoritesPage_products {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-/* Animation for list entry */
-.animate {
-  animation: floatzoom 0.5s ease;
-  transition: all 0.5s ease;
-}
-
-@keyframes floatzoom {
-  0% {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Media queries for responsive design */
-@media (max-width: 768px) {
-  .favoritesPage_products {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
-
-@media (max-width: 420px) {
-  .empty-img {
-    width: 280px;
-  }
-}
-
-@media (max-width: 350px) {
-  .empty-img {
-    width: 230px;
-  }
-  .empty-desc,
-  .shopping {
-    font-size: 13px;
-  }
 }

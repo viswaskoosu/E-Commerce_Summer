@@ -1,6 +1,64 @@
 export const initialState = {
   basket: [],
-  favouriteItems: [],
+  favouriteItems: [
+    {
+      id: 1,
+      image: "https://m.media-amazon.com/images/I/714rkFrqqXL._SX450_.jpg",
+      mrp: 2599,
+      price: 2499,
+      rating: 4.5,
+      title: "Electric Drill Machine 13mm",
+    },
+    {
+      id: 2,
+      image: "https://m.media-amazon.com/images/I/81LyOCwztpL._SX425_.jpg",
+      mrp: 10995,
+      price: 10595,
+      rating: 5,
+      title: "Bosch Professional GSB 180-LI, 18V Cordless Impact Drill Driver",
+    },
+    {
+      id: 3,
+      image: "https://5.imimg.com/data5/SA/CN/MY-1043916/reversible-mobile-concrete-mixer-machine-250x250.png",
+      mrp: 319.99,
+      price: 299.99,
+      rating: 4,
+      title: "Concrete Mixer",
+    },
+    {
+      id: 4,
+      image: "https://5.imimg.com/data5/SELLER/Default/2023/6/314153940/DT/OY/RZ/2057180/whatsapp-image-2023-06-07-at-10-16-29-am-1--500x500.jpeg",
+      mrp: 129.99,
+      price: 119.99,
+      rating: 4,
+      title: "Circular Saw Machine",
+    },
+    {
+      id: 5,
+      image: "https://5.imimg.com/data5/SELLER/Default/2020/10/OU/JO/ZX/2483340/pbt-rh-26-scaled-500x500.jpg",
+      mrp: 99.99,
+      price: 89.99,
+      rating: 4,
+      title: "Hammer Drill",
+    },
+    {
+      id: 6,
+      image: "https://5.imimg.com/data5/ANDROID/Default/2021/3/RU/IL/BW/19592605/product-jpeg-500x500.jpg",
+      mrp: 79.99,
+      price: 69.99,
+      rating: 4,
+      title: "Angle Grinder",
+    },
+    {
+      id: 7,
+      image: "https://5.imimg.com/data5/YW/LY/DQ/SELLER-3062576/checkmate-power-tools-500x500.jpg",
+      mrp: 269.99,
+      price: 249.99,
+      rating: 5,
+      title: "Rotary Hammer Drill",
+    },
+  ],
+  
   user: {
     displayName: 'Viswas',
     email: 'viswas@example.com',
@@ -48,6 +106,7 @@ export const initialState = {
 };
 
 const reducer = (state, action) => {
+  
   switch (action.type) {
     case 'COMPLETE_ORDER':
       return {

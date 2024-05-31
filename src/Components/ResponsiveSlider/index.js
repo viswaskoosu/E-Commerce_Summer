@@ -17,15 +17,15 @@ const ResponsiveSlider = () => {
     autoplay: false,
     autoplaySpeed: 3000,
     responsive: [
-    {
+      {
         breakpoint: 1320,
         settings: {
-            slidesToShow: 5,
-            slidesToScroll: 4,
-            infinite: true,
-            dots: true
+          slidesToShow: 5,
+          slidesToScroll: 4,
+          infinite: true,
+          dots: true
         }
-        },
+      },
       {
         breakpoint: 1070,
         settings: {

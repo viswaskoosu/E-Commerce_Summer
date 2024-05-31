@@ -22,7 +22,6 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
           price: price,
           rating: rating,
           mrp:mrp,
-          
         },
       });
     } else {
@@ -47,11 +46,11 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
   return (
     <div className="product card">
       <div className="card-img-data">
-          <img src={image} alt={title} className="card-img" />
-          <p className="price-off">({discountPercentage}% OFF)</p>
-          <a href={`/product/${id}`} className="product_link">
-            <button className="view">View product</button>
-          </a>
+        <img src={image} alt={title} className="card-img" />
+        <p className="price-off">({discountPercentage}% OFF)</p>
+        <a href={`/product/${id}`} className="product_link">
+          <button className="view">View product</button>
+        </a>
         <IconContext.Provider value={{ size: '1.5rem' }}>
           <p className="add-list" onClick={addToFavourites}>
             {favouriteItems.some(item => item.id === id) ? <AiFillHeart /> : <AiOutlineHeart />}
@@ -72,6 +71,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
           <p className="mrp">₹{mrp}</p>
         </div>
       </div>
+
     </div>
   );
 }
