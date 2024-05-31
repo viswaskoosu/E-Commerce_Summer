@@ -17,7 +17,7 @@ function AccountPage() {
           <h2>Welcome, {user.displayName}!</h2>
 
           {/* Contact Information Section */}
-          <Link to="/contactInfo" className="accountPage_section">
+          {/* <Link to="/contactInfo" className="accountPage_section">
             <h3>Contact Information</h3>
             <p>Email: {user.email}</p>
             <p>Phone Number: {user.phoneNumber}</p>
@@ -27,10 +27,10 @@ function AccountPage() {
                 ? `${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.zip}, ${user.address.country}`
                 : "Not provided"}
             </p>
-          </Link>
+          </Link> */}
 
           {/* Payment Methods Section */}
-          <Link to="/paymentmethods" className="accountPage_section">
+          {/* <Link to="/paymentmethods" className="accountPage_section">
             <h3>Payment Methods</h3>
             {user.paymentMethods.length > 0 ? (
               <ul className="accountPage_list">
@@ -44,7 +44,7 @@ function AccountPage() {
             ) : (
               <p>No payment methods saved.</p>
             )}
-          </Link>
+          </Link> */}
 
           {/* Login & Security Section */}
           <Link to="/loginSecurity" className="accountPage_section">

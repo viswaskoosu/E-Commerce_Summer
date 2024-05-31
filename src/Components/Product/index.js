@@ -78,7 +78,7 @@ function Product({ id, title, image, price, rating }) {
     }
     return title;
   };
-
+  
   return (
     <div className="product">
       <Link to={`/product/${id}`} className="product_link">

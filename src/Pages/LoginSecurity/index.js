@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./LoginSecurity.css"; // Import your CSS file for styling
 import { useStateValue } from "../../Context/StateProvider";
 import Header from "../../Components/Header";
-
+import ReactLoading from 'react-loading'
+import { putReq } from "../../getReq";
 function LoginSecurity() {
   const [{ user, userLoggedIn }, dispatch] = useStateValue();
   const [editField, setEditField] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false)
   // Fetch country codes on component mount
   useEffect(() => {
     //check user is there??
@@ -35,12 +36,22 @@ function LoginSecurity() {
   };
 
   const handleSave = () => {
-    dispatch({
-      type: "UPDATE_USER_INFO",
-      field: editField,
-      value: editValue,
-    });
-    setEditField(null);
+    putReq(setIsLoading, `/user/updatedetails?${editField}=${editValue}`, {})
+    .then((responseData) => {
+      if (responseData.success){
+      dispatch({
+        type: "UPDATE_USER_INFO",
+        field: editField,
+        value: editValue,
+      });
+      alert('Updated successfully')
+    }
+    }
+    )
+    .catch((err) => alert(err))
+    .finally(() => {
+      setEditField(null);
+    })
   };
 
   const handleCountryChange = (e) => {
@@ -52,13 +63,24 @@ function LoginSecurity() {
 
   return !userLoggedIn ? (
     <div>404 not found</div>
+  ) : isLoading ? (
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ReactLoading type="spin" color="#FFAD33" height={200} width={100} />
+    </div>
   ) : (
     <>
       <Header />
       <div className="loginSecurity">
         <h2>Login & Security</h2>
         <div className="loginSecurity_info">
-          {editField === "name" ? (
+          {editField === "displayName" ? (
             <div className="loginSecurity_item">
               <h3>Name</h3>
               <input
@@ -73,7 +95,7 @@ function LoginSecurity() {
             <div className="loginSecurity_item">
               <h3>Name</h3>
               <p>{user.displayName}</p>
-              <button onClick={() => handleEditClick("name", user.displayName)}>
+              <button onClick={() => handleEditClick("displayName", user.displayName)}>
                 Edit
               </button>
             </div>
