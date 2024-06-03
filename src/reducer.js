@@ -124,18 +124,18 @@ const reducer = (state, action) => {
         basket: increasedBasket
       };
     case 'ADD_TO_BASKET':
-      const existingItemIndex = state.user.basket.findIndex(item => item.id === action.item.id);
+      const existingItemIndex = state.basket.findIndex(item => item.id === action.item.id);
 
       if (existingItemIndex !== -1) {
         // Item already exists in basket, update quantity
-        updatedBasket = state.user.basket.map((item, index) =>
+        updatedBasket = state.basket.map((item, index) =>
           index === existingItemIndex
             ? { ...item, quantity: item.quantity + action.item.quantity }
             : item
         );
       } else {
         // Item does not exist in basket, add it
-        updatedBasket = [...state.user.basket, action.item];
+        updatedBasket = [...state.basket, action.item];
       }
 
       return {
@@ -146,7 +146,7 @@ const reducer = (state, action) => {
         },
       };
     case 'REMOVE_FROM_BASKET':
-      const filteredBasket = state.user.basket.filter(item => item.id !== action.id);
+      const filteredBasket = state.basket.filter(item => item.id !== action.id);
       return {
         ...state,
         user: {
