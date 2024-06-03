@@ -1,10 +1,22 @@
 export const initialState = {
-  basket: localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [],
-  favouriteItems: localStorage.getItem('favouriteItems') ? JSON.parse(localStorage.getItem('favouriteItems')) : [],
+  favouriteItems: [
+    {
+      id: 1,
+      image: "https://m.media-amazon.com/images/I/714rkFrqqXL._SX450_.jpg",
+      mrp: 2599,
+      price: 2499,
+      rating: 4.5,
+      title: "Electric Drill Machine 13mm",
+    },
+  ],
   user: {
     displayName: 'Viswas',
+    basket: [], // Initial empty basket array
     email: 'viswas@example.com',
-    addresses: localStorage.getItem('addresses') ? JSON.parse(localStorage.getItem('addresses')) : [
+    password: 'viswas',
+    photoURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVI8wwjmbk07RHjMaoxGcLQw5kRfAizckn7g&s',
+    gender: 'Male',
+    addresses: [
       {
         id: '1',
         name: 'Viswas',
@@ -42,8 +54,9 @@ export const initialState = {
       },
     ],
     isAdmin: false,
+    orders: [],
   },
-  orders: localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [],
+  orders: [],
   products: [],
 };
 
@@ -55,7 +68,10 @@ const reducer = (state, action) => {
       localStorage.setItem('basket', JSON.stringify(newBasket));
       return {
         ...state,
-        basket: newBasket
+        user: {
+          ...state.user,
+          orders: [...state.user.orders, action.order],
+        },
       };
 
     case 'REMOVE_FROM_BASKET':
@@ -63,7 +79,7 @@ const reducer = (state, action) => {
       localStorage.setItem('basket', JSON.stringify(updatedBasket));
       return {
         ...state,
-        basket: updatedBasket
+        user: action.user
       };
 
     case 'INCREASE_QUANTITY':
@@ -75,22 +91,37 @@ const reducer = (state, action) => {
         ...state,
         basket: increasedBasket
       };
+    case 'ADD_TO_BASKET':
+      const existingItemIndex = state.user.basket.findIndex(item => item.id === action.item.id);
+      let updatedBasket = [];
 
-    case 'DECREASE_QUANTITY':
-      const decreasedBasket = state.basket.map(item =>
-        item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
-      );
-      localStorage.setItem('basket', JSON.stringify(decreasedBasket));
+      if (existingItemIndex !== -1) {
+        // Item already exists in basket, update quantity
+        updatedBasket = state.user.basket.map((item, index) =>
+          index === existingItemIndex
+            ? { ...item, quantity: item.quantity + action.item.quantity }
+            : item
+        );
+      } else {
+        // Item does not exist in basket, add it
+        updatedBasket = [...state.user.basket, action.item];
+      }
+
       return {
         ...state,
-        basket: decreasedBasket
+        user: {
+          ...state.user,
+          basket: updatedBasket,
+        },
       };
-
-    case 'EMPTY_BASKET':
-      localStorage.removeItem('basket');
+    case 'REMOVE_FROM_BASKET':
+      const filteredBasket = state.user.basket.filter(item => item.id !== action.id);
       return {
         ...state,
-        basket: []
+        user: {
+          ...state.user,
+          basket: filteredBasket,
+        },
       };
 
     // Favourites Actions
@@ -99,7 +130,7 @@ const reducer = (state, action) => {
       localStorage.setItem('favouriteItems', JSON.stringify(newFavourites));
       return {
         ...state,
-        favouriteItems: newFavourites
+        favouriteItems: [...state.favouriteItems, action.item],
       };
 
     case 'REMOVE_FROM_FAVOURITES':
@@ -107,10 +138,32 @@ const reducer = (state, action) => {
       localStorage.setItem('favouriteItems', JSON.stringify(updatedFavourites));
       return {
         ...state,
-        favouriteItems: updatedFavourites
+        favouriteItems: state.favouriteItems.filter(item => item.id !== action.id)
       };
-
-    // Address Actions
+    case 'INCREASE_QUANTITY':
+      return {
+        ...state,
+        basket: state.basket.map(item =>
+          item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      };
+    case 'DECREASE_QUANTITY':
+      return {
+        ...state,
+        basket: state.basket.map(item =>
+          item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
+        )
+      };
+    case 'ADD_ORDER':
+      return {
+        ...state,
+        orders: [...state.orders, action.order],
+      };
+    case 'EMPTY_BASKET':
+      return {
+        ...state,
+        basket: [],
+      };
     case 'ADD_ADDRESS':
       const newAddresses = [...state.user.addresses, action.address];
       localStorage.setItem('addresses', JSON.stringify(newAddresses));
@@ -123,7 +176,7 @@ const reducer = (state, action) => {
       };
 
     case 'EDIT_ADDRESS':
-      const updatedAddresses = state.user.addresses.map((address) =>
+      const updatedAddresses = state.user.addresses.map(address =>
         address.id === action.address.id ? action.address : address
       );
       localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
@@ -136,10 +189,7 @@ const reducer = (state, action) => {
       };
 
     case 'DELETE_ADDRESS':
-      const filteredAddresses = state.user.addresses.filter(
-        (address) => address.id !== action.addressId
-      );
-      localStorage.setItem('addresses', JSON.stringify(filteredAddresses));
+      const filteredAddresses = state.user.addresses.filter(address => address.id !== action.addressId);
       return {
         ...state,
         user: {
@@ -147,45 +197,20 @@ const reducer = (state, action) => {
           addresses: filteredAddresses,
         },
       };
-
-    // Order Actions
-    case 'ADD_ORDER':
-      const newOrders = [...state.orders, action.order];
-      localStorage.setItem('orders', JSON.stringify(newOrders));
-      return {
-        ...state,
-        orders: newOrders,
-      };
-
-    case 'COMPLETE_ORDER':
-      return {
-        ...state,
-        orders: [...state.orders, action.order],
-      };
-
-    // User Actions
-    case 'UPDATE_USER_INFO':
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          [action.field]: action.value,
-        },
-      };
-
-    // Product Actions
-    case 'SET_PRODUCTS':
-      return {
-        ...state,
-        products: action.products,
-      };
-
-    // Default case
+      case 'UPDATE_USER_INFO':
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            [action.field]: action.value,
+          },
+        };
     default:
       return state;
   }
 };
 
 export default reducer;
-export const getBasketTotal = (basket) =>
-  basket?.reduce((amount, item) => item.price + amount, 0);
+
+export const getBasketTotal = basket =>
+  basket?.reduce((amount, item) => item.price * item.quantity + amount, 0);
