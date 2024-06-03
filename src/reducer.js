@@ -9,9 +9,9 @@ export const initialState = {
       title: "Electric Drill Machine 13mm",
     },
   ],
-  user: {
-    displayName: 'Viswas',
     basket: [], 
+    user: {
+    displayName: 'Viswas',
     email: 'viswas@example.com',
     password: 'viswas',
     photoURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVI8wwjmbk07RHjMaoxGcLQw5kRfAizckn7g&s',
@@ -54,7 +54,6 @@ export const initialState = {
       },
     ],
     isAdmin: false,
-    orders: [],
   },
   orders: [],
   products: [],
@@ -63,11 +62,6 @@ export const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'COMPLETE_ORDER':
-      return {
-        ...state,
-        orders: [...state.orders, action.order],
-      };
     case 'SET_USER':
       // console.log("KKKKKK",action.user)
       return {
@@ -96,23 +90,20 @@ const reducer = (state, action) => {
       }
     // Basket Actions
     case 'ADD_TO_BASKET':
-      const newBasket = [...state.basket, action.item];
-      localStorage.setItem('basket', JSON.stringify(newBasket));
+      localStorage.setItem('basket', JSON.stringify([...state.basket,action.item]));
       return {
         ...state,
-        user: {
-          ...state.user,
-          orders: [...state.user.orders, action.order],
-        },
-      };
+        basket: [...state.basket,action.item],
+    };
 
     case 'REMOVE_FROM_BASKET':
       const updatedBasket = state.basket.filter(item => item.id !== action.id);
       localStorage.setItem('basket', JSON.stringify(updatedBasket));
       return {
         ...state,
-        user: action.user
+        basket: updatedBasket,
       };
+    
 
     case 'INCREASE_QUANTITY':
       const increasedBasket = state.basket.map(item =>
@@ -123,39 +114,6 @@ const reducer = (state, action) => {
         ...state,
         basket: increasedBasket
       };
-    case 'ADD_TO_BASKET':
-      const existingItemIndex = state.user.basket.findIndex(item => item.id === action.item.id);
-
-      if (existingItemIndex !== -1) {
-        // Item already exists in basket, update quantity
-        updatedBasket = state.user.basket.map((item, index) =>
-          index === existingItemIndex
-            ? { ...item, quantity: item.quantity + action.item.quantity }
-            : item
-        );
-      } else {
-        // Item does not exist in basket, add it
-        updatedBasket = [...state.user.basket, action.item];
-      }
-
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          basket: updatedBasket,
-        },
-      };
-    case 'REMOVE_FROM_BASKET':
-      const filteredBasket = state.user.basket.filter(item => item.id !== action.id);
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          basket: filteredBasket,
-        },
-      };
-
-    // Favourites Actions
     case 'ADD_TO_FAVOURITES':
       const newFavourites = [...state.favouriteItems, action.item];
       localStorage.setItem('favouriteItems', JSON.stringify(newFavourites));
@@ -171,24 +129,13 @@ const reducer = (state, action) => {
         ...state,
         favouriteItems: state.favouriteItems.filter(item => item.id !== action.id)
       };
-    case 'INCREASE_QUANTITY':
-      return {
-        ...state,
-        basket: state.basket.map(item =>
-          item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      };
+
     case 'DECREASE_QUANTITY':
       return {
         ...state,
         basket: state.basket.map(item =>
           item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
         )
-      };
-    case 'ADD_ORDER':
-      return {
-        ...state,
-        orders: [...state.orders, action.order],
       };
     case 'EMPTY_BASKET':
       return {

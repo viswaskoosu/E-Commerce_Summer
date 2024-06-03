@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductDetail.css';
 import { useStateValue } from '../../Context/StateProvider';
-import { Products, Categories } from '../../data'; // Import your products data
+import { Products } from '../../data'; 
 import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
 import Header from '../../Components/Header';
+import { Stack } from '@mui/material';
 
 function ProductDetail() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for managing current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchedProduct = Products.find(
@@ -22,11 +22,12 @@ function ProductDetail() {
     );
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      setIsInBasket(user.basket.some(item => item.id === parseInt(id)));
+      const isInBasket = user && user.basket && user.basket.some(item => item.id === parseInt(id));
+      setIsInBasket(isInBasket);
       setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
     }
-  }, [id, user.basket, favouriteItems]);
-
+  }, [id, user, favouriteItems]);
+  
   const addToBasket = () => {
     dispatch({
       type: "ADD_TO_BASKET",
@@ -37,13 +38,13 @@ function ProductDetail() {
         price: product.price,
         rating: product.rating,
         quantity: quantity,
-        mrp:product.mrp,
-        reviews:product.reviews,
+        mrp: product.mrp,
+        reviews: product.reviews,
       },
     });
     setIsInBasket(true);
   };
-
+  
   const removeFromBasket = () => {
     dispatch({
       type: "REMOVE_FROM_BASKET",
@@ -51,6 +52,7 @@ function ProductDetail() {
     });
     setIsInBasket(false);
   };
+  
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -143,12 +145,11 @@ function ProductDetail() {
 
           <div className="productDetail_info">
             <p className="productDetail_title">{product.title}</p>
-            <div className="productDetail_rating">
-              {Array(product.rating)
-                .fill()
-                .map((_, index) => (
-                  <p key={index}>⭐</p>
-                ))}
+            <div className="rating">
+              <Stack spacing={1}>
+                <Rating name={`rating-${id}`} value={product.rating} precision={0.5} readOnly />
+              </Stack>
+              <p className="rating-text">{product.reviews ? product.reviews.length : 0}</p>
             </div>
             <p className="productDetail_price">
               <small>₹</small>
@@ -248,7 +249,6 @@ function ProductDetail() {
         </div>
       </div>
       <div>
-        <p className="productDetail_description">{product.description}</p>
         <div className="reviews">
           <p className="reviews_title">Reviews:</p>
           <div className="review_sort">
