@@ -71,7 +71,7 @@ export const initialState = {
         isDefault: false,
       },
     ],
-    phoneNumber: '+91 9876543210',
+    phone: '+91 9876543210',
     paymentMethods: [
       {
         id: '1',
@@ -111,6 +111,21 @@ const reducer = (state, action) => {
         ...state,
         products: action.products,
       };
+    case 'SET_BASKET':
+      return {
+        ...state,
+        basket: action.basket
+      }
+    case 'SET_FAVOURITE_ITEMS':
+      return {
+        ...state, 
+        favouriteItems: action.favouriteItems
+      }
+    case 'SET_ORDERS':
+      return {
+        ...state,
+        orders: action.orders
+      }
     // Basket Actions
     case 'ADD_TO_BASKET':
       const newBasket = [...state.basket, action.item];
@@ -235,14 +250,23 @@ const reducer = (state, action) => {
         },
       };
 
-    // Product Actions
-    case 'SET_PRODUCTS':
-      return {
-        ...state,
-        products: action.products,
-      };
 
     // Default case
+    case 'USER_LOGIN':
+      // console.log("login")
+      return {
+        ...state,
+        userLoggedIn: true
+      }
+    case 'USER_LOGOUT':
+      return {
+        ...state,
+        basket: [],
+        orders: [],
+        favouriteItems: [],
+        user: {},
+        userLoggedIn: false
+      }
     default:
       return state;
   }

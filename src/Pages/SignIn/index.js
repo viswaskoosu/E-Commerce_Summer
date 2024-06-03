@@ -33,7 +33,7 @@ const theme = createTheme({
 
 function SignIn() {
   const navigate = useNavigate();
-  const [{ userLoggedIn }] = useStateValue();
+  const [{ userLoggedIn }, dispatch] = useStateValue();
   if (userLoggedIn){
     navigate('/account')
   }
@@ -88,12 +88,31 @@ function SignIn() {
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/login`, userData)
       .then((response) => {
-        console.log("succ");
+        // console.log("succ");
         if (response.data.success) {
           // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("basket", JSON.stringify(response.data.basket));
           alert("Signed in successfully");
+          dispatch({
+            type: 'USER_LOGIN'
+          })
+          dispatch({
+            type: 'SET_USER',
+            user: response.data.user
+          })
+          dispatch({
+            type: 'SET_BASKET',
+            basket: response.data.basket
+          })
+          dispatch({
+            type: 'SET_FAVOURITE_ITEMS',
+            favouriteItems: response.data.user.favouriteItems
+          })
+          dispatch({
+            type: 'SET_ORDERS',
+            orders: response.data.user.orders
+          })
           navigate("/");
         }
       })

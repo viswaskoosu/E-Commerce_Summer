@@ -22,6 +22,7 @@ import Addresses from "./Pages/Addresses";
 import Payment from "./Pages/Payment";
 import Error from "./Pages/Error";
 import ReactLoading from "react-loading";
+import { ToastContainer } from "react-toastify";
 function App() {
   // console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
@@ -34,19 +35,7 @@ function App() {
     });
   }, [dispatch]);
 
-  return isLoading ? (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <ReactLoading type="spin" color="#FFAD33" height={200} width={100} />
-    </div>
-  ) : (
-    // <StateProvider initialState={initialState} reducer={reducer}>
+  return (
     <div>
       <Router>
         <div className="app">
@@ -79,6 +68,7 @@ function App() {
           <Footer />
         </div>
       </Router>
+      <ToastContainer />
     </div>
   );
   // </StateProvider>

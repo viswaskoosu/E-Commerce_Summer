@@ -4,6 +4,8 @@ import { useStateValue } from "../../Context/StateProvider";
 import Header from "../../Components/Header";
 import ReactLoading from 'react-loading'
 import { putReq } from "../../getReq";
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 function LoginSecurity() {
   const [{ user, userLoggedIn }, dispatch] = useStateValue();
   const [editField, setEditField] = useState(null);
@@ -36,7 +38,8 @@ function LoginSecurity() {
   };
 
   const handleSave = () => {
-    putReq(setIsLoading, `/user/updatedetails?${editField}=${editValue}`, {})
+    const serverEditField = editField==='displayName'? 'name' : editField
+    putReq(setIsLoading, `/user/updatedetails?${serverEditField}=${editValue}`, {})
     .then((responseData) => {
       if (responseData.success){
       dispatch({
@@ -44,7 +47,8 @@ function LoginSecurity() {
         field: editField,
         value: editValue,
       });
-      alert('Updated successfully')
+      toast.success('Updated successfully')
+      // alert('Updated successfully')
     }
     }
     )
@@ -120,24 +124,26 @@ function LoginSecurity() {
               </button>
             </div>
           )}
-          {editField === "phoneNumber" ? (
+          {editField === "phone" ? (
             <div className="loginSecurity_item">
               <h3>Mobile Number</h3>
               <div className="loginSecurity_phone">
-                <select onChange={handleCountryChange}>
+                {/* <select onChange={handleCountryChange}>
                   <option value="">Select Country</option>
                   {countries.map((country) => (
                     <option key={country.code} value={country.name}>
                       {country.name} ({country.code})
                     </option>
                   ))}
-                </select>
+                </select> */}
                 <input
                   type="tel"
-                  value={editValue.replace(selectedCountryCode, "")}
-                  onChange={(e) =>
-                    setEditValue(selectedCountryCode + e.target.value)
-                  }
+                  // value={editValue.replace(selectedCountryCode, "")}
+                  // onChange={(e) =>
+                  //   setEditValue(selectedCountryCode + e.target.value)
+                  // }
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
                   placeholder="Phone Number"
                 />
               </div>
@@ -147,9 +153,9 @@ function LoginSecurity() {
           ) : (
             <div className="loginSecurity_item">
               <h3>Mobile Number</h3>
-              <p>{user.phoneNumber}</p>
+              <p>{user.phone}</p>
               <button
-                onClick={() => handleEditClick("phoneNumber", user.phoneNumber)}
+                onClick={() => handleEditClick("phone", user.phone)}
               >
                 Edit
               </button>

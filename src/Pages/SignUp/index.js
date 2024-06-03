@@ -36,9 +36,9 @@ const signUpTheme = createTheme({
 // }
 export default function SignUp() {
   const navigate = useNavigate();
-  const [{ userLoggedIn }] = useStateValue();
-  if (userLoggedIn){
-    navigate('/account')
+  const [{ userLoggedIn }, dispatch] = useStateValue();
+  if (userLoggedIn) {
+    navigate("/account");
   }
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
@@ -117,6 +117,25 @@ export default function SignUp() {
           localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("basket", JSON.stringify(response.data.basket));
         alert("Signed up successfully");
+        dispatch({
+          type: "USER_LOGIN",
+        });
+        dispatch({
+          type: 'SET_USER',
+          user: response.data.user
+        })
+        dispatch({
+          type: 'SET_BASKET',
+          user: response.data.basket
+        })
+        dispatch({
+          type: 'SET_FAVOURITE_ITEMS',
+          favouriteItems: response.data.user.favouriteItems
+        })
+        dispatch({
+          type: 'SET_ORDERS',
+          orders: response.data.user.orders
+        })
         navigate("/");
       })
       .catch((error) => {
