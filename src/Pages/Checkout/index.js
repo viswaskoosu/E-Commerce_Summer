@@ -4,6 +4,9 @@ import CheckoutProduct from "../../Components/CheckoutProduct";
 import Subtotal from "../../Components/Subtotal";
 import "./Checkout.css";
 import Header from "../../Components/Header";
+import { Link } from "react-router-dom";
+import image from './emptycart.png';
+
 function Checkout() {
   const [{ basket }] = useStateValue();
   const uniqueItems = [
@@ -13,22 +16,23 @@ function Checkout() {
   return (
     <>
       <Header />
-      <div className="checkout">
-        <div className="checkout_left">
-          <img
-            className="checkout_ad"
-            src="https://cdn-media.buildersmart.in/media/bannerslider/bannerslider/Buy_Online_Save_Money_..jpg"
-            alt=""
-          />
-          {basket?.length === 0 ? (
-            <div>
-              <h2>Your Cart is empty</h2>
-              <p>
-                You have no items in your cart. Try adding some products from
-                our collection.
+      <div className='checkout'>
+      <div className="checkout_left">
+        {/* Conditionally render based on user.basket length */}
+        {basket?.length === 0 ? (
+          <div className="empty-list">
+            <img src={image} className="empty-img" alt='' />
+            <div className="empty-text">
+              <p className="empty-head">It's empty here!</p>
+              <p className="empty-desc">
+                "Don't let your wishlist collect dust. Add some items that bring
+                joy to your life and watch as they become a reality with just a
+                few clicks."
               </p>
+              <Link to="/"><button className="shopping">Go Shopping</button></Link>
             </div>
-          ) : (
+          </div>
+        ) : (
             <div>
               <h2 className="checkout_title">Your Cart</h2>
               {uniqueItems.map((item) => (
