@@ -5,6 +5,7 @@ import { useStateValue } from '../../Context/StateProvider';
 import { Products, Categories } from '../../data'; // Import your products data
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
+import Header from '../../Components/Header';
 
 function ProductDetail() {
   const { id } = useParams();
@@ -21,15 +22,8 @@ function ProductDetail() {
     );
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-<<<<<<< HEAD
       setIsInBasket(user.basket.some(item => item.id === parseInt(id)));
       setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
-=======
-      setIsInBasket(basket.some((item) => item.id === parseInt(id)));
-      setIsInFavourites(
-        favouriteItems.some((item) => item.id === parseInt(id))
-      );
->>>>>>> 281c1a8bc6406933bd39a5d6f96a1cb6f5bf28b2
     }
   }, [id, user.basket, favouriteItems]);
 
@@ -116,69 +110,6 @@ function ProductDetail() {
   }
 
   return (
-<<<<<<< HEAD
-    <div className='product_description'>
-      <div className="productDetail">
-        <div className="imagePreviews">
-          {product.images.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt={`Preview ${index}`}
-              className={`imagePreview ${index === currentImageIndex ? 'active' : ''}`}
-              onClick={() => handleImageClick(index)}
-            />
-          ))}
-        </div>
-        <div className="productDetail_imageContainer">
-          <button className="imageNavButton" onClick={handlePrevImage}>
-            {"<"}
-          </button>
-          <img
-            src={product.images[currentImageIndex]}
-            alt={product.title}
-            className="productDetail_image"
-          />
-          <button className="imageNavButton" onClick={handleNextImage}>
-            {">"}
-          </button>
-        </div>
-
-        <div className="productDetail_info">
-          <p className="productDetail_title">{product.title}</p>
-          <div className="rating">
-            <div className="product_rating item-rating">
-              <Stack spacing={1}>
-                <Rating name={`rating-${id}`} value={product.rating} precision={0.5} readOnly />
-              </Stack>
-            </div>
-            <p>({product.rating})</p>
-          </div>
-          <p className="productDetail_price">
-            Price: 
-            <small>₹</small>
-            <strong>{product.price}</strong>{" "}
-            <strong className="productDetail_mrp">
-              <span style={{ textDecoration: "line-through", color: "grey" }}>₹{product.mrp}</span>
-            </strong>
-          </p>
-
-          <p>Category: {product.category}</p>
-          {product.discount && (
-            <p>Discount: {product.discount}% off</p>
-          )}
-
-          <div className="specifications">
-            <p className="specifications_title">Specifications:</p>
-            <ul>
-              {Object.keys(product.specifications).map((key, index) => (
-                <li key={index}>
-                  <strong>{key}:</strong> {product.specifications[key]}
-                </li>
-              ))}
-            </ul>
-          </div>
-=======
     <>
       <Header />
       <div className="product_description">
@@ -285,7 +216,6 @@ function ProductDetail() {
         </div>
         <div>
           <p className="productDetail_description">{product.description}</p>
->>>>>>> 281c1a8bc6406933bd39a5d6f96a1cb6f5bf28b2
           <div className="keyFeatures">
             <p className="keyFeatures_title">Key Features:</p>
             <ul>
@@ -294,7 +224,6 @@ function ProductDetail() {
               ))}
             </ul>
           </div>
-<<<<<<< HEAD
           <div className="productDetail_buttons">
             <button className="productDetail_favouriteButton" onClick={addToFavourites}>
               {isInFavourites ? "Remove from Favorites" : "Add to Favorites"}
@@ -338,8 +267,6 @@ function ProductDetail() {
               <p>Date: {review.date}</p>
             </div>
           ))}
-=======
->>>>>>> 281c1a8bc6406933bd39a5d6f96a1cb6f5bf28b2
         </div>
       </div>
     </>

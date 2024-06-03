@@ -11,7 +11,7 @@ export const initialState = {
   ],
   user: {
     displayName: 'Viswas',
-    basket: [], // Initial empty basket array
+    basket: [], 
     email: 'viswas@example.com',
     password: 'viswas',
     photoURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVI8wwjmbk07RHjMaoxGcLQw5kRfAizckn7g&s',
