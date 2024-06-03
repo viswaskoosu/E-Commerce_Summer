@@ -6,7 +6,10 @@ import './Subtotal.css';
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();
     const navigate = useNavigate(); // Initialize useNavigate
+<<<<<<< HEAD
 
+=======
+>>>>>>> 281c1a8bc6406933bd39a5d6f96a1cb6f5bf28b2
     const placeOrder = () => {
         const order = {
             id: Date.now().toString(),

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import './Home.css';
 import Carousel from '../../Components/carousel/carousel';
 import Delivery from "./delivery.png";
@@ -38,6 +39,21 @@ function Home() {
         </div>
       <Carousel />
       <ResponsiveSlider/>
+=======
+import "./Home.css";
+import Carousel from "../../Components/carousel/carousel";
+import ResponsiveSlider from "../../Components/ResponsiveSlider";
+import Header from "../../Components/Header";
+function Home() {
+  return (
+    <div>
+      {/* {(localStorage.getItem('user'))} */}
+      <Header />
+      <div className="home">
+        <Carousel />
+        <ResponsiveSlider />
+      </div>
+>>>>>>> 281c1a8bc6406933bd39a5d6f96a1cb6f5bf28b2
     </div>
   );
 }

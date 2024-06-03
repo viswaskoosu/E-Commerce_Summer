@@ -41,8 +41,11 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
     return title;
   };
   
+<<<<<<< HEAD
   const discountPercentage = Math.round(((mrp - price) * 100) / mrp);
 
+=======
+>>>>>>> 281c1a8bc6406933bd39a5d6f96a1cb6f5bf28b2
   return (
     <div className="product card">
       <div className="card-img-data">

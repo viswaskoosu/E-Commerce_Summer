@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import './Header.css';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import "./Header.css";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   IconButton,
@@ -9,7 +9,7 @@ import {
   Badge,
   Menu,
   MenuItem,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Search as SearchIcon,
   LocationOn as LocationOnIcon,
@@ -17,21 +17,24 @@ import {
   ShoppingCart as ShoppingCartIcon,
   Person as PersonIcon,
   ShoppingBag as ShoppingBagIcon,
-} from '@mui/icons-material';
-import { useStateValue } from '../../Context/StateProvider';
+  Logout as LogoutIcon,
+} from "@mui/icons-material";
+import { useStateValue } from "../../Context/StateProvider";
 
 const Header = () => {
-  const [{ basket, favouriteItems, user }] = useStateValue();
+  const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
+  const [state, dispatch] = useStateValue();
+  // console.log(state)
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 800);
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
@@ -41,7 +44,7 @@ const Header = () => {
     handleMenuClose();
   };
   const handleAddNewAddress = () => {
-    history.push('/addresses');
+    navigate("/addresses");
     handleMenuClose();
   };
 
@@ -51,7 +54,18 @@ const Header = () => {
       <Typography variant="body2">{`${address.city}, ${address.zip}`}</Typography>
     </Box>
   );
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("basket");
 
+    dispatch({
+      type: "USER_LOGOUT",
+    });
+    navigate('/')
+  };
+  // const userExists = () =>{
+  //   return localStorage.getItem('user')
+  // }
   return (
     <nav className="header">
       <Link to="/">
@@ -62,11 +76,16 @@ const Header = () => {
         />
       </Link>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', mr: 1, cursor: 'pointer' }} onClick={handleMenuOpen}>
+      <Box
+        sx={{ display: "flex", alignItems: "center", mr: 1, cursor: "pointer" }}
+        onClick={handleMenuOpen}
+      >
         <LocationOnIcon />
         {!isSmallScreen && (
           <Typography variant="body1" sx={{ ml: 1 }}>
-            {selectedAddress ? renderAddress(selectedAddress) : 'Select Address'}
+            {selectedAddress
+              ? renderAddress(selectedAddress)
+              : "Select Address"}
           </Typography>
         )}
       </Box>
@@ -75,7 +94,7 @@ const Header = () => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
-        PaperProps={{ style: { maxHeight: '200px', width: '300px' } }}
+        PaperProps={{ style: { maxHeight: "200px", width: "300px" } }}
       >
         {user?.addresses?.slice(0, 3).map((address, index) => (
           <MenuItem key={index} onClick={() => handleAddressChange(address)}>
@@ -83,28 +102,42 @@ const Header = () => {
           </MenuItem>
         ))}
         {user?.addresses?.length > 3 && (
-          <MenuItem onClick={handleAddNewAddress}>
-            View All Addresses
-          </MenuItem>
+          <MenuItem onClick={handleAddNewAddress}>View All Addresses</MenuItem>
         )}
-        <MenuItem onClick={handleAddNewAddress}>
-          Add New Address
-        </MenuItem>
+        <MenuItem onClick={handleAddNewAddress}>Add New Address</MenuItem>
       </Menu>
 
-      <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', ml: 1, minWidth: 0 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexGrow: 1,
+          alignItems: "center",
+          ml: 1,
+          minWidth: 0,
+        }}
+      >
         <InputBase
           placeholder="Search for Products, Brands and More"
-          inputProps={{ 'aria-label': 'search' }}
-          sx={{ color: 'inherit', backgroundColor: 'white', borderRadius: 1, pl: 2, pr: 2, width: '100%' }}
+          inputProps={{ "aria-label": "search" }}
+          sx={{
+            color: "inherit",
+            backgroundColor: "white",
+            borderRadius: 1,
+            pl: 2,
+            pr: 2,
+            width: "100%",
+          }}
         />
-        <IconButton type="submit" sx={{ p: '10px', ml: 1 }}>
+        <IconButton type="submit" sx={{ p: "10px", ml: 1 }}>
           <SearchIcon />
         </IconButton>
       </Box>
 
       <div className="header_nav">
-        <Link to={user ? '/account' : '/signin'} className="header_Link">
+        <Link
+          to={userLoggedIn ? "/account" : "/signin"}
+          className="header_Link"
+        >
           <div className="header_option">
             {isSmallScreen ? (
               <IconButton color="inherit">
@@ -112,8 +145,12 @@ const Header = () => {
               </IconButton>
             ) : (
               <>
-                <span className="header_optionLineOne">{user ? `Hello ${user.displayName}` : 'Hello Guest'}</span>
-                <span className="header_optionLineTwo">{user ? 'Your Account' : 'Sign In'}</span>
+                <span className="header_optionLineOne">
+                  {userLoggedIn ? `Hello ${user.displayName}` : "Hello Guest"}
+                </span>
+                <span className="header_optionLineTwo">
+                  {userLoggedIn ? "Your Account" : "Sign In"}
+                </span>
               </>
             )}
           </div>
@@ -140,8 +177,14 @@ const Header = () => {
               <IconButton color="inherit">
                 <Badge
                   badgeContent={favouriteItems?.length}
-                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                  sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      fontSize: "1.3rem",
+                      top: "50%",
+                      right: "-50%",
+                    },
+                  }}
                 >
                   <FavoriteBorderIcon />
                 </Badge>
@@ -152,8 +195,14 @@ const Header = () => {
                 <IconButton color="inherit">
                   <Badge
                     badgeContent={favouriteItems?.length}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        fontSize: "1.3rem",
+                        top: "50%",
+                        right: "-50%",
+                      },
+                    }}
                   >
                     <FavoriteBorderIcon />
                   </Badge>
@@ -161,18 +210,40 @@ const Header = () => {
               </div>
             )}
           </Link>
-
           <Link to="/checkout" className="header_Link">
             <IconButton color="inherit">
               <Badge
                 badgeContent={basket?.length}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                sx={{ '& .MuiBadge-badge': { fontSize: '1.3rem', top: '50%', right: '-50%' } }}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    fontSize: "1.3rem",
+                    top: "50%",
+                    right: "-50%",
+                  },
+                }}
               >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
           </Link>
+          {userLoggedIn? (
+          <IconButton color="inherit" onClick={logout}>
+            <Badge
+              badgeContent={basket?.length}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              sx={{
+                "& .MuiBadge-badge": {
+                  fontSize: "1.3rem",
+                  top: "50%",
+                  right: "-50%",
+                },
+              }}
+            >
+              <LogoutIcon />
+            </Badge>
+          </IconButton>
+          ) : (<></>)}
         </div>
       </div>
     </nav>

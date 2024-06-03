@@ -38,7 +38,7 @@ export const initialState = {
         isDefault: false,
       },
     ],
-    phoneNumber: '+91 9876543210',
+    phone: '+91 9876543210',
     paymentMethods: [
       {
         id: '1',
@@ -58,10 +58,42 @@ export const initialState = {
   },
   orders: [],
   products: [],
+  userLoggedIn: false,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'COMPLETE_ORDER':
+      return {
+        ...state,
+        orders: [...state.orders, action.order],
+      };
+    case 'SET_USER':
+      // console.log("KKKKKK",action.user)
+      return {
+        ...state,
+        user: action.user
+      };
+    case 'SET_PRODUCTS':
+      return {
+        ...state,
+        products: action.products,
+      };
+    case 'SET_BASKET':
+      return {
+        ...state,
+        basket: action.basket
+      }
+    case 'SET_FAVOURITE_ITEMS':
+      return {
+        ...state, 
+        favouriteItems: action.favouriteItems
+      }
+    case 'SET_ORDERS':
+      return {
+        ...state,
+        orders: action.orders
+      }
     // Basket Actions
     case 'ADD_TO_BASKET':
       const newBasket = [...state.basket, action.item];
@@ -93,7 +125,6 @@ const reducer = (state, action) => {
       };
     case 'ADD_TO_BASKET':
       const existingItemIndex = state.user.basket.findIndex(item => item.id === action.item.id);
-      let updatedBasket = [];
 
       if (existingItemIndex !== -1) {
         // Item already exists in basket, update quantity
@@ -197,14 +228,49 @@ const reducer = (state, action) => {
           addresses: filteredAddresses,
         },
       };
-      case 'UPDATE_USER_INFO':
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            [action.field]: action.value,
-          },
-        };
+
+    // Order Actions
+    case 'ADD_ORDER':
+      const newOrders = [...state.orders, action.order];
+      localStorage.setItem('orders', JSON.stringify(newOrders));
+      return {
+        ...state,
+        orders: newOrders,
+      };
+
+    case 'COMPLETE_ORDER':
+      return {
+        ...state,
+        orders: [...state.orders, action.order],
+      };
+
+    // User Actions
+    case 'UPDATE_USER_INFO':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          [action.field]: action.value,
+        },
+      };
+
+
+    // Default case
+    case 'USER_LOGIN':
+      // console.log("login")
+      return {
+        ...state,
+        userLoggedIn: true
+      }
+    case 'USER_LOGOUT':
+      return {
+        ...state,
+        basket: [],
+        orders: [],
+        favouriteItems: [],
+        user: {},
+        userLoggedIn: false
+      }
     default:
       return state;
   }
