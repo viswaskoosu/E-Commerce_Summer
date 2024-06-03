@@ -1,31 +1,33 @@
 import React from 'react';
 import { useStateValue } from '../../Context/StateProvider';
-import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import './Subtotal.css';
 
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();
-    const history = useHistory(); 
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const placeOrder = () => {
         const order = {
-          id: Date.now().toString(),
-          date: new Date(),
-          items: basket,
-          total: basket.reduce((amount, item) => item.price * item.quantity + amount, 0),
+            id: Date.now().toString(),
+            date: new Date(),
+            items: basket,
+            total: basket.reduce((amount, item) => item.price * item.quantity + amount, 0),
         };
-        // console.log(order.id);
-    
+
+        // Dispatch action to add order
         dispatch({
-          type: 'ADD_ORDER',
-          order: order,
-        });
-    
-        dispatch({
-          type: 'EMPTY_BASKET',
+            type: 'ADD_ORDER',
+            order: order, // Correctly setting the order in the action
         });
 
-        history.push('/payments');
+        // Dispatch action to empty the basket
+        dispatch({
+            type: 'EMPTY_BASKET',
+        });
+
+        // Navigate to payments page
+        navigate('/payments');
     };
 
     // Calculate the subtotal

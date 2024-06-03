@@ -1,54 +1,162 @@
 .loginSecurity {
-  max-width: 800px;
-  margin: 20px auto;
+  width: 100%;
+  max-width: 900px; /* Adjust as needed */
+  margin: 30px auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.loginSecurity_info {
-  padding: 20px;
+@media (max-width: 768px) {
+  .loginSecurity {
+    max-width: 500px;
+  }
 }
 
-.loginSecurity_item {
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+@media (max-width: 576px) {
+  .loginSecurity {
+    max-width: 400px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .loginSecurity {
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    padding: 10px;
+  }
+}
+
+.loginSecurity_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+.loginSecurity h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.edit-button,
+.save-button {
+  padding: 10px 20px; /* Adjust padding for better button size */
+  font-size: 16px; /* Increase font size for better readability */
+  font-weight: bold;
+  border: none;
+  border-radius: 5px; /* Slightly rounder corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #007bff; /* Blue background color */
+  color: #fff; /* White text color */
+  margin-left: 10px; /* Add margin for spacing */
+}
+
+.edit-button:hover,
+.save-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.save-button {
+  background-color: #28a745; /* Green save button */
+}
+
+.save-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.loginSecurity_info {
+  margin-top: 20px;
+}
+
+.loginSecurity_item {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .loginSecurity_item h3 {
-  margin-bottom: 10px;
-  color: #333333;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
 }
 
 .loginSecurity_item p {
-  margin-bottom: 5px;
-  color: #555555;
+  font-size: 16px;
+  color: #666;
 }
 
 .loginSecurity_item input {
-  margin-bottom: 10px;
-  padding: 10px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.loginSecurity_item button {
-  background-color: #FFAD33;
-  color: #fff;
-  border: none;
+.loginSecurity_phone {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.loginSecurity_phone select {
+  flex: 1;
+  padding: 8px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.loginSecurity_phone input {
+  flex: 2;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.button-group button {
   padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
-.loginSecurity_item button:hover {
-  background-color: #e09428;
+.button-group button:hover {
+  background-color: #ddd;
+}
+
+.select-country {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.select-country option {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.select-country:hover,
+.select-country:focus {
+  border-color: #666;
 }

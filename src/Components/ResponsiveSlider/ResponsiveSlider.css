@@ -1,57 +1,65 @@
+/* ResponsiveSlider.css */
 .slider-container {
-    margin: 20px; /* Add margin around the slider */
-    padding: 10px; /* Add padding inside the slider container */
-    max-width: calc(100vw - 40px); /* Ensure slider does not exceed window width minus margins */
-  }
-  
-  .slider-item {
-    padding: 10px; /* Padding around each slide item */
-  }
-  
-  .slick-prev,
-  .slick-next {
-    z-index: 1;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: absolute;
-  }
-  
-  .slick-prev {
-    left: 10px;
-  }
-  
-  .slick-next {
-    right: 10px;
-  }
-  
-  .slick-prev:hover,
-  .slick-next:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .slick-dots {
-    position: absolute;
-    margin-top: 100px;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-  }
-  
-  .slick-dots li button:before {
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 12px;
-  }
-  
-  .slick-dots li.slick-active button:before {
-    color: rgba(0, 0, 0, 0.9);
-  }
-  
+  margin: 20px; /* Add margin around the slider */
+  padding: 10px; /* Add padding inside the slider container */
+  max-width: calc(100vw - 40px); /* Ensure slider does not exceed window width minus margins */
+}
+
+.slider-item {
+  padding: 10px; /* Padding around each slide item */
+  display: flex; /* Ensure flex display for proper alignment */
+  justify-content: center; /* Center items within the slide */
+}
+
+/* Overwrite specific styles for slider context */
+.slider-item .product.card {
+  margin: 0; /* Reset margin for cards within the slider */
+  width: 100%; /* Ensure the card takes full width of the slide */
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+}
+
+.slick-prev {
+  left: 10px;
+}
+
+.slick-next {
+  right: 10px;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.slick-dots {
+  position: absolute;
+  margin-top: 100px;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.slick-dots li button:before {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: rgba(0, 0, 0, 0.9);
+}
