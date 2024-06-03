@@ -63,7 +63,6 @@ function App() {
               <Route path="/error" element={<Error />} />
             </Routes>
           </div>
-          <Footer />
         </div>
       </Router>
     </StateProvider>

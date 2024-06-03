@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './LoginSecurity.css'; // Import your CSS file for styling
+import './LoginSecurity.css';
 import { useStateValue } from '../../Context/StateProvider';
+import { Link } from 'react-router-dom';
 
 function LoginSecurity() {
   const [{ user }, dispatch] = useStateValue();
@@ -13,6 +14,9 @@ function LoginSecurity() {
   });
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [password, setPassword] = useState('');
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
 
   // Fetch country codes on component mount
   useEffect(() => {
@@ -24,21 +28,26 @@ function LoginSecurity() {
           .map((country) => ({
             name: country.name.common,
             code: `${country.idd.root}${country.idd.suffixes ? country.idd.suffixes[0] : ''}`,
-          }));
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name)); // Sort countries alphabetically
         setCountries(countryData);
       })
       .catch((error) => console.error('Error fetching countries:', error));
   }, []);
 
   const handleEditToggle = () => {
-    setEditMode(!editMode);
-    // Reset edit values to current user values
-    setEditValues({
-      name: user.displayName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      password: '',
-    });
+    if (isPasswordCorrect) {
+      setEditMode(!editMode);
+      // Reset edit values to current user values
+      setEditValues({
+        name: user.displayName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        password: '',
+      });
+    } else {
+      setShowPasswordPrompt(true);
+    }
   };
 
   const handleSave = () => {
@@ -49,6 +58,20 @@ function LoginSecurity() {
       value: editValues,
     });
     setEditMode(false); // Exit edit mode after saving
+    setIsPasswordCorrect(false); // Reset password correctness
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    // Validate the password (in a real application, you would call your backend API here)
+    if (password === user.password) {
+      setIsPasswordCorrect(true);
+      setShowPasswordPrompt(false);
+      setEditMode(true);
+    } else {
+      alert('Incorrect password. Please try again.');
+      setPassword('');
+    }
   };
 
   const handleCountryChange = (e) => {
@@ -70,6 +93,14 @@ function LoginSecurity() {
     }));
   };
 
+  if (!user) {
+    return (
+      <Link to="/signin" className="accountPage_section">
+        Sign In
+      </Link>
+    );
+  }
+
   return (
     <div className="loginSecurity">
       <div className="loginSecurity_header">
@@ -80,6 +111,19 @@ function LoginSecurity() {
           <button className="save-button" onClick={handleSave}>Save</button>
         )}
       </div>
+      {showPasswordPrompt && (
+        <form className="password-prompt" onSubmit={handlePasswordSubmit}>
+          <h3>Please enter your password to proceed:</h3>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+      )}
       <div className="loginSecurity_info">
         <div className="loginSecurity_item">
           <h3>Name</h3>
@@ -135,6 +179,7 @@ function LoginSecurity() {
               type="password"
               value={editValues.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
+              placeholder="New Password"
             />
           ) : (
             <p>••••••••</p>
@@ -146,3 +191,4 @@ function LoginSecurity() {
 }
 
 export default LoginSecurity;
+

@@ -7,16 +7,17 @@ import { Link } from 'react-router-dom';
 import image from './emptycart.png'; // Assuming this is your empty cart image
 
 function Checkout() {
-  const [{ basket }] = useStateValue();
-
+  const [{ user }] = useStateValue();
+  const { basket } = user;
+  
   // Filter unique items based on item.id to avoid duplicates
-  const uniqueItems = [...new Map(basket.map(item => [item.id, item])).values()];
+  const uniqueItems = [...new Map(user.basket.map(item => [item.id, item])).values()];
 
   return (
     <div className='checkout'>
       <div className="checkout_left">
-        {/* Conditionally render based on basket length */}
-        {basket?.length === 0 ? (
+        {/* Conditionally render based on user.basket length */}
+        {user.basket?.length === 0 ? (
           <div className="empty-list">
             <img src={image} className="empty-img" alt='' />
             <div className="empty-text">
@@ -50,8 +51,8 @@ function Checkout() {
           </div>
         )}
       </div>
-      {/* Render Subtotal component only if basket is not empty */}
-      {basket.length > 0 && (
+      {/* Render Subtotal component only if user.basket is not empty */}
+      {user.basket.length > 0 && (
         <div className="checkout_right">
           <Subtotal />
         </div>

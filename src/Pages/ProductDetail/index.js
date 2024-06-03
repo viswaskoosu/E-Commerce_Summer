@@ -8,22 +8,21 @@ import Stack from '@mui/material/Stack';
 
 function ProductDetail() {
   const { id } = useParams();
-  const [{ basket, favouriteItems }, dispatch] = useStateValue();
+  const [{ user, favouriteItems }, dispatch] = useStateValue();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for managing current image index
 
-  // Fetch the product based on the id from the URL
   useEffect(() => {
     const fetchedProduct = Products.find(product => product.id === parseInt(id));
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      setIsInBasket(basket.some(item => item.id === parseInt(id)));
+      setIsInBasket(user.basket.some(item => item.id === parseInt(id)));
       setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
     }
-  }, [id, basket, favouriteItems]);
+  }, [id, user.basket, favouriteItems]);
 
   const addToBasket = () => {
     dispatch({

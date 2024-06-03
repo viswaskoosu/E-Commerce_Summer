@@ -9,12 +9,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useStateValue } from '../../Context/StateProvider';
 
 function AccountPage() {
-  const [{ user }] = useStateValue();
-  const [image, setImage] = useState("");
-  const navigate = useNavigate();
-
-  document.title = "Profile section";
-
+  const [{ user }, dispatch] = useStateValue(); // Destructure user from context
+  const [image, setImage] = useState(""); // State for profile image
+  const navigate = useNavigate(); // Navigate function from react-router-dom
   const checkDP = () => {
     if (user && user.photoURL && user.photoURL.includes("https")) {
       setImage(user.photoURL);
