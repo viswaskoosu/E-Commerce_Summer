@@ -46,10 +46,24 @@ export const initialState = {
   // orders: [],
   basket: localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [],
   favouriteItems: localStorage.getItem('favouriteItems') ? JSON.parse(localStorage.getItem('favouriteItems')) : [],
+  favouriteItems: [
+    {
+      id: 1,
+      image: "https://m.media-amazon.com/images/I/714rkFrqqXL._SX450_.jpg",
+      mrp: 2599,
+      price: 2499,
+      rating: 4.5,
+      title: "Electric Drill Machine 13mm",
+    },
+  ],
   user: {
     displayName: 'Viswas',
     email: 'viswas@example.com',
-    addresses: localStorage.getItem('addresses') ? JSON.parse(localStorage.getItem('addresses')) : [
+
+    password: 'viswas',
+    photoURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVI8wwjmbk07RHjMaoxGcLQw5kRfAizckn7g&s',
+    gender: 'Male',
+    addresses: [
       {
         id: '1',
         name: 'Viswas',
@@ -87,6 +101,7 @@ export const initialState = {
       },
     ],
     isAdmin: false,
+    orders: [],
   },
   orders: localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [],
   products: [],
@@ -98,13 +113,16 @@ const reducer = (state, action) => {
     case 'COMPLETE_ORDER':
       return {
         ...state,
-        orders: [...state.orders, action.order],
+        user: {
+          ...state.user,
+          orders: [...state.user.orders, action.order],
+        },
       };
     case 'SET_USER':
       // console.log("KKKKKK",action.user)
       return {
         ...state,
-        user: action.user
+        user: action.user,
       };
     case 'SET_PRODUCTS':
       return {
@@ -185,7 +203,7 @@ const reducer = (state, action) => {
       };
 
     case 'EDIT_ADDRESS':
-      const updatedAddresses = state.user.addresses.map((address) =>
+      const updatedAddresses = state.user.addresses.map(address =>
         address.id === action.address.id ? action.address : address
       );
       localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
@@ -198,10 +216,7 @@ const reducer = (state, action) => {
       };
 
     case 'DELETE_ADDRESS':
-      const filteredAddresses = state.user.addresses.filter(
-        (address) => address.id !== action.addressId
-      );
-      localStorage.setItem('addresses', JSON.stringify(filteredAddresses));
+      const filteredAddresses = state.user.addresses.filter(address => address.id !== action.addressId);
       return {
         ...state,
         user: {
@@ -234,7 +249,6 @@ const reducer = (state, action) => {
           [action.field]: action.value,
         },
       };
-
     // Product Actions
     case 'SET_PRODUCTS':
       return {
@@ -249,5 +263,6 @@ const reducer = (state, action) => {
 };
 
 export default reducer;
-export const getBasketTotal = (basket) =>
-  basket?.reduce((amount, item) => item.price + amount, 0);
+
+export const getBasketTotal = basket =>
+  basket?.reduce((amount, item) => item.price * item.quantity + amount, 0);

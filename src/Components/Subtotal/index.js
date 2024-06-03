@@ -5,30 +5,27 @@ import './Subtotal.css';
 
 function Subtotal() {
     const [{ basket }, dispatch] = useStateValue();
-<<<<<<< HEAD
-    const history = useHistory(); 
-=======
     const navigate = useNavigate(); // Initialize useNavigate
->>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
 
     const placeOrder = () => {
         const order = {
-          id: Date.now().toString(),
-          date: new Date(),
-          items: basket,
-          total: basket.reduce((amount, item) => item.price * item.quantity + amount, 0),
+            id: Date.now().toString(),
+            date: new Date(),
+            items: basket,
+            total: basket.reduce((amount, item) => item.price * item.quantity + amount, 0),
         };
-        // console.log(order.id);
     
         dispatch({
-          type: 'ADD_ORDER',
-          order: order,
-        });
-    
-        dispatch({
-          type: 'EMPTY_BASKET',
+            type: 'ADD_ORDER',
+            order: order, // Correctly setting the order in the action
         });
 
+        // Dispatch action to empty the basket
+        dispatch({
+            type: 'EMPTY_BASKET',
+        });
+
+        // Navigate to payments page
         navigate('/payments');
     };
 

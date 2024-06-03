@@ -12,40 +12,40 @@ const ResponsiveSlider = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 6,
     slidesToScroll: 5,
     autoplay: false,
     autoplaySpeed: 3000,
     responsive: [
-    {
+      {
         breakpoint: 1320,
         settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-        }
-        },
-      {
-        breakpoint: 1070,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToShow: 5,
+          slidesToScroll: 4,
           infinite: true,
           dots: true
         }
       },
       {
-        breakpoint: 843,
+        breakpoint: 1070,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1
+          slidesToShow: 4,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 820,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2
         }
       },
       {
         breakpoint: 594,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1
         }
       }
@@ -63,6 +63,8 @@ const ResponsiveSlider = () => {
               image={product.images[0]} // Use the first image as the product image
               price={product.price}
               rating={product.rating}
+              mrp={product.mrp}
+              reviews={product.reviews}
             />
           </div>
         ))}

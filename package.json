@@ -25,6 +25,7 @@
     "react-router-dom": "^5.3.4",
 =======
     "react-icons": "^5.2.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.23.1",
 >>>>>>> 6f1ad8ddd6b3b9a50724c1a5b85adfbe0cd7f4ef
     "react-scripts": "5.0.1",
