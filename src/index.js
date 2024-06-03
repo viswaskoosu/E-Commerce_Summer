@@ -14,9 +14,7 @@ const savedOrders = localStorage.getItem('user') ? JSON.parse(localStorage.getIt
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
 // console.log(user)
 // console.log(savedBasket,savedFavourites, savedAddresses, savedOrders)
-if (localStorage.getItem('token') && !localStorage.getItem('user')){
-  localStorage.removeItem('token')
-}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

@@ -9,9 +9,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useStateValue } from '../../Context/StateProvider';
 
 function AccountPage() {
-  const [{ user }, dispatch] = useStateValue(); // Destructure user from context
-  const [image, setImage] = useState(""); // State for profile image
-  const navigate = useNavigate(); // Navigate function from react-router-dom
+  const [{ user }, dispatch] = useStateValue();
+  const [image, setImage] = useState(""); 
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("basket");
+
+    dispatch({
+      type: "USER_LOGOUT",
+    });
+    navigate('/')
+  };
   const checkDP = () => {
     if (user && user.photoURL && user.photoURL.includes("https")) {
       setImage(user.photoURL);
@@ -29,6 +38,7 @@ function AccountPage() {
 
   return (
     <>
+    <Header/>
       <div className="profile-section" style={{ height: user ? 'fit-content' : '70vh' }}>
         <div className={`account-section ${user ? 'animate' : ''}`}>
           <div className="top-section">
@@ -40,7 +50,7 @@ function AccountPage() {
               <p className="profile-name">{user ? `${user.displayName}` : ""}</p>
               <p className="profile-email">{user ? `${user.email}` : ""}</p>
               <button
-                onClick={() => navigate("/signup")}
+                onClick={logout}
                 className="signout-btn"
               >
                 Sign out
@@ -65,7 +75,7 @@ function AccountPage() {
                     <p>Edit login, name, and mobile number</p>
                   </div>
                 </Link>
-                <Link to='/contactinfo' className="accountPage_section"> {/* Add className="accountPage_section" to the Link */}
+                <Link to='/contactinfo' className="accountPage_section">
                   <div className="contact-info">
                     <div className="mail-section">
                       <p className="mail-data">Contact Information</p>
@@ -73,7 +83,7 @@ function AccountPage() {
                     </div>
                     <div>
                       <p>{user ? `${user.email}` : ""}</p>
-                      <p> {user ? `${user.phoneNumber}` : ""}</p>
+                      <p> {user ? `${user.phone}` : ""}</p>
                       <p>{user && user.addresses.length > 0 ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].state}, ${user.addresses[0].zip}, ${user.addresses[0].country}` : ""}</p>
                     </div>
                   </div>

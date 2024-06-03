@@ -1,13 +1,13 @@
-// CheckoutProduct.js
 import React from 'react';
 import './CheckoutProduct.css';
 import { useStateValue } from '../../Context/StateProvider';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Rating, Stack } from '@mui/material';
 
-function CheckoutProduct({ id, title, image, price, rating }) {
+function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
-  
+
   const removeFromBasket = () => {
     dispatch({
       type: 'REMOVE_FROM_BASKET',
@@ -31,8 +31,9 @@ function CheckoutProduct({ id, title, image, price, rating }) {
 
   const toggleFavourite = () => {
     const isInBasket = basket.some(item => item.id === id);
-    
-    if (favouriteItems.some(item => item.id === id)) {
+    const isFavourite = favouriteItems.some(item => item.id === id);
+
+    if (isFavourite) {
       dispatch({
         type: 'REMOVE_FROM_FAVOURITES',
         id: id,
@@ -68,16 +69,15 @@ function CheckoutProduct({ id, title, image, price, rating }) {
           <small>₹</small>
           <strong>{price}</strong>
         </p>
-        <div className='checkoutProduct_rating'>
-          {Array(rating)
-            .fill()
-            .map((_, i) => (
-              <p key={i}>⭐</p>
-            ))}
+        <div className="rating">
+          <Stack spacing={1}>
+            <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
+          </Stack>
+          <p className="rating-text">{reviews ? reviews.length : 0}</p>
         </div>
         <div className="checkoutProduct_quantityControl">
           <button onClick={decreaseQuantity}>-</button>
-          <span>{basketItem?.quantity}</span>
+          <span>{basketItem?.quantity}</span> {/* Safely access quantity */}
           <button onClick={increaseQuantity}>+</button>
         </div>
         <div className="checkoutProduct_actions">

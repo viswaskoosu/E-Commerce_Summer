@@ -4,6 +4,7 @@ import Product from '../../Components/Product';
 import './FavoritesPage.css';
 import { Link } from 'react-router-dom';
 import image from './empty.png';
+import Header from '../../Components/Header';
 
 function FavouritesPage() {
   const [{ favouriteItems }] = useStateValue();
@@ -17,6 +18,8 @@ function FavouritesPage() {
     return title;
   };
   return (
+    <>
+    <Header/>
     <div className='favoritesPage'>
       <p className="wishlist-head">Your Favorites</p>
       {reversedFavourites.length === 0 ? (
@@ -54,6 +57,7 @@ function FavouritesPage() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

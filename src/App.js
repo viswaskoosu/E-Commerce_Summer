@@ -34,25 +34,20 @@ function App() {
   }, [dispatch]);
 
   return (
-    <StateProvider initialState={initialState} reducer={reducer}>
       <Router>
         <div className="app">
-          <Header />
           <div className="main-content">
             <Routes>
-              {/* Public Routes */}
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/favourites" element={<FavoritesPage />} />
               <Route path="/orderhistory" element={<OrderHistory />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route exact path="/" element={<Home />} />
 
-              {/* Restricted Routes */}
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-              {/* Protected Routes */}
               <Route path="/account" element={<AccountPage />} />
               <Route path="/contactinfo" element={<ContactInfo />} />
               <Route path="/paymentmethods" element={<PaymentMethods />} />
@@ -65,7 +60,6 @@ function App() {
           </div>
         </div>
       </Router>
-    </StateProvider>
   );
 }
 

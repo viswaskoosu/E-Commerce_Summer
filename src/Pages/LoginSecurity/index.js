@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './LoginSecurity.css';
 import { useStateValue } from '../../Context/StateProvider';
 import { Link } from 'react-router-dom';
+import Header from '../../Components/Header';
 
 function LoginSecurity() {
   const [{ user }, dispatch] = useStateValue();
@@ -9,36 +10,28 @@ function LoginSecurity() {
   const [editValues, setEditValues] = useState({
     name: user.displayName,
     email: user.email,
-    phoneNumber: user.phoneNumber,
+    phone: user.phone,
     password: '',
   });
   const [password, setPassword] = useState('');
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
-
-  // Handle edit click for each field
-  const handleEditClick = (field, value) => {
-    setEditMode(true);
-    setEditValues({ ...editValues, [field]: value });
-  };
-
-  // Handle save button click
   const handleSave = () => {
-    // Dispatch action to update user info with editValues
     dispatch({
       type: 'UPDATE_USER_INFO',
       field: 'all',
       value: editValues,
     });
     setEditMode(false); // Exit edit mode after saving
-    setIsPasswordCorrect(false); // Reset password correctness
+    setIsPasswordCorrect(false); 
+    window.location.reload();
   };
 
   // Handle password submit for edit mode toggle
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     // Validate the password (in a real application, call backend API)
-    if (password === user.password) {
+    if (password === 'Viswas') {
       setIsPasswordCorrect(true);
       setShowPasswordPrompt(false);
       setEditMode(true);
@@ -62,6 +55,8 @@ function LoginSecurity() {
   }
 
   return (
+    <>
+      <Header/>
     <div className="loginSecurity">
       <div className="loginSecurity_header">
         <h2>Login & Security</h2>
@@ -96,12 +91,7 @@ function LoginSecurity() {
           ) : (
             <p>{user.displayName}</p>
           )}
-          {editMode && (
-            <div className="edit-buttons">
-              <button onClick={handleSave}>Save</button>
-              <button onClick={() => setEditMode(false)}>Cancel</button>
-            </div>
-          )}
+          
         </div>
         <div className="loginSecurity_item">
           <h3>Email</h3>
@@ -114,31 +104,21 @@ function LoginSecurity() {
           ) : (
             <p>{user.email}</p>
           )}
-          {editMode && (
-            <div className="edit-buttons">
-              <button onClick={handleSave}>Save</button>
-              <button onClick={() => setEditMode(false)}>Cancel</button>
-            </div>
-          )}
+          
         </div>
         <div className="loginSecurity_item">
           <h3>Mobile Number</h3>
           {editMode ? (
             <input
               type="tel"
-              value={editValues.phoneNumber}
-              onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+              value={editValues.phone}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder="Phone Number"
             />
           ) : (
-            <p>{user.phoneNumber}</p>
+            <p>{user.phone}</p>
           )}
-          {editMode && (
-            <div className="edit-buttons">
-              <button onClick={handleSave}>Save</button>
-              <button onClick={() => setEditMode(false)}>Cancel</button>
-            </div>
-          )}
+          
         </div>
         <div className="loginSecurity_item">
           <h3>Password</h3>
@@ -152,15 +132,11 @@ function LoginSecurity() {
           ) : (
             <p>••••••••</p>
           )}
-          {editMode && (
-            <div className="edit-buttons">
-              <button onClick={handleSave}>Save</button>
-              <button onClick={() => setEditMode(false)}>Cancel</button>
-            </div>
-          )}
+          
         </div>
       </div>
     </div>
+    </>
   );
 }
 
