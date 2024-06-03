@@ -24,7 +24,7 @@ import { useStateValue } from "../../Context/StateProvider";
 const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
   const [state, dispatch] = useStateValue();
-  // console.log(state)
+  console.log(state)
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -229,19 +229,8 @@ const Header = () => {
           </Link>
           {userLoggedIn? (
           <IconButton color="inherit" onClick={logout}>
-            <Badge
-              badgeContent={basket?.length}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              sx={{
-                "& .MuiBadge-badge": {
-                  fontSize: "1.3rem",
-                  top: "50%",
-                  right: "-50%",
-                },
-              }}
-            >
+
               <LogoutIcon />
-            </Badge>
           </IconButton>
           ) : (<></>)}
         </div>

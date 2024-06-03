@@ -88,13 +88,25 @@ const reducer = (state, action) => {
         ...state,
         orders: action.orders
       }
-    // Basket Actions
     case 'ADD_TO_BASKET':
-      localStorage.setItem('basket', JSON.stringify([...state.basket,action.item]));
-      return {
-        ...state,
-        basket: [...state.basket,action.item],
-    };
+      const existingItemIndex = state.basket.findIndex(item => item.id === action.item.id);
+      if (existingItemIndex !== -1) {
+        const updatedBasket = state.basket.map((item, index) =>
+          index === existingItemIndex ? { ...item, quantity: item.quantity + 1 } : item
+        );
+        localStorage.setItem('basket', JSON.stringify(updatedBasket));
+        return {
+          ...state,
+          basket: updatedBasket,
+        };
+      } else {
+        localStorage.setItem('basket', JSON.stringify([...state.basket, action.item]));
+        return {
+          ...state,
+          basket: [...state.basket, action.item],
+        };
+      }
+    
 
     case 'REMOVE_FROM_BASKET':
       const updatedBasket = state.basket.filter(item => item.id !== action.id);

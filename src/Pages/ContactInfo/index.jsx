@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStateValue } from "../../Context/StateProvider";
 import "./ContactInfo.css"; // Import the CSS file
 import Header from "../../Components/Header";
+import { useNavigate } from "react-router-dom";
 
 function ContactInfo() {
   const [{ user, userLoggedIn }] = useStateValue();
+  const navigate = useNavigate();
 
-  return !userLoggedIn ? (
-    <div>404 not found</div>
-  ) : (
+  useEffect(() => {
+    if (!userLoggedIn) {
+      navigate('/error');
+    }
+  }, [userLoggedIn, navigate]);
+
+  if (!userLoggedIn) {
+    return null; // or a loading spinner, or any fallback UI
+  }
+
+  return (
     <>
       <Header />
       <div className="contactInfo">
@@ -19,7 +29,7 @@ function ContactInfo() {
             <strong>Email:</strong> {user.email}
           </p>
           <p>
-            <strong>Phone Number:</strong> {user.phoneNumber}
+            <strong>Phone Number:</strong> {user.phone}
           </p>
           <p>
             <strong>Address:</strong>{" "}

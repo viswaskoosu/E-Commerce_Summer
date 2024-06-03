@@ -45,14 +45,6 @@ function ProductDetail() {
     setIsInBasket(true);
   };
   
-  const removeFromBasket = () => {
-    dispatch({
-      type: "REMOVE_FROM_BASKET",
-      id: product.id,
-    });
-    setIsInBasket(false);
-  };
-  
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -197,21 +189,12 @@ function ProductDetail() {
                 </span>
                 <button onClick={increaseQuantity}>+</button>
               </div>
-              {isInBasket ? (
-                <button
-                  className="productDetail_removeFromBasketButton"
-                  onClick={removeFromBasket}
-                >
-                  Remove from Basket
-                </button>
-              ) : (
                 <button
                   className="productDetail_addToBasketButton"
                   onClick={addToBasket}
                 >
                   Add to Basket
                 </button>
-              )}
             </div>
           </div>
         </div>
@@ -226,25 +209,6 @@ function ProductDetail() {
             </ul>
           </div>
           <div className="productDetail_buttons">
-            <button className="productDetail_favouriteButton" onClick={addToFavourites}>
-              {isInFavourites ? "Remove from Favorites" : "Add to Favorites"}
-            </button>
-            <div className="productDetail_quantityControl">
-              <button onClick={decreaseQuantity}>-</button>
-              <span style={{ marginLeft: "15px", marginRight: "15px", fontWeight: "bold" }}>
-                {quantity}
-              </span>
-              <button onClick={increaseQuantity}>+</button>
-            </div>
-            {isInBasket ? (
-              <button className="productDetail_removeFromBasketButton" onClick={removeFromBasket}>
-                Remove from Basket
-              </button>
-            ) : (
-              <button className="productDetail_addToBasketButton" onClick={addToBasket}>
-                Add to Basket
-              </button>
-            )}
           </div>
         </div>
       </div>
