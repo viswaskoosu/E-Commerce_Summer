@@ -24,7 +24,6 @@ import { useStateValue } from "../../Context/StateProvider";
 const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
   const [state, dispatch] = useStateValue();
-  console.log(state)
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);

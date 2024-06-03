@@ -92,7 +92,7 @@ function AccountPage() {
                 <Link to="/paymentmethods" className="accountPage_section">
                   <div>
                     <h3>Payment Methods</h3>
-                    {user && user.paymentMethods.length > 0 ? (
+                    {user && user.paymentMethods?.length > 0 ? (
                       <ul className="accountPage_list">
                         {user.paymentMethods.map((method) => (
                           <li key={method.id}>
