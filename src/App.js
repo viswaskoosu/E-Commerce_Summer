@@ -21,7 +21,7 @@ import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
 import Error from './Pages/Error';
-
+import { ToastContainer } from 'react-toastify'
 function App() {
   console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
@@ -59,6 +59,7 @@ function App() {
             </Routes>
           </div>
         </div>
+        <ToastContainer/>
       </Router>
   );
 }

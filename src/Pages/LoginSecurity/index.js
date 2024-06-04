@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import Header from "../../Components/Header";
 import LoadingPage from "../../Components/LoadingPage";
 import { putReq, postReq } from "../../getReq.js";
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function LoginSecurity() {
   const [{ user }, dispatch] = useStateValue();
   const [editMode, setEditMode] = useState(false);
@@ -41,7 +44,7 @@ function LoginSecurity() {
             field: "phone",
             value: editValues.phone,
           });
-          alert("successful update");
+          toast.success("successful update");
         }
       })
       .catch((error) => {
@@ -50,9 +53,9 @@ function LoginSecurity() {
           error.response.data &&
           error.response.data.error
         ) {
-          alert("Couldn't update: " + error.response.data.error);
+          toast.error("Couldn't update: " + error.response.data.error);
         } else {
-          alert("Error in contacting server.");
+          toast.error("Error in contacting server.");
         }
       })
       .finally(() => {
@@ -81,10 +84,10 @@ function LoginSecurity() {
           error.response.data &&
           error.response.data.error
         ) {
-          alert("Not authorized: " + error.response.data.error);
+          toast.error("Not authorized: " + error.response.data.error);
           setPassword("");
         } else {
-          alert("Error in contacting server.");
+          toast.error("Error in contacting server.");
         }
       });
   };

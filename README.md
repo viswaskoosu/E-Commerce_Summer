@@ -9,3 +9,4 @@ fix if needed:
 need fix:
 1. don't read from localstorage. (might crash if corrupted, fetch from server in index.js)
 2. details check in edit page
+3. suggesstion maybe: store token as state also. (after delete token, unless u refresh the page you can access server)

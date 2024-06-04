@@ -19,6 +19,9 @@ import Footer from "../../Components/Footer";
 import axios from "axios";
 import Header from "../../Components/Header";
 import { useStateValue } from "../../Context/StateProvider";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingPage from "../../Components/LoadingPage";
 // Create a custom theme with the desired color scheme
 const theme = createTheme({
   palette: {
@@ -32,10 +35,11 @@ const theme = createTheme({
 });
 
 function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [{ userLoggedIn }, dispatch] = useStateValue();
-  if (userLoggedIn){
-    navigate('/account')
+  if (userLoggedIn) {
+    navigate("/account");
   }
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -84,6 +88,7 @@ function SignIn() {
       password: data.get("password"),
     };
 
+    setIsLoading(true);
     let responseData = {};
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/login`, userData)
@@ -93,38 +98,43 @@ function SignIn() {
           // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("basket", JSON.stringify(response.data.basket));
-          alert("Signed in successfully");
+          toast.success("Signed in successfully");
+          // alert("Signed in successfully");
           dispatch({
-            type: 'USER_LOGIN'
-          })
+            type: "USER_LOGIN",
+          });
           dispatch({
-            type: 'SET_USER',
-            user: response.data.user
-          })
+            type: "SET_USER",
+            user: response.data.user,
+          });
           dispatch({
-            type: 'SET_BASKET',
-            basket: response.data.basket
-          })
+            type: "SET_BASKET",
+            basket: response.data.basket,
+          });
           dispatch({
-            type: 'SET_FAVOURITE_ITEMS',
-            favouriteItems: response.data.user.favouriteItems
-          })
+            type: "SET_FAVOURITE_ITEMS",
+            favouriteItems: response.data.user.favouriteItems,
+          });
           dispatch({
-            type: 'SET_ORDERS',
-            orders: response.data.user.orders
-          })
+            type: "SET_ORDERS",
+            orders: response.data.user.orders,
+          });
           navigate("/");
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         if (
           error.response &&
           error.response.data &&
           error.response.data.error
         ) {
-          alert("Couldn't sign in " + error.response.data.error);
-        } else alert("Couldn't sign in (Server error)");
+          toast.error("Couldn't sign in " + error.response.data.error);
+          // alert("Couldn't sign in " + error.response.data.error);
+        } else toast.error("Couldn't sign in (Server error)");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
     // console.log({
     //   email: data.get('email'),
@@ -132,8 +142,11 @@ function SignIn() {
     // });
   };
 
-  return (userLoggedIn?
-  <>404 not found</>:
+  return userLoggedIn ? (
+    <>404 not found</>
+  ) : isLoading ? (
+    <LoadingPage />
+  ) : (
     <div>
       <Header />
       <ThemeProvider theme={theme}>

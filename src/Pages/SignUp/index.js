@@ -16,6 +16,9 @@ import { Link as RouterLink, useNavigate } from "react-router-dom"; // Import Li
 import axios from "axios";
 import Header from "../../Components/Header";
 import { useStateValue } from "../../Context/StateProvider";
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import LoadingPage from "../../Components/LoadingPage";
 
 // Create a custom theme with the desired color scheme
 const signUpTheme = createTheme({
@@ -35,6 +38,7 @@ const signUpTheme = createTheme({
 
 // }
 export default function SignUp() {
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
   const [{ userLoggedIn }, dispatch] = useStateValue();
   if (userLoggedIn) {
@@ -108,6 +112,7 @@ export default function SignUp() {
       allowExtraEmails: data.get("allowExtraEmails") === "on",
     };
     // console.log(userData);
+    setIsLoading(true)
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/signup`, userData)
       .then((response) => {
@@ -116,7 +121,7 @@ export default function SignUp() {
           // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("basket", JSON.stringify(response.data.basket));
-        alert("Signed up successfully");
+        toast.success("Signed up successfully");
         dispatch({
           type: "USER_LOGIN",
         });
@@ -144,13 +149,20 @@ export default function SignUp() {
           error.response.data &&
           error.response.data.error
         ) {
-          alert("Couldn't signup " + error.response.data.error);
-        } else alert("Couldn't sign up (Server error)");
+          toast.error("Couldn't signup " + error.response.data.error);
+        } else toast.error("Couldn't sign up (Server error)");
+      })
+      .finally(() => {
+        setIsLoading(false)
       });
     // Redirect or handle form submission logic here
   };
 
-  return (
+  return userLoggedIn ? (
+    <>404 not found</>
+  ) : isLoading ? (
+    <LoadingPage />
+  ) : (
     <>
       <Header />
       <ThemeProvider theme={signUpTheme}>
