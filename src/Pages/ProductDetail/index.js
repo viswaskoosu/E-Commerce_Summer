@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductDetail.css';
 import { useStateValue } from '../../Context/StateProvider';
-import { Products } from '../../data'; 
+import { Products } from '../../data';
 import Rating from '@mui/material/Rating';
 import Header from '../../Components/Header';
-import { Stack } from '@mui/material';
+import { Stack, Modal, Box } from '@mui/material';
 
 function ProductDetail() {
   const { id } = useParams();
@@ -15,6 +15,7 @@ function ProductDetail() {
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchedProduct = Products.find(
@@ -27,7 +28,7 @@ function ProductDetail() {
       setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
     }
   }, [id, user, favouriteItems]);
-  
+
   const addToBasket = () => {
     dispatch({
       type: "ADD_TO_BASKET",
@@ -44,7 +45,6 @@ function ProductDetail() {
     });
     setIsInBasket(true);
   };
-  
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -82,6 +82,7 @@ function ProductDetail() {
 
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
+    setOpen(true);
   };
 
   const sortReviewsByDate = () => {
@@ -129,6 +130,7 @@ function ProductDetail() {
               src={product.images[currentImageIndex]}
               alt={product.title}
               className="productDetail_image"
+              onClick={() => setOpen(true)}
             />
             <button className="imageNavButton" onClick={handleNextImage}>
               {">"}
@@ -137,13 +139,15 @@ function ProductDetail() {
 
           <div className="productDetail_info">
             <p className="productDetail_title">{product.title}</p>
+            <p className='product_category'>Category: {product.category}</p>
             <div className="rating">
               <Stack spacing={1}>
                 <Rating name={`rating-${id}`} value={product.rating} precision={0.5} readOnly />
               </Stack>
-              <p className="rating-text">{product.reviews ? product.reviews.length : 0}</p>
+              <p className="rating-text">({product.reviews ? product.reviews.length : 0})</p>
             </div>
             <p className="productDetail_price">
+            <strong>Price:{' '}</strong>
               <small>₹</small>
               <strong>{product.mrp}</strong>{" "}
               <strong
@@ -233,6 +237,23 @@ function ProductDetail() {
           ))}
         </div>
       </div>
+      
+      {/* Modal for Image Slider */}
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Box className="modalBox">
+          <button className="imageNavButton" onClick={handlePrevImage}>
+            {"<"}
+          </button>
+          <img
+            src={product.images[currentImageIndex]}
+            alt={product.title}
+            className="modalImage"
+          />
+          <button className="imageNavButton" onClick={handleNextImage}>
+            {">"}
+          </button>
+        </Box>
+      </Modal>
     </>
   );
 }
