@@ -126,6 +126,7 @@ const reducer = (state, action) => {
         ...state,
         basket: increasedBasket
       };
+
     case 'ADD_TO_FAVOURITES':
       const newFavourites = [...state.favouriteItems, action.item];
       localStorage.setItem('favouriteItems', JSON.stringify(newFavourites));
