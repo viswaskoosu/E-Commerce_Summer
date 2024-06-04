@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import "./Addresses.css"; // Ensure this CSS file is in the correct path
 import { useStateValue } from "../../Context/StateProvider";
 import Header from "../../Components/Header";
-
+import {postReq} from '../../getReq'
+import LoadingPage from '../../Components/LoadingPage'
+import 'react-toastify/dist/ReactToastify.css'
+import {toast} from 'react-toastify'
 const countries = [
   "India",
   "United States",
@@ -32,7 +35,7 @@ function Addresses() {
   const [errors, setErrors] = useState({});
   const [pinTimeout, setPinTimeout] = useState(null);
   const [manualCountry, setManualCountry] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const validate = () => {
     let validationErrors = {};
     if (!newAddress.name) validationErrors.name = "Name is required";
@@ -79,11 +82,23 @@ function Addresses() {
   };
 
   const handleDelete = (addressId) => {
-    const updatedAddresses = user.addresses.filter((a) => a.id !== addressId);
-    dispatch({
-      type: "DELETE_ADDRESS",
-      addressId,
-    });
+    // const updatedAddresses = user.addresses.filter((a) => a.id !== addressId);
+    postReq(setIsLoading, `/user/editaddress?request=delete&id=${addressId}`)
+      .then(() => {
+        dispatch({
+          type: "DELETE_ADDRESS",
+          addressId: addressId,
+        });
+        toast.success('Deleted successfully')
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error){
+          toast.error(error.response.data.error)
+        }else{
+          toast.error("Error contacting server")
+        }
+      })
+    
   };
 
   const handleSave = () => {
@@ -94,28 +109,71 @@ function Addresses() {
     }
 
     if (currentAddress) {
-      dispatch({
-        type: "EDIT_ADDRESS",
-        address: { ...newAddress, id: currentAddress.id },
-      });
+      const addressObject = {address: newAddress}
+      // console.log(currentAddress.id, newAddress.id)
+      postReq(setIsLoading, '/user/editaddress?request=update', addressObject)
+      .then(() => {
+        dispatch({
+          type: "EDIT_ADDRESS",
+          address: { ...newAddress, id: currentAddress.id },//both ids are same.
+        });
+        toast.success('Edited successfully')
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error){
+          toast.error(error.response.data.error)
+        }else{
+          toast.error("Error contacting server")
+        }
+      })
+      .finally(() => {
+        setEditMode(false);
+        setCurrentAddress({...newAddress}) // doubt in this line... (nithin added)
+        setNewAddress({
+          name: "",
+          street: "",
+          city: "",
+          state: "",
+          zip: "",
+          country: "India",
+        });
+        setErrors({});
+        setManualCountry(false);
+      })    
     } else {
       const newAddressWithId = { ...newAddress, id: Date.now().toString() };
-      dispatch({
-        type: "ADD_ADDRESS",
-        address: newAddressWithId,
-      });
-    }
-    setEditMode(false);
-    setNewAddress({
-      name: "",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      country: "India",
-    });
-    setErrors({});
-    setManualCountry(false);
+      const addressObject = {address: newAddressWithId}
+
+      postReq(setIsLoading, '/user/editaddress?request=add', addressObject)
+      .then(() => {
+        dispatch({
+          type: "ADD_ADDRESS",
+          address: newAddressWithId,
+        });
+        toast.success('Added successfully')
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error){
+          toast.error(error.response.data.error)
+        }else{
+          toast.error("Error contacting server")
+        }
+      })
+      .finally(() => {
+        setEditMode(false);
+        setCurrentAddress({...newAddress})
+        setNewAddress({
+          name: "",
+          street: "",
+          city: "",
+          state: "",
+          zip: "",
+          country: "India",
+        });
+        setErrors({});
+        setManualCountry(false);
+      })    
+    }  
   };
 
   const handlePinChange = (e) => {
