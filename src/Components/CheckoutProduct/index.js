@@ -4,6 +4,7 @@ import { useStateValue } from '../../Context/StateProvider';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Rating, Stack } from '@mui/material';
+import { Link } from 'react-router-dom'; // Import Link for client-side routing
 
 function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
@@ -62,9 +63,13 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
 
   return (
     <div className='checkoutProduct'>
-      <img className='checkoutProduct_image' src={image} alt='' />
+      <Link to={`/product/${id}`} className='checkoutProduct_link'>
+        <img className='checkoutProduct_image' src={image} alt='' />
+      </Link>
       <div className='checkoutProduct_info'>
-        <p className='checkoutProduct_title'>{title}</p>
+        <Link to={`/product/${id}`} className='checkoutProduct_link'>
+          <p className='checkoutProduct_title'>{title}</p>
+        </Link>
         <p className='checkoutProduct_price'>
           <small>₹</small>
           <strong>{price}</strong>
@@ -73,7 +78,7 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
           <Stack spacing={1}>
             <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
           </Stack>
-          <p className="rating-text">{reviews ? reviews.length : 0}</p>
+          <p className="rating-text">({reviews ? reviews.length : 0})</p>
         </div>
         <div className="checkoutProduct_quantityControl">
           <button onClick={decreaseQuantity}>-</button>
