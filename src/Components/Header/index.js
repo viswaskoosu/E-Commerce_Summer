@@ -27,10 +27,12 @@ const Header = () => {
   const [state, dispatch] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null);
   const [isLoading, setIsLoading] = useState(false) //useless
   const navigate = useNavigate();
-
+  // if (selectedAddress==null && user && user.currentAddress && user.currentAddress!==-1){
+  //   setSelectedAddress(user.addresses[user.currentAddress])
+  // }
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 800);
     handleResize();
@@ -60,7 +62,7 @@ const Header = () => {
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("basket");
-
+    setSelectedAddress(null)
     dispatch({
       type: "USER_LOGOUT",
     });
