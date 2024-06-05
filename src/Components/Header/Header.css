@@ -16,6 +16,7 @@
 .header_badge {
   margin-left: 5px; /* Adjust this value as needed */
 background-color: rgb(30, 23, 16);
+font-size: 3rem;
 }
 
 .header_logo {
@@ -33,7 +34,7 @@ background-color: rgb(30, 23, 16);
 .header_Link {
   color: black;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 18px;
   display: flex;
   align-items: center;
 }
@@ -57,12 +58,16 @@ background-color: rgb(30, 23, 16);
   font-weight: 800;
 }
 
+
 .header_option_fav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
   position: sticky;
+  
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif; /* Ensure 'Poppins' is available */
 }
 
 .fav_cart {

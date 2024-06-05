@@ -181,89 +181,59 @@ const Header = () => {
         </Link>
 
         <div className="fav_cart">
-          <Link to="/favourites" className="header_Link">
-            {isSmallScreen ? (
-              <IconButton color="inherit">
-                <Badge
-                  badgeContent={favouriteItems?.length}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  sx={{
-                    "& .MuiBadge-badge": {
-                      fontSize: "1.3rem",
-                      top: "50%",
-                      right: "-50%",
-                    },
-                  }}
-                >
-                  <FavoriteBorderIcon />
-                </Badge>
-              </IconButton>
-            ) : (
-              <div className="header_option_fav">
-              <span style={{ fontWeight: '600' }}>Favourites</span>
-                <IconButton color="inherit">
-                  <Badge
-                    badgeContent={favouriteItems?.length}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    sx={{
-                      "& .MuiBadge-badge": {
-                        fontSize: "1.3rem",
-                        top: "50%",
-                        right: "-50%",
-                      },
-                    }}
-                  >
-                    <FavoriteBorderIcon />
-                  </Badge>
-                </IconButton>
-              </div>
-            )}
-          </Link>
+        <Link to="/favourites" className="header_Link">
+  <IconButton color="inherit" className="favourites-icon">
+    <Badge
+      badgeContent={favouriteItems?.length}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      sx={{
+        position: 'absolute',
+        top: 8,
+        left: 20,
+        backgroundColor: '#FFAD33', // Customize badge background color
+        color: '#000000', // Customize badge text color
+        fontFamily: 'Poppins', // Customize badge font family
+        fontWeight: '600', // Customize badge font weight
+        zIndex: 1, // Ensure badge appears on top of icon
+      }}
+      badgeContentStyle={{ fontSize: '3rem' }} // Specify badge content font size
+    />
+    <FavoriteBorderIcon />
+    <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Favourites</span>
+  </IconButton>
+</Link>
+
+
+
           <Link to="/checkout" className="header_Link">
-            {isSmallScreen ? (
-            <IconButton color="inherit">
-              <Badge
-                badgeContent={basket?.length}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                sx={{
-                  "& .MuiBadge-badge": {
-                    fontSize: "1.3rem",
-                    top: "50%",
-                    right: "-50%",
-                  },
-                }}
-              >
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>)
-            : (
-              <div className="header_option_fav">
-              <span style={{ fontWeight: '600' }}>Cart</span>
-                <IconButton color="inherit">
-                  <Badge
-                    badgeContent={basket?.length}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    sx={{
-                      "& .MuiBadge-badge": {
-                        fontSize: "1.3rem",
-                        top: "50%",
-                        right: "-50%",
-                      },
-                    }}
-                  >
-                    <ShoppingCartIcon />
-                  </Badge>
-                </IconButton>
-              </div>)}
-          </Link>
+  <IconButton color="inherit" className="cart-icon">
+    <Badge
+      badgeContent={basket?.length}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      sx={{
+        position: 'absolute',
+        top: 8,
+        left: 20,
+        backgroundColor: '#FFAD33', // Customize badge background color
+        color: '#000000', // Customize badge text color
+        fontFamily: 'Poppins', // Customize badge font family
+        fontWeight: '600', // Customize badge font weight
+        zIndex: 1, // Ensure badge appears on top of icon
+      }}
+      badgeContentStyle={{ fontSize: '2rem' }} // Specify badge content font size
+    />
+    <ShoppingCartIcon />
+    <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Cart</span>
+  </IconButton>
+</Link>
+
+
           {userLoggedIn? (
           <IconButton color="inherit" onClick={logout} className="fav_cart">
             {isSmallScreen?
               <></>:(
-                <span style={{ fontWeight: '600', fontFamily: 'Poppins' }}>Logout</span>
+                <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>Logout</span>
               )
-              
-            
             }
             <LogoutIcon />
 
