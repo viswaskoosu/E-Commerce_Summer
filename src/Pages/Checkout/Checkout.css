@@ -1,8 +1,15 @@
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f6f5f5;
-  overflow-x: hidden; /* Remove horizontal scroll bar */
+@keyframes slide {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
+
 
 .checkout {
   background-color: #f6f5f5;
@@ -24,7 +31,22 @@ body {
 }
 
 .poster-area {
-  background: radial-gradient(circle, #1e1d1d 0%, #4e4a4a 60%);
+  background: linear-gradient(
+      45deg,
+      #e9bc89,
+      #00b7ff,
+      rgba(255, 255, 0, 0.76),
+      lightgreen,
+      #00b7ff,      
+      rgba(255, 255, 0, 0.86),
+      lightgreen,
+      #00b7ff,
+      rgba(255, 255, 0, 0.76),
+      #00b7ff,
+      #b6853b
+    )
+    300% 300% / 400% 400%;
+  animation: slide 15s ease infinite;
   position: relative;
   border-radius: 20px;
   margin: 0 auto; /* Center align */
@@ -35,7 +57,6 @@ body {
   padding-left: 40px;
   text-align: left;
   max-width: 90%;
-  max-height: 40%;
   width: 100%; /* Ensure it uses the available space */
 }
 
@@ -93,10 +114,11 @@ body {
 
 .delivery {
   position: absolute;
-  width: 400px;
+  width: 330px;
   right: 250px;
   top: 95px;
   animation: float 0.5s ease-out forwards;
+  
 }
 
 @keyframes float {
@@ -114,6 +136,8 @@ body {
 @media (max-width: 1200px) {
   .delivery {
     top: 121px;
+  width: 300px;
+
   }
   .poster-area{
     padding: 10px;
@@ -245,9 +269,11 @@ body {
   width: 100%; /* Ensure it uses the available space */
   justify-content: space-between;
   margin-left: 20px;
+
 }
 .checkout-product{
   width: 60%;
+
 }
 .subtotal{
   margin-right: 50px;

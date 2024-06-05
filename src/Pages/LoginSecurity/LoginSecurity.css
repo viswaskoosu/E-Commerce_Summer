@@ -6,10 +6,18 @@ body, html {
   font-family: "Poppins", Arial, sans-serif; /* Ensure Poppins is used as primary font */
   background-color: #f4f4f9;
 }
+.loginSecurity_item {
+  margin-bottom: 20px;
+}
 
-/* LoginSecurity Component */
-.loginSecurity {
+.password-prompt {
+  padding: 20px;
   width: 100%;
+}
+
+
+.loginSecurity {
+  width: 85%;
   max-width: 900px; /* Adjust as needed */
   margin: 30px auto;
   padding: 20px;
@@ -19,7 +27,7 @@ body, html {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 920px) {
   .loginSecurity {
     max-width: 500px;
   }
@@ -54,7 +62,11 @@ body, html {
   font-weight: bold;
   color: #333;
 }
-
+.cancel-edit{
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+}
 .edit-button,
 .save-button {
   padding: 10px 20px; /* Adjust padding for better button size */
@@ -84,22 +96,21 @@ body, html {
 
 .password-prompt {
   margin-top: 20px;
+  width: 97%;
+  padding-right: 200px;
 }
 
 .password-prompt h3 {
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
 }
 
 .password-prompt input {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
   border-radius: 4px;
-  margin-bottom: 10px;
 }
 
 .password-prompt button {
@@ -146,9 +157,8 @@ body, html {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
   border-radius: 4px;
-  margin-top: 8px;
+  
 }
 
 @media (max-width: 576px) {
@@ -160,7 +170,7 @@ body, html {
 .loginSecurity_phone {
   display: flex;
   align-items: center;
-  margin-top: 8px;
+  
 }
 
 .loginSecurity_phone select {
@@ -207,7 +217,7 @@ body, html {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-top: 8px;
+  
 }
 
 .select-country option {

@@ -82,7 +82,7 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
         </div>
         <div className="checkoutProduct_quantityControl">
           <button onClick={decreaseQuantity}>-</button>
-          <span>{basketItem?.quantity}</span> {/* Safely access quantity */}
+          <span>{basketItem?.quantity}</span> 
           <button onClick={increaseQuantity}>+</button>
         </div>
         <div className="checkoutProduct_actions">

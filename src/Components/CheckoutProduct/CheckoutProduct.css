@@ -1,7 +1,7 @@
 .checkoutProduct {
   display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   background-color: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -33,7 +33,6 @@
 .checkoutProduct_title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
   color: #333;
 }
 
@@ -41,24 +40,24 @@
   font-size: 16px;
   font-weight: bold;
   color: #4caf50;
-  margin-bottom: 10px;
+  margin: 0;
 }
 
 .rating {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin: 0;
 }
 
 .rating-text {
-  margin-left: 5px;
   color: #888;
+  margin: 0;
 }
 
 .checkoutProduct_quantityControl {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin: 0;
 }
 
 .checkoutProduct_quantityControl button {
@@ -76,7 +75,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 10px;
 }
 
 .checkoutProduct_actions button {
@@ -87,7 +85,6 @@
   padding: 8px 12px;
   font-size: 14px;
   border-radius: 4px;
-  margin-right: 10px;
 }
 
 .checkoutProduct_actions button.checkoutProduct_favouriteButton {
@@ -117,7 +114,6 @@
 
   .checkoutProduct_info {
     padding-left: 0; /* Remove left padding */
-    margin-top: 10px; /* Add margin to separate from image */
   }
 
   .checkoutProduct_image {
@@ -146,6 +142,5 @@
 .checkoutProduct_link {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
   text-decoration: none; /* Remove underline */
 }

@@ -82,8 +82,8 @@ function AccountPage() {
                       <img src={contact} className="mail-photo" alt="Contact Icon" />
                     </div>
                     <div>
-                      <p>{user ? `${user.email}` : ""}</p>
-                      <p> {user ? `${user.phone}` : ""}</p>
+                      <p>{user.email ? `${user.email}` : "Please update your Email "}</p>
+                      <p> {user.phone ? `${user.phone}` : "Please update your Mobile Number"}</p>
                       <p>{user && user.addresses.length > 0 ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].state}, ${user.addresses[0].zip}, ${user.addresses[0].country}` : ""}</p>
                     </div>
                   </div>

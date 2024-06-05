@@ -197,7 +197,7 @@ const Header = () => {
               </IconButton>
             ) : (
               <div className="header_option_fav">
-                <Typography sx={{ ml: 1 }}>Favorites</Typography>
+              <span style={{ fontWeight: '600' }}>Favourites</span>
                 <IconButton color="inherit">
                   <Badge
                     badgeContent={favouriteItems?.length}
@@ -217,6 +217,7 @@ const Header = () => {
             )}
           </Link>
           <Link to="/checkout" className="header_Link">
+            {isSmallScreen ? (
             <IconButton color="inherit">
               <Badge
                 badgeContent={basket?.length}
@@ -231,12 +232,38 @@ const Header = () => {
               >
                 <ShoppingCartIcon />
               </Badge>
-            </IconButton>
+            </IconButton>)
+            : (
+              <div className="header_option_fav">
+              <span style={{ fontWeight: '600' }}>Cart</span>
+                <IconButton color="inherit">
+                  <Badge
+                    badgeContent={basket?.length}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        fontSize: "1.3rem",
+                        top: "50%",
+                        right: "-50%",
+                      },
+                    }}
+                  >
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              </div>)}
           </Link>
           {userLoggedIn? (
-          <IconButton color="inherit" onClick={logout}>
+          <IconButton color="inherit" onClick={logout} className="fav_cart">
+            {isSmallScreen?
+              <></>:(
+                <span style={{ fontWeight: '600', fontFamily: 'Poppins' }}>Logout</span>
+              )
+              
+            
+            }
+            <LogoutIcon />
 
-              <LogoutIcon />
           </IconButton>
           ) : (<></>)}
         </div>

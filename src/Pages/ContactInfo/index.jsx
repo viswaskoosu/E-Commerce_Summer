@@ -47,7 +47,7 @@ function ContactInfo() {
             </Grid>
             <Grid item xs={11}>
               <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
-                <strong>Phone Number:</strong> {user.phone}
+                <strong>Phone Number:</strong> {user.phone?`${user.phone}` : "Not provided"}
               </Typography>
             </Grid>
             <Grid item xs={1}>
