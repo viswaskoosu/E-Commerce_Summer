@@ -157,7 +157,11 @@ const reducer = (state, action) => {
       };
     case 'ADD_ADDRESS':
       const newAddresses = [...state.user.addresses, action.address];
-      localStorage.setItem('addresses', JSON.stringify(newAddresses));
+      // localStorage.setItem('addresses', JSON.stringify(newAddresses));
+      localStorage.setItem('user', JSON.stringify({
+        ...state.user,
+        addresses: newAddresses,
+      }))
       return {
         ...state,
         user: {
@@ -170,7 +174,11 @@ const reducer = (state, action) => {
       const updatedAddresses = state.user.addresses.map(address =>
         address.id === action.address.id ? action.address : address
       );
-      localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
+      // localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
+      localStorage.setItem('user', JSON.stringify({
+        ...state.user,
+        addresses: updatedAddresses,
+      }))
       return {
         ...state,
         user: {
@@ -181,6 +189,10 @@ const reducer = (state, action) => {
 
     case 'DELETE_ADDRESS':
       const filteredAddresses = state.user.addresses.filter(address => address.id !== action.addressId);
+      localStorage.setItem('user', JSON.stringify({
+        ...state.user,
+        addresses: filteredAddresses,
+      }))
       return {
         ...state,
         user: {

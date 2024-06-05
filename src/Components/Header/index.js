@@ -21,13 +21,15 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 import { useStateValue } from "../../Context/StateProvider";
-
+import axios from 'axios'
+import { postReq } from "../../getReq";
 const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
   const [state, dispatch] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isLoading, setIsLoading] = useState(false) //useless
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,12 +50,14 @@ const Header = () => {
     handleMenuClose();
   };
 
-  const renderAddress = (address) => (
-    <Box>
+  const renderAddress = (address) => {
+    //without loading
+    // postReq(setIsLoading, `/user/editaddress?request=currentaddress&address=${address.id}`)
+    return (<Box onClick={() => {postReq(setIsLoading, `/user/editaddress?request=currentaddress&address=${address.id}`)}}>
       <Typography variant="body1">{address.name}</Typography>
       <Typography variant="body2">{`${address.city}, ${address.zip}`}</Typography>
-    </Box>
-  );
+    </Box>)
+  };
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("basket");
