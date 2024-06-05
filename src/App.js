@@ -22,6 +22,7 @@ import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
 import Error from './Pages/Error';
 import { ToastContainer } from 'react-toastify';
+import CategoryPage from './Pages/CategoryPage';
 
 function App() {
   console.log('Window width: ' + window.innerWidth + 'px');
@@ -44,6 +45,8 @@ function App() {
             <Route path="/favourites" element={<FavoritesPage />} />
             <Route path="/orderhistory" element={<OrderHistory />} />
             <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/categories/:id" element={<CategoryPage/>}/>
             <Route exact path="/" element={<Home />} />
 
             <Route path="/signin" element={<SignIn />} />
