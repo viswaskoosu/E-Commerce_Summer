@@ -180,7 +180,6 @@ const Header = () => {
           </div>
         </Link>
 
-        <div className="fav_cart">
         <Link to="/favourites" className="header_Link">
   <IconButton color="inherit" className="favourites-icon">
     <Badge
@@ -230,17 +229,16 @@ const Header = () => {
 
           {userLoggedIn? (
           <IconButton color="inherit" onClick={logout} className="fav_cart">
+            <LogoutIcon />
             {isSmallScreen?
               <></>:(
                 <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>Logout</span>
               )
             }
-            <LogoutIcon />
 
           </IconButton>
           ) : (<></>)}
         </div>
-      </div>
     </nav>
   );
 };
