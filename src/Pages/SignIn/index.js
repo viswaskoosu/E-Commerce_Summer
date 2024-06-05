@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,8 +13,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import { createTheme, ThemeProvider } from "@mui/material/styles"; // Import from @mui/material/styles
-import { Link as RouterLink, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Footer from "../../Components/Footer";
 import axios from "axios";
 import Header from "../../Components/Header";
@@ -22,14 +22,14 @@ import { useStateValue } from "../../Context/StateProvider";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "../../Components/LoadingPage";
-// Create a custom theme with the desired color scheme
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#FFAD33", // Main color for primary elements
+      main: "#FFAD33",
     },
     textPrimary: {
-      main: "#000000", // Adjust text primary color
+      main: "#000000",
     },
   },
 });
@@ -38,12 +38,15 @@ function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [{ userLoggedIn }, dispatch] = useStateValue();
-  if (userLoggedIn) {
-    navigate("/account");
-  }
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  useEffect(() => {
+    if (userLoggedIn) {
+      navigate("/account");
+    }
+  }, [userLoggedIn, navigate]);
 
   const removeErrorMessage = (e) => {
     if (e.target.id === "email") {
@@ -56,29 +59,28 @@ function SignIn() {
 
   const checkForm = (data) => {
     let check = false;
-    // console.log(data.get('email'))
     const emailregex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailregex.test(data.get("email"))) {
       setEmailError("Invalid email");
-      check = check || true;
+      check = true;
     } else {
       setEmailError(false);
     }
     if (data.get("password").length === 0) {
-      check = check || true;
+      check = true;
       setPasswordError("Invalid password");
     } else {
       setPasswordError(false);
     }
     return check;
   };
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (event) => {
-    // console.log('submit')
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (checkForm(data)) return;
@@ -89,62 +91,37 @@ function SignIn() {
     };
 
     setIsLoading(true);
-    let responseData = {};
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/login`, userData)
       .then((response) => {
-        // console.log("succ");
         if (response.data.success) {
-          // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("basket", JSON.stringify(response.data.basket));
           toast.success("Signed in successfully");
-          // alert("Signed in successfully");
-          dispatch({
-            type: "USER_LOGIN",
-          });
-          dispatch({
-            type: "SET_USER",
-            user: response.data.user,
-          });
-          dispatch({
-            type: "SET_BASKET",
-            basket: response.data.basket,
-          });
+          dispatch({ type: "USER_LOGIN" });
+          dispatch({ type: "SET_USER", user: response.data.user });
+          dispatch({ type: "SET_BASKET", basket: response.data.basket });
           dispatch({
             type: "SET_FAVOURITE_ITEMS",
             favouriteItems: response.data.user.favouriteItems,
           });
-          dispatch({
-            type: "SET_ORDERS",
-            orders: response.data.user.orders,
-          });
+          dispatch({ type: "SET_ORDERS", orders: response.data.user.orders });
           navigate("/");
         }
       })
       .catch((error) => {
-        console.log(error);
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
+        if (error.response && error.response.data && error.response.data.error) {
           toast.error("Couldn't sign in " + error.response.data.error);
-          // alert("Couldn't sign in " + error.response.data.error);
-        } else toast.error("Couldn't sign in (Server error)");
+        } else {
+          toast.error("Couldn't sign in (Server error)");
+        }
       })
       .finally(() => {
         setIsLoading(false);
       });
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
   };
 
-  return userLoggedIn ? (
-    <>404 not found</>
-  ) : isLoading ? (
+  return isLoading ? (
     <LoadingPage />
   ) : (
     <div>
@@ -206,12 +183,9 @@ function SignIn() {
                   id="email"
                   label="Email Address"
                   name="email"
-                  // autoComplete="email"
                   autoFocus
-                  inputProps={{
-                    type: "email",
-                  }}
-                  error={emailError}
+                  inputProps={{ type: "email" }}
+                  error={!!emailError}
                   helperText={emailError}
                   onChange={removeErrorMessage}
                 />
@@ -232,16 +206,12 @@ function SignIn() {
                           onClick={handleShowPassword}
                           edge="end"
                         >
-                          {showPassword ? (
-                            <VisibilityOffIcon />
-                          ) : (
-                            <VisibilityIcon />
-                          )}
+                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                         </IconButton>
                       </InputAdornment>
                     ),
                   }}
-                  error={passwordError}
+                  error={!!passwordError}
                   helperText={passwordError}
                   onChange={removeErrorMessage}
                 />
@@ -260,24 +230,12 @@ function SignIn() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <RouterLink
-                      to="/forgotpassword"
-                      component={Link}
-                      variant="body2"
-                      color="textPrimary"
-                      underline="none"
-                    >
+                    <RouterLink to="/forgotpassword" component={Link} variant="body2">
                       Forgot password?
                     </RouterLink>
                   </Grid>
                   <Grid item>
-                    <RouterLink
-                      to="/signup"
-                      component={Link}
-                      variant="body2"
-                      color="textPrimary"
-                      underline="none"
-                    >
+                    <RouterLink to="/signup" component={Link} variant="body2">
                       {"Don't have an account? Sign Up"}
                     </RouterLink>
                   </Grid>

@@ -19,6 +19,7 @@ function FavouritesPage() {
   };
   return (
     <>
+    
     <Header/>
     <div className='favoritesPage'>
       <p className="wishlist-head">Your Favorites</p>
@@ -40,7 +41,10 @@ function FavouritesPage() {
       ) : (
         <div className='favoritesPage_products'>
           {reversedFavourites.map(item => (
+
             <div key={item.id} className="each_card">
+{            console.log(item.rating)
+}
               <Product
                 id={item.id}
                 title={truncateTitle(item.title,25)}

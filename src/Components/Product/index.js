@@ -64,7 +64,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
           <Stack spacing={1}>
             <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
           </Stack>
-          <p className="rating-text">{reviews ? reviews.length : 0}</p>
+          <p className="rating-text">({rating})</p>
         </div>
         <div className="card-price">
           <p className="discount">₹{price}</p>

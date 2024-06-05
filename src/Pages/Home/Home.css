@@ -6,7 +6,9 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
-
+.products{
+  margin-left: 10px;
+}
 .product-row {
   display: flex;
   justify-content: space-around;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
+import CompanyLogo from './companyLogo.png';
 import {
   Box,
   IconButton,
@@ -70,7 +71,7 @@ const Header = () => {
       <Link to="/">
         <img
           className="header_logo"
-          src="http://pngimg.com/uploads/amazon/amazon_PNG11.png"
+          src={CompanyLogo}
           alt="logo"
         />
       </Link>
