@@ -19,8 +19,7 @@ background-color: rgb(30, 23, 16);
 }
 
 .header_logo {
-  width: 100px;
-  object-fit: contain;
+  height: 60px;
 }
 
 .header_nav {

@@ -2,12 +2,10 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Products } from '../../data'; // Assuming Products are imported from data file
 import Product from '../Product'; // Import the Product component
 import './ResponsiveSlider.css'; // Import CSS file for custom styles
 
-const ResponsiveSlider = () => {
-  // Settings for the slider
+const ResponsiveSlider = ({ products }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -15,7 +13,6 @@ const ResponsiveSlider = () => {
     slidesToShow: 6,
     slidesToScroll: 5,
     autoplay: false,
-    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1320,
@@ -52,15 +49,19 @@ const ResponsiveSlider = () => {
     ]
   };
 
+  if (!Array.isArray(products)) {
+    return null;
+  }
+
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        {Products.map(product => (
+        {products.map(product => (
           <div className='slider-item' key={product.id}>
             <Product
               id={product.id}
               title={product.title}
-              image={product.images[0]} // Use the first image as the product image
+              image={product.images[0]}
               price={product.price}
               rating={product.rating}
               mrp={product.mrp}

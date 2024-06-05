@@ -34,25 +34,46 @@ const Carousel = () => {
     <Box
       sx={{
         position: "relative",
-        width: "100%", 
-        overflowX: "hidden", 
+        width: "100%",
+        overflowX: "hidden",
         maxHeight: "60vh",
-        margin: 0, 
+        margin: 0,
         padding: 0,
       }}
     >
-      <img
+      <Box
+        component="img"
         src={images[index]}
         alt={`Slide ${index}`}
-        style={{ width: "100%", height: "auto" }}
+        sx={{
+          width: "100%",
+          height: "auto",
+          position: "relative",
+          zIndex: 1,
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 2,
+        }}
       />
       <IconButton
         sx={{
           position: "absolute",
           top: "50%",
-          left: "10px",
           transform: "translateY(-50%)",
-          zIndex: "1",
+          left: "10px",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          color: "white",
+          zIndex: 3,
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+          },
         }}
         onClick={handlePrev}
       >
@@ -62,9 +83,14 @@ const Carousel = () => {
         sx={{
           position: "absolute",
           top: "50%",
-          right: "10px",
           transform: "translateY(-50%)",
-          zIndex: "1",
+          right: "10px",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          color: "white",
+          zIndex: 3,
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+          },
         }}
         onClick={handleNext}
       >

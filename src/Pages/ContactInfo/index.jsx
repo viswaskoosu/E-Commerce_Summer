@@ -3,6 +3,10 @@ import { useStateValue } from "../../Context/StateProvider";
 import "./ContactInfo.css"; // Import the CSS file
 import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
+import { Typography, Grid, Paper, IconButton } from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function ContactInfo() {
   const [{ user, userLoggedIn }] = useStateValue();
@@ -22,22 +26,43 @@ function ContactInfo() {
     <>
       <Header />
       <div className="contactInfo">
-        <h2>Welcome, {user.displayName}!</h2>
-        <div className="infoContainer">
-          <h3>Contact Information</h3>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p>
-            <strong>Phone Number:</strong> {user.phone}
-          </p>
-          <p>
-            <strong>Address:</strong>{" "}
-            {user.address
-              ? `${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.zip}, ${user.address.country}`
-              : "Not provided"}
-          </p>
-        </div>
+        <Typography variant="h2" align="center" gutterBottom style={{ fontFamily: 'Poppins' }}>
+          Welcome, {user.displayName}!
+        </Typography>
+        <Paper elevation={3} className="infoContainer">
+          <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: 'Poppins', color: '#333' }}>
+            Contact Information
+          </Typography>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={1}>
+              <EmailIcon style={{ fontSize: 28, color: '#666' }} />
+            </Grid>
+            <Grid item xs={11}>
+              <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
+                <strong>Email:</strong> {user.email}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <PhoneIcon style={{ fontSize: 28, color: '#666' }} />
+            </Grid>
+            <Grid item xs={11}>
+              <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
+                <strong>Phone Number:</strong> {user.phone}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <LocationOnIcon style={{ fontSize: 28, color: '#666' }} />
+            </Grid>
+            <Grid item xs={11}>
+              <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
+                <strong>Address:</strong>{" "}
+                {user.address
+                  ? `${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.zip}, ${user.address.country}`
+                  : "Not provided"}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Paper>
       </div>
     </>
   );

@@ -21,9 +21,12 @@ import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
 import Error from './Pages/Error';
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify';
+import CategoryPage from './Pages/CategoryPage';
+
 function App() {
   console.log('Window width: ' + window.innerWidth + 'px');
+
   const [, dispatch] = useStateValue();
 
   useEffect(() => {
@@ -34,33 +37,35 @@ function App() {
   }, [dispatch]);
 
   return (
-      <Router>
-        <div className="app">
-          <div className="main-content">
-            <Routes>
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/favourites" element={<FavoritesPage />} />
-              <Route path="/orderhistory" element={<OrderHistory />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route exact path="/" element={<Home />} />
+    <Router>
+      <div className="app">
+        <div className="main-content">
+          <Routes>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/favourites" element={<FavoritesPage />} />
+            <Route path="/orderhistory" element={<OrderHistory />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/categories/:id" element={<CategoryPage/>}/>
+            <Route exact path="/" element={<Home />} />
 
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-              <Route path="/account" element={<AccountPage />} />
-              <Route path="/contactinfo" element={<ContactInfo />} />
-              <Route path="/paymentmethods" element={<PaymentMethods />} />
-              <Route path="/loginSecurity" element={<LoginSecurity />} />
-              <Route path="/payments" element={<Payment />} />
-              <Route path="/addresses" element={<Addresses />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/contactinfo" element={<ContactInfo />} />
+            <Route path="/paymentmethods" element={<PaymentMethods />} />
+            <Route path="/loginSecurity" element={<LoginSecurity />} />
+            <Route path="/payments" element={<Payment />} />
+            <Route path="/addresses" element={<Addresses />} />
 
-              <Route path="/error" element={<Error />} />
-            </Routes>
-          </div>
+            <Route path="/error" element={<Error />} />
+          </Routes>
         </div>
-        <ToastContainer/>
-      </Router>
+      </div>
+      <ToastContainer/>
+    </Router>
   );
 }
 
