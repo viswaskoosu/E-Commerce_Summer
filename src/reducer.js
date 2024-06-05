@@ -188,6 +188,7 @@ const reducer = (state, action) => {
       };
 
     case 'DELETE_ADDRESS':
+      const currentAddress = (state.user.currentAddress!==-1 && state.user.addresses[state.user.currentAddress].id===action.addressId) ? -1 : state.user.currentAddress;
       const filteredAddresses = state.user.addresses.filter(address => address.id !== action.addressId);
       localStorage.setItem('user', JSON.stringify({
         ...state.user,
@@ -198,6 +199,7 @@ const reducer = (state, action) => {
         user: {
           ...state.user,
           addresses: filteredAddresses,
+          currentAddress: currentAddress
         },
       };
 

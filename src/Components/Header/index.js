@@ -25,15 +25,18 @@ import axios from 'axios'
 import { postReq } from "../../getReq";
 const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
+  console.log(user)
   const [state, dispatch] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  // console.log((user && user.currentAddress && user.currentAddress!==-1))
+
   const [selectedAddress, setSelectedAddress] = useState((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null);
   const [isLoading, setIsLoading] = useState(false) //useless
   const navigate = useNavigate();
-  // if (selectedAddress==null && user && user.currentAddress && user.currentAddress!==-1){
-  //   setSelectedAddress(user.addresses[user.currentAddress])
-  // }
+  useEffect(() => {
+    setSelectedAddress((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null)
+  }, [user.addresses]);
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 800);
     handleResize();
