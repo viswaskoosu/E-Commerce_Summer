@@ -27,7 +27,8 @@ const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
   console.log(user)
   const [state, dispatch] = useStateValue();
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(true);
+  const [isSmallScreenForUpper1, setIsSmallScreenForUpper1] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   // console.log((user && user.currentAddress && user.currentAddress!==-1))
 
@@ -37,12 +38,7 @@ const Header = () => {
   useEffect(() => {
     setSelectedAddress((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null)
   }, [user.addresses]);
-  useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth < 800);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
@@ -75,8 +71,9 @@ const Header = () => {
   const [isSmallScreenForUpper, setIsSmallScreenUpper] = useState(true);
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 800);
-      setIsSmallScreenUpper(window.innerWidth < 600); // Adjust the threshold as needed
+      setIsSmallScreen(window.innerWidth < 1020);
+      setIsSmallScreenForUpper1(window.innerWidth < 1200);
+      setIsSmallScreenUpper(window.innerWidth < 800); // Adjust the threshold as needed
     };
 
     handleResize(); 
@@ -153,43 +150,48 @@ const Header = () => {
         </Box>
 
         <div className="header_nav">
-          <Link
-            to={userLoggedIn ? "/account" : "/signin"}
-            className="header_Link"
-          >
-          <IconButton color="inherit">
-                  <PersonIcon />
-            <div className="header_option">
-            
-              {isSmallScreenForUpper ? (
-                <></>
-              ) : (
-                <>
-                  <span className="header_optionLineOne">
-                    {userLoggedIn ? `Hello, ${user.displayName}` : "Hello Guest"}
-                  </span>
-                  <span className="header_optionLineTwo">
-                    {userLoggedIn ? "Your Account" : "Sign In"}
-                  </span>
-                </>
-              )}
-            </div>
-                </IconButton>
-          </Link>
+        <Link
+  to={userLoggedIn ? "/account" : "/signin"}
+  className="header_Link"
+>
+  <IconButton color="inherit">
+    <PersonIcon />
+    <div className="header_option">
+
+        <>
+          {!isSmallScreenForUpper1 && (
+            <span className="header_optionLineOne">
+              {userLoggedIn ? `Hello, ${user.displayName}` : "Hello Guest"}
+            </span>
+          )}
+          <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>
+            {userLoggedIn ? 
+            (isSmallScreenForUpper1?
+            (isSmallScreen?
+            (isSmallScreenForUpper?<></>:"Account"):<></>)
+             : "Your Account")
+             : "Sign In"}
+          </span>
+        </>
+      
+    </div>
+  </IconButton>
+</Link>
+
 
           <Link to="/orderhistory" className="header_Link">
           <>
           <IconButton color="inherit">
                   <ShoppingBagIcon />
             <div className="header_option">
-              {isSmallScreenForUpper ? (
-                <></>
-              ) : (
-                <>
-                  <span className="header_optionLineOne">Your</span>
-                  <span className="header_optionLineTwo">Orders</span>
-                </>
-              )}
+              
+                <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>
+            {!isSmallScreenForUpper1?
+            "Orders":
+            isSmallScreen?(
+              isSmallScreenForUpper?<></>:"Orders"
+            ):<></>}
+                </span>
             </div>
             </IconButton>
             </>
@@ -215,6 +217,8 @@ const Header = () => {
                     badgeContentStyle={{ fontSize: '3rem' }}
                   />
                   <FavoriteBorderIcon />
+                  {/* {!isSmallScreenForUpper1 ? <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Favourites</span>
+                  :<></>} */}
                   <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Favourites</span>
                 </IconButton>
               </Link>
@@ -237,14 +241,22 @@ const Header = () => {
                     badgeContentStyle={{ fontSize: '2rem' }}
                   />
                   <ShoppingCartIcon />
+                  {/* {!isSmallScreenForUpper1 ? <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>
+                  Cart</span>
+                  :<></>}                 */}
                   <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Cart</span>
-                </IconButton>
+                  </IconButton>
               </Link>
 
               {userLoggedIn && (
                 <IconButton color="inherit" onClick={logout} className="fav_cart">
                   <LogoutIcon />
+                  {isSmallScreenForUpper1?
+                  (isSmallScreen?
+                  <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>Logout</span>:<></>
+                  ):                  
                   <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>Logout</span>
+}
                 </IconButton>
               )}
             </>

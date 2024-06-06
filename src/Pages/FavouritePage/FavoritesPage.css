@@ -6,22 +6,11 @@
 .favoritesPage_products {
   display: flex;
   flex-wrap: wrap;
-  justify-content:flex-start;
   width: 100%;
 }
 
-.each_card {
-  display: flex;
-  flex-direction: row;
-  margin-right: 10px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-}
 
 
-.each_card .Product {
-  width: 100%; /* Ensure Product component fills the width of each card */
-}
 
 .wishlist-head {
   text-align: center;
