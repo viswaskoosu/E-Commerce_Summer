@@ -49,7 +49,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
         <img src={image} alt={title} className="card-img" />
         <p className="price-off">({discountPercentage}% OFF)</p>
         <a href={`/product/${id}`} className="product_link">
-          <button className="view">View product</button>
+          <button className="view" >View product</button>
         </a>
         <IconContext.Provider value={{ size: '1.5rem' }}>
           <p className="add-list" onClick={addToFavourites}>
