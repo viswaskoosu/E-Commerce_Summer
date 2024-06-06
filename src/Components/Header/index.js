@@ -72,174 +72,186 @@ const Header = () => {
     });
     navigate('/')
   };
-  // const userExists = () =>{
-  //   return localStorage.getItem('user')
-  // }
+  const [isSmallScreenForUpper, setIsSmallScreenUpper] = useState(true);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 800);
+      setIsSmallScreenUpper(window.innerWidth < 600); // Adjust the threshold as needed
+    };
+
+    handleResize(); 
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
-    <nav className="header">
-      <Link to="/">
-        <img
-          className="header_logo"
-          src={CompanyLogo}
-          alt="logo"
-        />
-      </Link>
+    <div>
+      <nav className="header">
+        <Link to="/">
+          <img
+            className="header_logo"
+            src={CompanyLogo}
+            alt="logo"
+          />
+        </Link>
 
-      <Box
-        sx={{ display: "flex", alignItems: "center", mr: 1, cursor: "pointer" }}
-        onClick={handleMenuOpen}
-      >
-        <LocationOnIcon />
-        {!isSmallScreen && (
-          <Typography variant="body1" sx={{ ml: 1 }}>
-            {selectedAddress
-              ? renderAddress(selectedAddress)
-              : "Select Address"}
-          </Typography>
-        )}
-      </Box>
-
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-        PaperProps={{ style: { maxHeight: "200px", width: "300px" } }}
-      >
-        {user?.addresses?.slice(0, 3).map((address, index) => (
-          <MenuItem key={index} onClick={() => handleAddressChange(address)}>
-            {renderAddress(address)}
-          </MenuItem>
-        ))}
-        {user?.addresses?.length > 3 && (
-          <MenuItem onClick={handleAddNewAddress}>View All Addresses</MenuItem>
-        )}
-        <MenuItem onClick={handleAddNewAddress}>Add New Address</MenuItem>
-      </Menu>
-
-      <Box
-        sx={{
-          display: "flex",
-          flexGrow: 1,
-          alignItems: "center",
-          ml: 1,
-          minWidth: 0,
-        }}
-      >
-        <InputBase
-          placeholder="Search for Products, Brands and More"
-          inputProps={{ "aria-label": "search" }}
-          sx={{
-            color: "inherit",
-            backgroundColor: "white",
-            borderRadius: 1,
-            pl: 2,
-            pr: 2,
-            width: "100%",
-          }}
-        />
-        <IconButton type="submit" sx={{ p: "10px", ml: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box>
-
-      <div className="header_nav">
-        <Link
-          to={userLoggedIn ? "/account" : "/signin"}
-          className="header_Link"
+        <Box
+          sx={{ display: "flex", alignItems: "center", mr: 1, cursor: "pointer" }}
+          onClick={handleMenuOpen}
         >
-          <div className="header_option">
-            {isSmallScreen ? (
-              <IconButton color="inherit">
-                <PersonIcon />
-              </IconButton>
-            ) : (
-              <>
-                <span className="header_optionLineOne">
-                  {userLoggedIn ? `Hello ${user.displayName}` : "Hello Guest"}
-                </span>
-                <span className="header_optionLineTwo">
-                  {userLoggedIn ? "Your Account" : "Sign In"}
-                </span>
-              </>
-            )}
-          </div>
-        </Link>
+          <LocationOnIcon />
+          {!isSmallScreenForUpper && (
+            <Typography variant="body1" sx={{ ml: 1 }}>
+              {selectedAddress
+                ? renderAddress(selectedAddress)
+                : "Select Address"}
+            </Typography>
+          )}
+        </Box>
 
-        <Link to="/orderhistory" className="header_Link">
-          <div className="header_option">
-            {isSmallScreen ? (
-              <IconButton color="inherit">
-                <ShoppingBagIcon />
-              </IconButton>
-            ) : (
-              <>
-                <span className="header_optionLineOne">Your</span>
-                <span className="header_optionLineTwo">Orders</span>
-              </>
-            )}
-          </div>
-        </Link>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          PaperProps={{ style: { maxHeight: "200px", width: "300px" } }}
+        >
+          {user?.addresses?.slice(0, 3).map((address, index) => (
+            <MenuItem key={index} onClick={() => handleAddressChange(address)}>
+              {renderAddress(address)}
+            </MenuItem>
+          ))}
+          {user?.addresses?.length > 3 && (
+            <MenuItem onClick={handleAddNewAddress}>View All Addresses</MenuItem>
+          )}
+          <MenuItem onClick={handleAddNewAddress}>Add New Address</MenuItem>
+        </Menu>
 
-        <Link to="/favourites" className="header_Link">
-  <IconButton color="inherit" className="favourites-icon">
-    <Badge
-      badgeContent={favouriteItems?.length}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      sx={{
-        position: 'absolute',
-        top: 8,
-        left: 20,
-        backgroundColor: '#FFAD33', // Customize badge background color
-        color: '#000000', // Customize badge text color
-        fontFamily: 'Poppins', // Customize badge font family
-        fontWeight: '600', // Customize badge font weight
-        zIndex: 1, // Ensure badge appears on top of icon
-      }}
-      badgeContentStyle={{ fontSize: '3rem' }} // Specify badge content font size
-    />
-    <FavoriteBorderIcon />
-    <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Favourites</span>
-  </IconButton>
-</Link>
-
-
-
-          <Link to="/checkout" className="header_Link">
-  <IconButton color="inherit" className="cart-icon">
-    <Badge
-      badgeContent={basket?.length}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      sx={{
-        position: 'absolute',
-        top: 8,
-        left: 20,
-        backgroundColor: '#FFAD33', // Customize badge background color
-        color: '#000000', // Customize badge text color
-        fontFamily: 'Poppins', // Customize badge font family
-        fontWeight: '600', // Customize badge font weight
-        zIndex: 1, // Ensure badge appears on top of icon
-      }}
-      badgeContentStyle={{ fontSize: '2rem' }} // Specify badge content font size
-    />
-    <ShoppingCartIcon />
-    <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Cart</span>
-  </IconButton>
-</Link>
-
-
-          {userLoggedIn? (
-          <IconButton color="inherit" onClick={logout} className="fav_cart">
-            <LogoutIcon />
-            {isSmallScreen?
-              <></>:(
-                <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>Logout</span>
-              )
-            }
-
+        <Box
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            alignItems: "center",
+            ml: 1,
+            minWidth: 0,
+          }}
+        >
+          <InputBase
+            placeholder="Search for Products, Brands and More"
+            inputProps={{ "aria-label": "search" }}
+            sx={{
+              color: "inherit",
+              backgroundColor: "white",
+              borderRadius: 1,
+              pl: 2,
+              pr: 2,
+              width: "100%",
+            }}
+          />
+          <IconButton type="submit" sx={{ p: "10px", ml: 1 }}>
+            <SearchIcon />
           </IconButton>
-          ) : (<></>)}
+        </Box>
+
+        <div className="header_nav">
+          <Link
+            to={userLoggedIn ? "/account" : "/signin"}
+            className="header_Link"
+          >
+          <IconButton color="inherit">
+                  <PersonIcon />
+            <div className="header_option">
+            
+              {isSmallScreenForUpper ? (
+                <></>
+              ) : (
+                <>
+                  <span className="header_optionLineOne">
+                    {userLoggedIn ? `Hello, ${user.displayName}` : "Hello Guest"}
+                  </span>
+                  <span className="header_optionLineTwo">
+                    {userLoggedIn ? "Your Account" : "Sign In"}
+                  </span>
+                </>
+              )}
+            </div>
+                </IconButton>
+          </Link>
+
+          <Link to="/orderhistory" className="header_Link">
+          <>
+          <IconButton color="inherit">
+                  <ShoppingBagIcon />
+            <div className="header_option">
+              {isSmallScreenForUpper ? (
+                <></>
+              ) : (
+                <>
+                  <span className="header_optionLineOne">Your</span>
+                  <span className="header_optionLineTwo">Orders</span>
+                </>
+              )}
+            </div>
+            </IconButton>
+            </>
+          </Link>
+
+          {!isSmallScreen && (
+            <>
+              <Link to="/favourites" className="header_Link">
+                <IconButton color="inherit" className="favourites-icon">
+                  <Badge
+                    badgeContent={favouriteItems?.length}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      left: 20,
+                      backgroundColor: '#FFAD33',
+                      color: '#000000',
+                      fontFamily: 'Poppins',
+                      fontWeight: '600',
+                      zIndex: 1,
+                    }}
+                    badgeContentStyle={{ fontSize: '3rem' }}
+                  />
+                  <FavoriteBorderIcon />
+                  <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Favourites</span>
+                </IconButton>
+              </Link>
+
+              <Link to="/checkout" className="header_Link">
+                <IconButton color="inherit" className="cart-icon">
+                  <Badge
+                    badgeContent={basket?.length}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      left: 20,
+                      backgroundColor: '#FFAD33',
+                      color: '#000000',
+                      fontFamily: 'Poppins',
+                      fontWeight: '600',
+                      zIndex: 1,
+                    }}
+                    badgeContentStyle={{ fontSize: '2rem' }}
+                  />
+                  <ShoppingCartIcon />
+                  <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px', marginLeft: '5px' }}>Cart</span>
+                </IconButton>
+              </Link>
+
+              {userLoggedIn && (
+                <IconButton color="inherit" onClick={logout} className="fav_cart">
+                  <LogoutIcon />
+                  <span style={{ fontWeight: '600', fontFamily: 'Poppins', fontSize: '18px' }}>Logout</span>
+                </IconButton>
+              )}
+            </>
+          )}
         </div>
-    </nav>
+      </nav>
+    </div>
   );
 };
 

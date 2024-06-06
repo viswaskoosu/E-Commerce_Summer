@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
+.LowerHeader {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Ensure it's above other content */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
+}
 .home {
   width: 100%;
   margin: 0 auto;

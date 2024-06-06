@@ -48,7 +48,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/categories/:id" element={<CategoryPage/>}/>
             <Route exact path="/" element={<Home />} />
-
+            
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />

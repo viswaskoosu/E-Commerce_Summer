@@ -7,24 +7,15 @@ import './ResponsiveSlider.css'; // Import CSS file for custom styles
 
 const ResponsiveSlider = ({ products }) => {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 5,
+    slidesToShow: 5,
+    slidesToScroll: 4,
     autoplay: false,
     responsive: [
       {
         breakpoint: 1320,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 4,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 1070,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 3,
@@ -33,16 +24,25 @@ const ResponsiveSlider = ({ products }) => {
         }
       },
       {
-        breakpoint: 820,
+        breakpoint: 1080,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 2
+          slidesToScroll: 2,
+          infinite: true,
+          dots: true
         }
       },
       {
-        breakpoint: 594,
+        breakpoint: 800,
         settings: {
           slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 564,
+        settings: {
+          slidesToShow: 1,
           slidesToScroll: 1
         }
       }

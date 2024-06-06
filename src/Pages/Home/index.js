@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductsData from '../../data'; // Assuming this contains your product data
 import Header from '../../Components/Header';
 import Carousel from '../../Components/carousel/carousel';
 import ResponsiveSlider from '../../Components/ResponsiveSlider';
-import './Home.css'; 
-import Categories from '../../categories'; 
+import './Home.css';
+import Categories from '../../categories';
 import Footer from '../../Components/Footer';
+import LowerHeader from '../../Components/Header/LowerHeader';
+
 const Home = () => {
+  const [isSmallScreen, setIsSmallScreen] = useState(true);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 600);
+    };
+    handleResize(); 
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 800);
+    };
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const groupProductsByCategory = () => {
     const groupedProducts = {};
 
@@ -38,7 +58,8 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <Footer/>
+      <Footer />
+      <div className='LowerHeader'>{isSmallScreen && <LowerHeader />}</div>
     </>
   );
 };

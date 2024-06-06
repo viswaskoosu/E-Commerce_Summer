@@ -48,8 +48,9 @@ font-size: 3rem;
 }
 
 .header_optionLineOne {
-  font-size: 12px;
+  font-size: 13px;
   color: black;
+  font-weight: 500;
 }
 
 .header_optionLineTwo {
@@ -78,4 +79,10 @@ font-size: 3rem;
 .header_basketCount {
   margin-left: 10px;
   margin-right: 10px;
+}
+.lowerHeader{
+  display: flex;
+  flex-direction: row;
+  background-color: #FFAD33; /* Adjust background color as needed */
+  justify-content: space-evenly;
 }

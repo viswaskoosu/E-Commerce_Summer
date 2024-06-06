@@ -21,7 +21,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
           image: image,
           price: price,
           rating: rating,
-          mrp:mrp,
+          mrp: mrp,
         },
       });
     } else {
@@ -34,17 +34,17 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
 
   const truncateTitle = (title, maxLength) => {
     if (!title) return ''; // Handle case where title is undefined or null
-  
+
     if (title.length > maxLength) {
       return title.substring(0, maxLength) + '...';
     }
     return title;
   };
-  
+
   const discountPercentage = Math.round(((mrp - price) * 100) / mrp);
 
   return (
-    <div className="product card">
+    <div className="card">
       <div className="card-img-data">
         <img src={image} alt={title} className="card-img" />
         <p className="price-off">({discountPercentage}% OFF)</p>
@@ -71,7 +71,6 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
           <p className="mrp">₹{mrp}</p>
         </div>
       </div>
-
     </div>
   );
 }

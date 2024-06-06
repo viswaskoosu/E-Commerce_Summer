@@ -86,3 +86,15 @@
 .shopping:active {
   transform: scale(1);
 }
+@media (max-width: 800px) {
+  .empty-list {
+    flex-direction: column;
+  }
+  .empty-img {
+    width: 250px;
+    height: 250px;
+    margin: -40px;
+    margin-top: -70px;
+  }
+  
+}
