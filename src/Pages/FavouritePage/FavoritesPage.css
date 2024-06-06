@@ -7,7 +7,22 @@
   left:-50%;
   bottom: 50%;
 }
-
+.empty-list{
+  display: flex;
+  flex-direction: row;
+}
+@media (max-width: 800px) {
+  .empty-list {
+    flex-direction: column;
+  }
+  .empty-img {
+    width: 250px;
+    height: 250px;
+    margin: -40px;
+    margin-top: -70px;
+  }
+  
+}
 .favorites .card{
   margin-left: 0px; 
   margin-top: 0px;
