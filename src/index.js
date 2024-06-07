@@ -6,15 +6,15 @@ import reportWebVitals from './reportWebVitals';
 import { StateProvider } from './Context/StateProvider';
 import reducer, { initialState } from './reducer'; // Ensure correct import
 import { getReq } from './getReq';
+import axios from 'axios'
+import Products from './data'
+// axios.post('http://localhost:4000/product/uploaddummyproducts', {products: Products})
 // Initialize localStorage for application state
 const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
 const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];
 // const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
 const savedOrders = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).orders : [];
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
-// console.log(user)
-// console.log(savedBasket,savedFavourites, savedAddresses, savedOrders)
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
