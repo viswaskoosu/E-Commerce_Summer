@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ProductsData from '../../data'; // Assuming this contains your product data
+// import ProductsData from '../../data'; // Assuming this contains your product data
 import Header from '../../Components/Header';
 import Carousel from '../../Components/carousel/carousel';
 import ResponsiveSlider from '../../Components/ResponsiveSlider';
@@ -7,9 +7,14 @@ import './Home.css';
 import Categories from '../../categories';
 import Footer from '../../Components/Footer';
 import LowerHeader from '../../Components/Header/LowerHeader';
+import { useStateValue } from "../../Context/StateProvider";
 
 const Home = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(true);
+  const [state,] = useStateValue()
+  const ProductsData = state.products
+  // console.log(state)
+  // console.log(ProductsData)
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 600);

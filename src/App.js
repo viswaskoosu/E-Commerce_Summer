@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header';
@@ -16,27 +16,39 @@ import ProductDetail from './Pages/ProductDetail';
 import AccountPage from './Pages/Account';
 import ContactInfo from './Pages/ContactInfo';
 import PaymentMethods from './Pages/PaymentMethods';
-import Products from './data';
+// import Products from './data';
 import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
 import Error from './Pages/Error';
 import { ToastContainer } from 'react-toastify';
 import CategoryPage from './Pages/CategoryPage';
-
+import LoadingPage from './Components/LoadingPage'
+import axios from 'axios'
 function App() {
-  console.log('Window width: ' + window.innerWidth + 'px');
-
+  // console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
-
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
-    dispatch({
-      type: 'SET_PRODUCTS',
-      products: Products,
-    });
+    setIsLoading(true)
+    axios.get(`${process.env.REACT_APP_API_URL}/product/fetchproducts`)
+    .then((response) => {
+      dispatch({
+        type: 'SET_PRODUCTS',
+        products: response.data,
+      });
+    } )
+    .catch(() => {
+      // window.location.replace('/error')
+      // if (!error) setError(true)
+      
+    })
+    .finally(() => {
+      setIsLoading(false)
+    })
   }, [dispatch]);
-
-  return (
+  return (isLoading? <LoadingPage/>:
+    // errors? <Error/>:
     <Router>
       <div className="app">
         <div className="main-content">

@@ -26,7 +26,7 @@ import axios from 'axios'
 import { postReq } from "../../getReq";
 const LowerHeader = () => {  
     const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
-  console.log(user)
+  // console.log(user)
   const [state, dispatch] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {

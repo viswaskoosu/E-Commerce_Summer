@@ -10,7 +10,7 @@ function Error() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="main">
         <div className="error-image">
           <img src={error} alt="error" />
