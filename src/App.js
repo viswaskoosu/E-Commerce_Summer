@@ -28,11 +28,8 @@ import axios from 'axios'
 function App() {
   // console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
-  const [isLoading, setIsLoading] = useState(false)
-  console.log('app')
-
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
-    console.log('app')
     if (window.location.pathname==='/error') return
     setIsLoading(true)
     axios.get(`${process.env.REACT_APP_API_URL}/product/fetchproducts`)
@@ -41,7 +38,6 @@ function App() {
         type: 'SET_PRODUCTS',
         products: response.data,
       });
-      console.log(1)
     } )
     .catch(() => {
       window.location.replace('/error')

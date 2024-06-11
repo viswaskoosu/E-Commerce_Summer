@@ -11,7 +11,7 @@ const FavouritesPage = () => {
   const reversedFavourites = favouriteItems
     ? [...favouriteItems].reverse()
     : [];
-  console.log(products);
+  // console.log(products);
   const truncateTitle = (title, maxLength) => {
     if (!title) return "";
     if (title.length > maxLength) {
