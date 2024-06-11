@@ -1,19 +1,21 @@
-import React from 'react';
-import { useStateValue } from '../../Context/StateProvider';
-import Product from '../../Components/Product';
-import './FavoritesPage.css';
-import { Link } from 'react-router-dom';
-import image from './empty.png';
-import Header from '../../Components/Header';
+import React from "react";
+import { useStateValue } from "../../Context/StateProvider";
+import Product from "../../Components/Product";
+import "./FavoritesPage.css";
+import { Link } from "react-router-dom";
+import image from "./empty.png";
+import Header from "../../Components/Header";
 
 const FavouritesPage = () => {
-  const [{ favouriteItems }] = useStateValue();
-  const reversedFavourites = favouriteItems ? [...favouriteItems].reverse() : [];
-
+  const [{ favouriteItems, products }] = useStateValue();
+  const reversedFavourites = favouriteItems
+    ? [...favouriteItems].reverse()
+    : [];
+  // console.log(products);
   const truncateTitle = (title, maxLength) => {
-    if (!title) return '';
+    if (!title) return "";
     if (title.length > maxLength) {
-      return title.substring(0, maxLength) + '...';
+      return title.substring(0, maxLength) + "...";
     }
     return title;
   };
@@ -21,11 +23,11 @@ const FavouritesPage = () => {
   return (
     <>
       <Header />
-      <div className='favoritesPage'>
+      <div className="favoritesPage">
         <p className="wishlist-head">Your Favorites</p>
         {reversedFavourites.length === 0 ? (
           <div className="empty-list">
-            <img src={image} className="empty-img" alt='' />
+            <img src={image} className="empty-img" alt="" />
             <div className="empty-text">
               <p className="empty-head">It's empty here!</p>
               <p className="empty-desc">
@@ -39,22 +41,27 @@ const FavouritesPage = () => {
             </div>
           </div>
         ) : (
-          <div className='favoritesPage_products'>
-            {reversedFavourites.map(item => (
-              <div key={item.id} className="each_card">
-                <Product
-                  id={item.id}
-                  title={truncateTitle(item.title, 25)}
-                  image={item.image}
-                  price={item.price}
-                  rating={item.rating}
-                  mrp={item.mrp}
-                  category={item.category}
-                  reviews={item.reviews}
-                  className="favorites"
-                />
-              </div>
-            ))}
+          <div className="favoritesPage_products">
+            {reversedFavourites.map((item) => {
+               const product = products.find((obj) => obj.id === item);
+              {/* console.log(product); */}
+              if (!product) {return null;}
+               return (
+                <div key={product.id} className="each_card">
+                  <Product
+                    id={product.id}
+                    title={truncateTitle(product.title, 25)}
+                    image={product.images[0]}
+                    price={product.price}
+                    rating={product.rating}
+                    mrp={product.mrp}
+                    category={product.category}
+                    reviews={product.reviews}
+                    className="favorites"
+                  />
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

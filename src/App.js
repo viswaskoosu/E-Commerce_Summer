@@ -27,7 +27,7 @@ import LoadingPage from './Components/LoadingPage'
 import axios from 'axios'
 function App() {
   const [, dispatch] = useStateValue();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     if (window.location.pathname==='/error') return
     setIsLoading(true)
