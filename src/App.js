@@ -37,7 +37,7 @@ function App() {
         type: 'SET_PRODUCTS',
         products: response.data,
       });
-      console.log(response.data)
+      // console.log(response.data)
     } )
     .catch(() => {
       window.location.replace('/error')

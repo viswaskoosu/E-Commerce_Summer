@@ -15,14 +15,14 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
     if (!isInFavourites) {
       dispatch({
         type: 'ADD_TO_FAVOURITES',
-        item: 
+        item: {
            id,
-          // title: title,
-          // image: image,
-          // price: price,
-          // rating: rating,
-          // mrp: mrp,
-        // },
+          title: title,
+          image: image,
+          price: price,
+          rating: rating,
+          mrp: mrp,
+        },
       });
     } else {
       dispatch({
