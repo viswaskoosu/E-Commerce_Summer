@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'; // Import Link for client-side routing
 
 function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
-
+  // console.log(id)
   const removeFromBasket = () => {
     dispatch({
       type: 'REMOVE_FROM_BASKET',

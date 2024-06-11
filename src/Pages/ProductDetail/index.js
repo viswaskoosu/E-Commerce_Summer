@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
 import { useStateValue } from '../../Context/StateProvider';
 import { Products } from '../../data';
@@ -8,62 +8,84 @@ import Header from '../../Components/Header';
 import { Stack, Modal, Box } from '@mui/material';
 
 function ProductDetail() {
+  const navigate = useNavigate()
   const { id } = useParams();
-  const [{ user, favouriteItems }, dispatch] = useStateValue();
+  const [{ user, favouriteItems, products, basket }, dispatch] = useStateValue();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [open, setOpen] = useState(false);
-
   useEffect(() => {
-    const fetchedProduct = Products.find(
-      (product) => product.id === parseInt(id)
+    const fetchedProduct = products.find(
+      // (product) => product.id === parseInt(id)
+      (product) => product.id === id
+
     );
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      const isInBasket = user && user.basket && user.basket.some(item => item.id === parseInt(id));
-      setIsInBasket(isInBasket);
-      setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
+      setIsInBasket(basket && basket.some(item => item.id === id));
+      setIsInFavourites(favouriteItems.some(item => item === id));
     }
   }, [id, user, favouriteItems]);
 
   const addToBasket = () => {
+    // console.log(id)
     dispatch({
       type: "ADD_TO_BASKET",
-      item: {
-        id: product.id,
-        title: product.title,
-        image: product.images[0], // Use the first image as the product image in the basket
-        price: product.price,
-        rating: product.rating,
-        quantity: quantity,
-        mrp: product.mrp,
-        reviews: product.reviews,
-      },
+      // item: {
+      //   id: product.id,
+      //   title: product.title,
+      //   image: product.images[0], // Use the first image as the product image in the basket
+      //   price: product.price,
+      //   rating: product.rating,
+      //   quantity: quantity,
+      //   mrp: product.mrp,
+      //   reviews: product.reviews,
+      // },
+      id: id,
+      quantity: quantity
     });
     setIsInBasket(true);
   };
-
+  const goToBasket = () => {
+    // dispatch({
+    //   type: "REMOVE_FROM_BASKET",
+    //   id: id
+    // })
+    // setIsInBasket(false)
+    navigate('/checkout')
+  }
   const increaseQuantity = () => {
+    dispatch({
+      type: 'INCREASE_QUANTITY',
+      id: id,
+    });
     setQuantity(quantity + 1);
   };
 
   const decreaseQuantity = () => {
-    if (quantity > 1) {
+    dispatch({
+      type: 'DECREASE_QUANTITY',
+      id: id,
+    });
+    if (quantity > 0) {
       setQuantity(quantity - 1);
     }
   };
 
   const addToFavourites = () => {
+    // console.log(isInFavourites)
     dispatch({
       type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      id: product.id,
-      item: {
-        ...product,
-      },
+      // id: product.id,
+      // item: {
+      //   ...product,
+      // },
+      item: product.id
     });
+    // console.log(isInFavourites, "hi")
     setIsInFavourites(!isInFavourites);
   };
 
@@ -106,6 +128,7 @@ function ProductDetail() {
 
   return (
     <>
+    {/* {isInFavourites.toString()} */}
       <Header />
       <div className="product_description">
         <div className="productDetail">
@@ -195,9 +218,9 @@ function ProductDetail() {
               </div>
                 <button
                   className="productDetail_addToBasketButton"
-                  onClick={addToBasket}
+                  onClick={!isInBasket? addToBasket: goToBasket}
                 >
-                  Add to Basket
+                  {!isInBasket? "Add to Basket": "Go to Basket"}
                 </button>
             </div>
           </div>
