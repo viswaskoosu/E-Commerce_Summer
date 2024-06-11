@@ -28,7 +28,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
     } else {
       dispatch({
         type: 'REMOVE_FROM_FAVOURITES',
-        item: id,
+        id: id,
       });
     }
   };
