@@ -9,39 +9,41 @@ import { Stack, Modal, Box } from '@mui/material';
 
 function ProductDetail() {
   const { id } = useParams();
-  const [{ user, favouriteItems }, dispatch] = useStateValue();
+  const [{ user, favouriteItems, products }, dispatch] = useStateValue();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [open, setOpen] = useState(false);
-
   useEffect(() => {
-    const fetchedProduct = Products.find(
-      (product) => product.id === parseInt(id)
+    const fetchedProduct = products.find(
+      // (product) => product.id === parseInt(id)
+      (product) => product.id === id
+
     );
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      const isInBasket = user && user.basket && user.basket.some(item => item.id === parseInt(id));
+      const isInBasket = user && user.basket && user.basket.some(item => item.id === id);
       setIsInBasket(isInBasket);
-      setIsInFavourites(favouriteItems.some(item => item.id === parseInt(id)));
+      setIsInFavourites(favouriteItems.some(item => item === id));
     }
   }, [id, user, favouriteItems]);
 
   const addToBasket = () => {
     dispatch({
       type: "ADD_TO_BASKET",
-      item: {
-        id: product.id,
-        title: product.title,
-        image: product.images[0], // Use the first image as the product image in the basket
-        price: product.price,
-        rating: product.rating,
-        quantity: quantity,
-        mrp: product.mrp,
-        reviews: product.reviews,
-      },
+      // item: {
+      //   id: product.id,
+      //   title: product.title,
+      //   image: product.images[0], // Use the first image as the product image in the basket
+      //   price: product.price,
+      //   rating: product.rating,
+      //   quantity: quantity,
+      //   mrp: product.mrp,
+      //   reviews: product.reviews,
+      // },
+      item: product.id
     });
     setIsInBasket(true);
   };
@@ -57,13 +59,16 @@ function ProductDetail() {
   };
 
   const addToFavourites = () => {
+    // console.log(isInFavourites)
     dispatch({
       type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      id: product.id,
-      item: {
-        ...product,
-      },
+      // id: product.id,
+      // item: {
+      //   ...product,
+      // },
+      item: product.id
     });
+    // console.log(isInFavourites, "hi")
     setIsInFavourites(!isInFavourites);
   };
 
@@ -106,6 +111,7 @@ function ProductDetail() {
 
   return (
     <>
+    {/* {isInFavourites.toString()} */}
       <Header />
       <div className="product_description">
         <div className="productDetail">

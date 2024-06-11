@@ -9,48 +9,49 @@ export const initialState = {
       title: "Electric Drill Machine 13mm",
     },
   ],
-    basket: [], 
-    user: {
-    displayName: 'Viswas',
-    email: 'viswas@example.com',
-    password: 'viswas',
-    photoURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVI8wwjmbk07RHjMaoxGcLQw5kRfAizckn7g&s',
-    gender: 'Male',
+  basket: [],
+  user: {
+    displayName: "Viswas",
+    email: "viswas@example.com",
+    password: "viswas",
+    photoURL:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVI8wwjmbk07RHjMaoxGcLQw5kRfAizckn7g&s",
+    gender: "Male",
     addresses: [
       {
-        id: '1',
-        name: 'Viswas',
-        street: '123 Main Street',
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        zip: '560001',
-        country: 'India',
+        id: "1",
+        name: "Viswas",
+        street: "123 Main Street",
+        city: "Bengaluru",
+        state: "Karnataka",
+        zip: "560001",
+        country: "India",
         isDefault: true,
       },
       {
-        id: '2',
-        name: 'Viswas',
-        street: '456 Park Avenue',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        zip: '400001',
-        country: 'India',
+        id: "2",
+        name: "Viswas",
+        street: "456 Park Avenue",
+        city: "Mumbai",
+        state: "Maharashtra",
+        zip: "400001",
+        country: "India",
         isDefault: false,
       },
     ],
-    phone: '+91 9876543210',
+    phone: "+91 9876543210",
     paymentMethods: [
       {
-        id: '1',
-        type: 'Credit Card',
-        last4: '1234',
-        expiration: '12/25',
+        id: "1",
+        type: "Credit Card",
+        last4: "1234",
+        expiration: "12/25",
       },
       {
-        id: '2',
-        type: 'UPI',
-        last4: '9876',
-        expiration: 'N/A',
+        id: "2",
+        type: "UPI",
+        last4: "9876",
+        expiration: "N/A",
       },
     ],
     isAdmin: false,
@@ -62,106 +63,127 @@ export const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'SET_USER':
+    case "SET_USER":
       // console.log("KKKKKK",action.user)
       return {
         ...state,
-        user: action.user
+        user: action.user,
       };
-    case 'SET_PRODUCTS':
+    case "SET_PRODUCTS":
       return {
         ...state,
         products: action.products,
       };
-    case 'SET_BASKET':
+    case "SET_BASKET":
       return {
         ...state,
-        basket: action.basket
-      }
-    case 'SET_FAVOURITE_ITEMS':
-      return {
-        ...state, 
-        favouriteItems: action.favouriteItems
-      }
-    case 'SET_ORDERS':
+        basket: action.basket,
+      };
+    case "SET_FAVOURITE_ITEMS":
       return {
         ...state,
-        orders: action.orders
-      }
-    case 'ADD_TO_BASKET':
-      const existingItemIndex = state.basket.findIndex(item => item.id === action.item.id);
+        favouriteItems: action.favouriteItems,
+      };
+    case "SET_ORDERS":
+      return {
+        ...state,
+        orders: action.orders,
+      };
+    case "ADD_TO_BASKET":
+      const existingItemIndex = state.basket.findIndex(
+        (item) => item.id === action.item.id
+      );
       if (existingItemIndex !== -1) {
         const updatedBasket = state.basket.map((item, index) =>
-          index === existingItemIndex ? { ...item, quantity: item.quantity + 1 } : item
+          index === existingItemIndex
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
-        localStorage.setItem('basket', JSON.stringify(updatedBasket));
+        localStorage.setItem("basket", JSON.stringify(updatedBasket));
         return {
           ...state,
           basket: updatedBasket,
         };
       } else {
-        localStorage.setItem('basket', JSON.stringify([...state.basket, action.item]));
+        localStorage.setItem(
+          "basket",
+          JSON.stringify([...state.basket, action.item])
+        );
         return {
           ...state,
           basket: [...state.basket, action.item],
         };
       }
-    
 
-    case 'REMOVE_FROM_BASKET':
-      const updatedBasket = state.basket.filter(item => item.id !== action.id);
-      localStorage.setItem('basket', JSON.stringify(updatedBasket));
+    case "REMOVE_FROM_BASKET":
+      const updatedBasket = state.basket.filter(
+        (item) => item.id !== action.id
+      );
+      localStorage.setItem("basket", JSON.stringify(updatedBasket));
       return {
         ...state,
         basket: updatedBasket,
       };
-    
 
-    case 'INCREASE_QUANTITY':
-      const increasedBasket = state.basket.map(item =>
+    case "INCREASE_QUANTITY":
+      const increasedBasket = state.basket.map((item) =>
         item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
       );
-      localStorage.setItem('basket', JSON.stringify(increasedBasket));
+      localStorage.setItem("basket", JSON.stringify(increasedBasket));
       return {
         ...state,
-        basket: increasedBasket
+        basket: increasedBasket,
       };
 
-    case 'ADD_TO_FAVOURITES':
+    case "ADD_TO_FAVOURITES":
       const newFavourites = [...state.favouriteItems, action.item];
-      localStorage.setItem('favouriteItems', JSON.stringify(newFavourites));
+      const newUser = state.user;
+      // console.log(state)
+      newUser.favouriteItems = newFavourites;
+      localStorage.setItem("user", JSON.stringify(newUser));
       return {
         ...state,
-        favouriteItems: [...state.favouriteItems, action.item],
+        favouriteItems: newFavourites,
       };
 
-    case 'REMOVE_FROM_FAVOURITES':
-      const updatedFavourites = state.favouriteItems.filter(item => item.id !== action.id);
-      localStorage.setItem('favouriteItems', JSON.stringify(updatedFavourites));
+    case "REMOVE_FROM_FAVOURITES": {
+      // const updatedFavourites = state.favouriteItems.filter(item => item.id !== action.id);
+      const updatedFavourites = state.favouriteItems.filter(
+        (item) => item !== action.item
+      );
+      const newUser = state.user;
+      newUser.favouriteItems = updatedFavourites;
+      localStorage.setItem("user", JSON.stringify(newUser));
       return {
         ...state,
-        favouriteItems: state.favouriteItems.filter(item => item.id !== action.id)
+        favouriteItems: updatedFavourites,
       };
+    }
 
-    case 'DECREASE_QUANTITY':
+    case "DECREASE_QUANTITY":
       return {
         ...state,
-        basket: state.basket.map(item =>
-          item.id === action.id ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
-        )
+        basket: state.basket.map((item) =>
+          item.id === action.id
+            ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
+            : item
+        ),
       };
-    case 'EMPTY_BASKET':
+    case "EMPTY_BASKET":
       return {
         ...state,
         basket: [],
       };
-    case 'ADD_ADDRESS':
+    case "ADD_ADDRESS":
       const newAddresses = [...state.user.addresses, action.address];
       // localStorage.setItem('addresses', JSON.stringify(newAddresses));
-      localStorage.setItem('user', JSON.stringify({
-        ...state.user,
-        addresses: newAddresses,
-      }))
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...state.user,
+          addresses: newAddresses,
+        })
+      );
       return {
         ...state,
         user: {
@@ -170,15 +192,18 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'EDIT_ADDRESS':
-      const updatedAddresses = state.user.addresses.map(address =>
+    case "EDIT_ADDRESS":
+      const updatedAddresses = state.user.addresses.map((address) =>
         address.id === action.address.id ? action.address : address
       );
       // localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
-      localStorage.setItem('user', JSON.stringify({
-        ...state.user,
-        addresses: updatedAddresses,
-      }))
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...state.user,
+          addresses: updatedAddresses,
+        })
+      );
       return {
         ...state,
         user: {
@@ -187,39 +212,48 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'DELETE_ADDRESS':
-      const currentAddress = (state.user.currentAddress!==-1 && state.user.addresses[state.user.currentAddress].id===action.addressId) ? -1 : state.user.currentAddress;
-      const filteredAddresses = state.user.addresses.filter(address => address.id !== action.addressId);
-      localStorage.setItem('user', JSON.stringify({
-        ...state.user,
-        addresses: filteredAddresses,
-      }))
+    case "DELETE_ADDRESS":
+      const currentAddress =
+        state.user.currentAddress !== -1 &&
+        state.user.addresses[state.user.currentAddress].id === action.addressId
+          ? -1
+          : state.user.currentAddress;
+      const filteredAddresses = state.user.addresses.filter(
+        (address) => address.id !== action.addressId
+      );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...state.user,
+          addresses: filteredAddresses,
+        })
+      );
       return {
         ...state,
         user: {
           ...state.user,
           addresses: filteredAddresses,
-          currentAddress: currentAddress
+          currentAddress: currentAddress,
         },
       };
 
     // Order Actions
-    case 'ADD_ORDER':
+    case "ADD_ORDER":
       const newOrders = [...state.orders, action.order];
-      localStorage.setItem('orders', JSON.stringify(newOrders));
+      localStorage.setItem("orders", JSON.stringify(newOrders));
       return {
         ...state,
         orders: newOrders,
       };
 
-    case 'COMPLETE_ORDER':
+    case "COMPLETE_ORDER":
       return {
         ...state,
         orders: [...state.orders, action.order],
       };
 
     // User Actions
-    case 'UPDATE_USER_INFO':
+    case "UPDATE_USER_INFO":
       return {
         ...state,
         user: {
@@ -228,23 +262,22 @@ const reducer = (state, action) => {
         },
       };
 
-
     // Default case
-    case 'USER_LOGIN':
+    case "USER_LOGIN":
       // console.log("login")
       return {
         ...state,
-        userLoggedIn: true
-      }
-    case 'USER_LOGOUT':
+        userLoggedIn: true,
+      };
+    case "USER_LOGOUT":
       return {
         ...state,
         basket: [],
         orders: [],
         favouriteItems: [],
         user: {},
-        userLoggedIn: false
-      }
+        userLoggedIn: false,
+      };
     default:
       return state;
   }
@@ -252,5 +285,5 @@ const reducer = (state, action) => {
 
 export default reducer;
 
-export const getBasketTotal = basket =>
+export const getBasketTotal = (basket) =>
   basket?.reduce((amount, item) => item.price * item.quantity + amount, 0);

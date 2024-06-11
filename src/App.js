@@ -30,6 +30,7 @@ function App() {
   const [, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
+    if (window.location.pathname==='/error') return
     setIsLoading(true)
     axios.get(`${process.env.REACT_APP_API_URL}/product/fetchproducts`)
     .then((response) => {
@@ -39,7 +40,7 @@ function App() {
       });
     } )
     .catch(() => {
-      // window.location.replace('/error')
+      window.location.replace('/error')
       // if (!error) setError(true)
       
     })
