@@ -91,27 +91,28 @@ const reducer = (state, action) => {
       };
     case "ADD_TO_BASKET":
       const existingItemIndex = state.basket.findIndex(
-        (item) => item.id === action.item.id
+        (item) => item.id === action.id
       );
       if (existingItemIndex !== -1) {
-        const updatedBasket = state.basket.map((item, index) =>
-          index === existingItemIndex
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-        localStorage.setItem("basket", JSON.stringify(updatedBasket));
-        return {
-          ...state,
-          basket: updatedBasket,
-        };
-      } else {
+        // const updatedBasket = state.basket.map((item, index) =>
+        //   index === existingItemIndex
+        //     ? { ...item, quantity: item.quantity + 1 }
+        //     : item
+        // );
+        // localStorage.setItem("basket", JSON.stringify(updatedBasket));
+        // return {
+        //   ...state,
+        //   basket: updatedBasket,
+        // };
+      } 
+      else {
         localStorage.setItem(
           "basket",
-          JSON.stringify([...state.basket, action.item])
+          JSON.stringify([...state.basket, { id: action.id, quantity: action.quantity }])
         );
         return {
           ...state,
-          basket: [...state.basket, action.item],
+          basket: [...state.basket, { id: action.id, quantity: action.quantity }],
         };
       }
 
@@ -161,6 +162,12 @@ const reducer = (state, action) => {
     }
 
     case "DECREASE_QUANTITY":
+      const decreasedBasket = state.basket.map((item) =>
+        item.id === action.id
+          ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
+          : item
+      );
+      localStorage.setItem("basket", JSON.stringify(decreasedBasket));
       return {
         ...state,
         basket: state.basket.map((item) =>
