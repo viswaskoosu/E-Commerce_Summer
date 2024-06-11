@@ -48,13 +48,13 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
       }
       dispatch({
         type: 'ADD_TO_FAVOURITES',
-        item: {
+        item: 
           id,
-          title,
-          image,
-          price,
-          rating,
-        },
+          // title,
+          // image,
+          // price,
+          // rating,
+        // },
       });
     }
   };

@@ -25,7 +25,9 @@ function ProductDetail() {
     );
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      setIsInBasket(basket && basket.some(item => item.id === id));
+      const i = basket.find(obj => obj.id === id)
+      setQuantity(i? i.quantity: 0)
+      setIsInBasket(i? true: false);
       setIsInFavourites(favouriteItems.some(item => item === id));
     }
   }, [id, user, favouriteItems]);
