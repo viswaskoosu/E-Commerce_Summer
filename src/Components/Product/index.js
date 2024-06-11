@@ -34,7 +34,8 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
   };
 
   const truncateTitle = (title, maxLength) => {
-    if (!title) return ''; 
+    if (!title) return ''; // Handle case where title is undefined or null
+
     if (title.length > maxLength) {
       return title.substring(0, maxLength) + '...';
     }
