@@ -137,7 +137,7 @@ const reducer = (state, action) => {
       };
 
     case "ADD_TO_FAVOURITES":
-      const newFavourites = [...state.favouriteItems, action.id];
+      const newFavourites = [...state.favouriteItems, action.item];
       const newUser = state.user;
       // console.log(state)
       newUser.favouriteItems = newFavourites;
@@ -150,7 +150,7 @@ const reducer = (state, action) => {
     case "REMOVE_FROM_FAVOURITES": {
       // const updatedFavourites = state.favouriteItems.filter(item => item.id !== action.id);
       const updatedFavourites = state.favouriteItems.filter(
-        (item) => item !== action.id
+        (item) => item !== action.item
       );
       const newUser = state.user;
       newUser.favouriteItems = updatedFavourites;
