@@ -10,8 +10,9 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
   const [{ favouriteItems }, dispatch] = useStateValue();
 
   const addToFavourites = () => {
-    const isInFavourites = favouriteItems.some(item => item.id === id);
-
+    console.log(favouriteItems)
+    const isInFavourites = favouriteItems.some(item => item === id);
+    console.log(isInFavourites)
     if (!isInFavourites) {
       dispatch({
         type: 'ADD_TO_FAVOURITES',
@@ -54,7 +55,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
         </a>
         <IconContext.Provider value={{ size: '1.5rem' }}>
           <p className="add-list" onClick={addToFavourites}>
-            {favouriteItems.some(item => item.id === id) ? <AiFillHeart /> : <AiOutlineHeart />}
+            {favouriteItems.some(item => item === id) ? <AiFillHeart /> : <AiOutlineHeart />}
           </p>
         </IconContext.Provider>
       </div>
