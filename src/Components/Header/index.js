@@ -54,11 +54,29 @@ const Header = () => {
   const renderAddress = (address) => {
     //without loading
     // postReq(setIsLoading, `/user/editaddress?request=currentaddress&address=${address.id}`)
-    return (<Box onClick={() => {postReq(setIsLoading, `/user/editaddress?request=currentaddress&address=${address.id}`)}}>
-      <Typography variant="body1">{address.name}</Typography>
-      <Typography variant="body2">{`${address.city}, ${address.zip}`}</Typography>
-    </Box>)
-  };
+    return (
+      <Box 
+        onClick={() => {
+          postReq(setIsLoading, `/user/editaddress?request=currentaddress&address=${address.id}`)
+        }} 
+        style={{ fontFamily: 'Poppins' }}
+      >
+        <Typography 
+          variant="body1" 
+          style={{ fontFamily: 'Poppins', fontWeight: 500 }}
+        >
+          {address.name.length > 8 ? address.name.substring(0, 9) + '..' : address.name}
+        </Typography>
+
+        <Typography variant="body2" style={{ fontFamily: 'Poppins', fontWeight: 500 }}>
+          {`${address.city},`}
+        </Typography>
+        <Typography variant="body2" style={{ fontFamily: 'Poppins', fontWeight: 500 }}>
+          {`${address.zip}`}
+        </Typography>
+      </Box>
+    )};
+    
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("basket");
@@ -91,37 +109,57 @@ const Header = () => {
             alt="logo"
           />
         </Link>
-
         <Box
-          sx={{ display: "flex", alignItems: "center", mr: 1, cursor: "pointer" }}
-          onClick={handleMenuOpen}
-        >
-          <LocationOnIcon />
-          {!isSmallScreenForUpper && (
-            <Typography variant="body1" sx={{ ml: 1 }}>
-              {selectedAddress
-                ? renderAddress(selectedAddress)
-                : "Select Address"}
-            </Typography>
-          )}
-        </Box>
+  sx={{ 
+    display: "flex", 
+    alignItems: "center", 
+    mr: 1, 
+    cursor: "pointer",
+    fontFamily: 'Poppins', 
+    fontWeight: 400 
+  }}
+  onClick={handleMenuOpen}
+>
+  <LocationOnIcon />
+  {!isSmallScreenForUpper && (
+    <Typography variant="body1" sx={{ ml: 1, fontFamily: 'Poppins', fontWeight: 400 }}>
+      {selectedAddress
+        ? renderAddress(selectedAddress)
+        : "Select Address"}
+    </Typography>
+  )}
+</Box>
+<Menu
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+  PaperProps={{ style: { maxHeight: "200px", width: "300px", fontFamily: 'Poppins', fontWeight: 400 } }}
+>
+  {user?.addresses?.slice(0, 3).map((address, index) => (
+    <MenuItem 
+      key={index} 
+      onClick={() => handleAddressChange(address)} 
+      style={{ fontFamily: 'Poppins', fontWeight: 400 }}
+    >
+      {renderAddress(address)}
+    </MenuItem>
+  ))}
+  {user?.addresses?.length > 3 && (
+    <MenuItem 
+      onClick={handleAddNewAddress} 
+      style={{ fontFamily: 'Poppins', fontWeight: 400 }}
+    >
+      View All Addresses
+    </MenuItem>
+  )}
+  <MenuItem 
+    onClick={handleAddNewAddress} 
+    style={{ fontFamily: 'Poppins', fontWeight: 400 }}
+  >
+    Add New Address
+  </MenuItem>
+</Menu>
 
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          PaperProps={{ style: { maxHeight: "200px", width: "300px" } }}
-        >
-          {user?.addresses?.slice(0, 3).map((address, index) => (
-            <MenuItem key={index} onClick={() => handleAddressChange(address)}>
-              {renderAddress(address)}
-            </MenuItem>
-          ))}
-          {user?.addresses?.length > 3 && (
-            <MenuItem onClick={handleAddNewAddress}>View All Addresses</MenuItem>
-          )}
-          <MenuItem onClick={handleAddNewAddress}>Add New Address</MenuItem>
-        </Menu>
 
         <Box
           sx={{
