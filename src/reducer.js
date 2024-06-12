@@ -164,7 +164,7 @@ const reducer = (state, action) => {
     case "DECREASE_QUANTITY":
       const decreasedBasket = state.basket.map((item) =>
         item.id === action.id
-          ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
+          ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
           : item
       );
       localStorage.setItem("basket", JSON.stringify(decreasedBasket));

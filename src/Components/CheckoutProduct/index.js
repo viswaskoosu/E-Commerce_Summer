@@ -60,7 +60,7 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   };
 
   const basketItem = basket.find(item => item.id === id);
-
+  
   return (
     <div className='checkoutProduct'>
       <Link to={`/product/${id}`} className='checkoutProduct_link'>
@@ -88,7 +88,7 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
         <div className="checkoutProduct_actions">
           <button className="checkoutProduct_removeButton" onClick={removeFromBasket}>Remove from Cart</button>
           <button className="checkoutProduct_favouriteButton" onClick={toggleFavourite}>
-            {favouriteItems.some(item => item.id === id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            {favouriteItems.some(item => item === id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </button>
         </div>
       </div>

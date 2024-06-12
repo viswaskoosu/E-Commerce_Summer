@@ -26,7 +26,7 @@ function ProductDetail() {
     if (fetchedProduct) {
       setProduct(fetchedProduct);
       const i = basket.find(obj => obj.id === id)
-      setQuantity(i? i.quantity: 0)
+      setQuantity(i? i.quantity: 1)
       setIsInBasket(i? true: false);
       setIsInFavourites(favouriteItems.some(item => item === id));
     }
@@ -72,7 +72,7 @@ function ProductDetail() {
       type: 'DECREASE_QUANTITY',
       id: id,
     });
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
