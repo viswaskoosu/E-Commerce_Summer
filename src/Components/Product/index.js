@@ -16,14 +16,6 @@ function  Product({ id, title, image, price, rating, category, mrp, reviews }) {
     if (!isInFavourites) {
       dispatch({
         type: 'ADD_TO_FAVOURITES',
-        // item: {
-        //   id: id,
-        //   title: title,
-        //   image: image,
-        //   price: price,
-        //   rating: rating,
-        //   mrp: mrp,
-        // },
         id: id
       });
     } else {
@@ -35,7 +27,7 @@ function  Product({ id, title, image, price, rating, category, mrp, reviews }) {
   };
 
   const truncateTitle = (title, maxLength) => {
-    if (!title) return ''; // Handle case where title is undefined or null
+    if (!title) return '';
 
     if (title.length > maxLength) {
       return title.substring(0, maxLength) + '...';

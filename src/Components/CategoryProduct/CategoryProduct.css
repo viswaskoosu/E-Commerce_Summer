@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+
+a{
+  text-decoration: none;
+}
 .category-product {
     display: flex;
     flex-direction: row;
@@ -7,11 +12,14 @@
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
+    text-decoration: none;
+    color: black;
+    height: 200px;
   }
   
   .product-image {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 200px;
+    max-height: 200px;
     margin-right: 10px;
   }
   
@@ -22,13 +30,43 @@
   .product-title {
     font-size: 16px;
     font-weight: 400;
-    margin-bottom: 5px;
-  }
+    color: black;
+    text-decoration: none;
+    border: none;
+    }
   
   .product-price {
     font-size: 18px;
     font-weight: 600;
   }
-  
+  .price-symbol{
+    top: -.75em;
+    font-size: 13px;
+    color: #0f1111;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    text-transform: none !important;
+}
+.mrp1 {
+  color: #565959;
+  font-size: 20px !important;
+    line-height: 20px !important;
+    font-family: 'Outfit', sans-serif;
+    font-weight:200;
+}
+  .mrp2{
+  color: #565959;
+    font-family: 'Outfit', sans-serif;
+    font-weight:100;
+    text-decoration: line-through;
+  }
+  .discount{
+    color: #363e3e;
+  }
+  button:hover{
+    z-index: 1;
+    scale: 1;
+  }
+
   /* Additional styles can be added for rating, reviews, etc. */
   

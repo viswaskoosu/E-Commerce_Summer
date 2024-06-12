@@ -1,0 +1,9 @@
+.category-container{
+    display: flex;
+}
+.product-list{
+    width: 100%;
+}
+.filters{
+    margin: 20px;
+}

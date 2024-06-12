@@ -33,19 +33,8 @@ function ProductDetail() {
   }, [id, user, favouriteItems]);
 
   const addToBasket = () => {
-    // console.log(id)
     dispatch({
       type: "ADD_TO_BASKET",
-      // item: {
-      //   id: product.id,
-      //   title: product.title,
-      //   image: product.images[0], // Use the first image as the product image in the basket
-      //   price: product.price,
-      //   rating: product.rating,
-      //   quantity: quantity,
-      //   mrp: product.mrp,
-      //   reviews: product.reviews,
-      // },
       id: id,
       quantity: quantity
     });
@@ -78,16 +67,10 @@ function ProductDetail() {
   };
 
   const addToFavourites = () => {
-    // console.log(isInFavourites)
     dispatch({
       type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      // id: product.id,
-      // item: {
-      //   ...product,
-      // },
       item: product.id
     });
-    // console.log(isInFavourites, "hi")
     setIsInFavourites(!isInFavourites);
   };
 
