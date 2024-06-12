@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Subtotal.css';
 
 function Subtotal() {
-    const [{ basket }, dispatch] = useStateValue();
+    const [{ basket, products }, dispatch] = useStateValue();
     const navigate = useNavigate();
 
     const placeOrder = () => {
@@ -28,7 +28,7 @@ function Subtotal() {
     };
 
     const getBasketTotal = (basket) =>
-        basket?.reduce((amount, item) => item.price * item.quantity + amount, 0);
+        basket?.reduce((amount, item) => {const itemPrice = products.find((obj) => obj.id===item.id).price;  return (itemPrice * item.quantity + amount)}, 0);
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-IN', {

@@ -9,10 +9,15 @@ import image from './emptycart.png';
 import Delivery from "./delivery.png";
 
 function Checkout() {
-  const [{ basket }] = useStateValue();
-  const uniqueItems = [
-    ...new Map(basket.map((item) => [item.id, item])).values(),
-  ];
+  const [{ basket, products }] = useStateValue();
+  // const uniqueItems = [
+  //   ...new Map(basket.map((item) => [item.id, item])).values(),
+  // ];
+  const uniqueItems = basket.map((item) => {return {id:item.id, quantity: item.quantity}})
+  for (let i = 0; i<uniqueItems.length; ++i){
+    uniqueItems[i] = {...uniqueItems[i], ...products.find((obj) => obj.id===uniqueItems[i].id)}
+  }
+  console.log(uniqueItems)
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -63,15 +68,16 @@ function Checkout() {
               <h2 className="checkout_title">Your Cart</h2>
               <div  className="lower">
               <div className="checkout-product">
-              {uniqueItems.map((item) => (
+              {uniqueItems.map((item) =>(
                   <CheckoutProduct
                     key={item.id}
                     id={item.id}
                     title={item.title}
-                    image={item.image}
+                    image={item.images[0]}
                     price={item.price}
                     rating={item.rating}
                   />
+              
                 ))}
                 </div>
                 <div className="subtotal">
