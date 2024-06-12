@@ -2,6 +2,13 @@
 .favouritesPage .card {
   margin: 0; 
 }
+.checkout_left{
+  align-self: center;
+  margin: auto;
+}
+.wishlist-head{
+  font-size: larger;
+}
 .each_card .view {
   right: 100%;
   left:-50%;
@@ -10,6 +17,8 @@
 .empty-list{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-self: center;
 }
 @media (max-width: 800px) {
   .empty-list {

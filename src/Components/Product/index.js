@@ -6,7 +6,7 @@ import { IconContext } from 'react-icons';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
-function Product({ id, title, image, price, rating, category, mrp, reviews }) {
+function  Product({ id, title, image, price, rating, category, mrp, reviews }) {
   const [{ favouriteItems }, dispatch] = useStateValue();
 
   const addToFavourites = () => {

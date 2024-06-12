@@ -15,7 +15,8 @@
   background-color: #f6f5f5;
   margin: 7px;
   display: flex;
-  flex-direction: column; /* Change to column for better mobile layout */
+  flex-direction: row; 
+  flex-wrap: wrap;
 }
 
 .checkout_title {
@@ -152,7 +153,8 @@
 
   .poster-area {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     padding-left: 20px;
     padding-right: 20px;
