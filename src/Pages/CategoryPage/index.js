@@ -10,16 +10,10 @@ const CategoryPage = () => {
   const { id } = useParams();
   const [{ products: ProductsData }] = useStateValue();
   const [products, setProducts] = useState([]);
-<<<<<<< HEAD
-  const [{ products: ProductsData }] = useStateValue(); 
-  
-=======
   const [sortBy, setSortBy] = useState('rating-high'); // Default sort criteria
   const [filters, setFilters] = useState({
     discount: []
   });
-
->>>>>>> a52e825374baa66fd2b3e1db1e94d930158a8cdc
   useEffect(() => {
     const fetchProducts = () => {
       let filteredProducts = ProductsData.filter(product => product.category === Categories[id]);
