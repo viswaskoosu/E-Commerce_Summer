@@ -52,7 +52,7 @@ const ResponsiveSlider = ({ products }) => {
   if (!Array.isArray(products)) {
     return null;
   }
-  console.log(products)
+  // console.log(products)
   return (
     <div className="slider-container">
       <Slider {...settings}>

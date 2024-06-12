@@ -10,7 +10,7 @@ const CategoryPage = () => {
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [{ products: ProductsData }] = useStateValue(); 
-
+  
   useEffect(() => {
     const fetchProducts = () => {
       const filteredProducts = ProductsData.filter(product => product.category === Categories[id]);
