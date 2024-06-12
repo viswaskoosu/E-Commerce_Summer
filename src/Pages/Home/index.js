@@ -1,5 +1,6 @@
+// Home.js
 import React, { useState, useEffect } from 'react';
-// import ProductsData from '../../data'; // Assuming this contains your product data
+import { useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header';
 import Carousel from '../../Components/carousel/carousel';
 import ResponsiveSlider from '../../Components/ResponsiveSlider';
@@ -8,26 +9,16 @@ import Categories from '../../categories';
 import Footer from '../../Components/Footer';
 import LowerHeader from '../../Components/Header/LowerHeader';
 import { useStateValue } from "../../Context/StateProvider";
-
 const Home = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(true);
-  const [state,] = useStateValue()
-  const ProductsData = state.products
-  // console.log(state)
-  // console.log(ProductsData)
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 600);
-    };
-    handleResize(); 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const [state] = useStateValue();
+  const ProductsData = state.products;
+  const navigate = useNavigate();
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 1020);
     };
-    handleResize(); // Initial check
+    handleResize(); 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -49,14 +40,30 @@ const Home = () => {
 
   const groupedProducts = groupProductsByCategory();
 
+  const handleCategorySelect = (event) => {
+    const selectedCategoryId = event.target.value;
+    navigate(`/categories/${selectedCategoryId}`);
+  };
+
   return (
     <>
       <Header />
       <div className="home">
         <Carousel />
+        <div className='category-select'>
+          <label htmlFor="category-select">Select a category:</label>
+          <select id="category-select" onChange={handleCategorySelect}>
+            <option value="">--Select Category--</option>
+            {Categories.map((category, index) => (
+              <option key={index} value={index}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className='products'>
-          {Categories.map(category => (
-            <div key={category}>
+          {Categories.map((category, index) => (
+            <div key={index}>
               <h2>{category}</h2>
               <ResponsiveSlider products={groupedProducts[category]} />
             </div>

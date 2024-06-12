@@ -2,10 +2,6 @@
 .favouritesPage .card {
   margin: 0; 
 }
-.checkout_left{
-  align-self: center;
-  margin: auto;
-}
 .wishlist-head{
   font-size: larger;
 }
@@ -18,7 +14,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-self: center;
+  
 }
 @media (max-width: 800px) {
   .empty-list {
