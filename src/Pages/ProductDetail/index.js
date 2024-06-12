@@ -52,6 +52,7 @@ function ProductDetail() {
         if (error.response && error.response.data && error.response.data.error) toast.error(error.response.data.error)
         else toast.error('Error contacting server')
     })
+
   };
   const goToBasket = () => {
     // dispatch({
@@ -80,16 +81,10 @@ function ProductDetail() {
   };
 
   const addToFavourites = () => {
-    // console.log(isInFavourites)
     dispatch({
       type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      // id: product.id,
-      // item: {
-      //   ...product,
-      // },
-      item: product.id,
+      item: product.id
     });
-    // console.log(isInFavourites, "hi")
     setIsInFavourites(!isInFavourites);
   };
 
