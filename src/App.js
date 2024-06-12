@@ -26,7 +26,6 @@ import CategoryPage from './Pages/CategoryPage';
 import LoadingPage from './Components/LoadingPage'
 import axios from 'axios'
 function App() {
-  // console.log('Window width: ' + window.innerWidth + 'px');
   const [, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -38,6 +37,7 @@ function App() {
         type: 'SET_PRODUCTS',
         products: response.data,
       });
+      // console.log(response.data)
     } )
     .catch(() => {
       window.location.replace('/error')

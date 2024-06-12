@@ -136,7 +136,7 @@ const reducer = (state, action) => {
         basket: increasedBasket,
       };
 
-    case "ADD_TO_FAVOURITES":
+      case "ADD_TO_FAVOURITES":
       const newFavourites = [...state.favouriteItems, action.id];
       const newUser = state.user;
       // console.log(state)
