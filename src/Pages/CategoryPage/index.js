@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Categories from '../../categories';
+import Categories from '../../Categories/categories';
 import './CategoryPage.css';
 import Header from '../../Components/Header';
 import CategoryProduct from '../../Components/CategoryProduct';
@@ -9,25 +9,20 @@ import { useStateValue } from '../../Context/StateProvider';
 const CategoryPage = () => {
   const { id } = useParams();
   const [{ products: ProductsData }] = useStateValue();
-  
-  // Function to calculate max price for the category
+  const [sortBy, setSortBy] = useState('rating-high');
   const getMaxPriceForCategory = () => {
     const categoryProducts = ProductsData.filter(product => product.category === Categories[id]);
     const maxPrice = Math.max(...categoryProducts.map(product => product.price));
     const roundedMaxPrice = Math.ceil(maxPrice / 100) * 100;
     return roundedMaxPrice;
   };
-
-  // State hooks
   const [products, setProducts] = useState([]);
-  const [sortBy, setSortBy] = useState('rating-high');
   const [filters, setFilters] = useState({
     discount: [],
     price: [0, getMaxPriceForCategory()]
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Effect hook for handling window resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -37,7 +32,6 @@ const CategoryPage = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Effect hook for fetching products and applying filters
   useEffect(() => {
     const fetchProducts = () => {
       let filteredProducts = ProductsData.filter(product => product.category === Categories[id]);
@@ -78,37 +72,34 @@ const CategoryPage = () => {
     };
 
     fetchProducts();
-  }, [id, ProductsData, sortBy, filters]); // Dependency array for useEffect
+  }, [id, ProductsData, sortBy, filters]); 
 
-  // Function to handle filter changes
   const handleFilterChange = (filterType, value) => {
     let newFilters = { ...filters };
     newFilters[filterType] = value;
     setFilters(newFilters);
   };
 
-  // Function to calculate discount percentage
   const getDiscountPercentage = (price, mrp) => {
     const discount = ((mrp - price) / mrp) * 100;
     return Math.round(discount);
   };
-
-  // JSX structure
   return (
     <div className='category-page'>
       <Header />
       <div className="category-container">
         {isMobile ? (
           <div className="mobile-filters">
-          <ul className="sort_by_buttons">
-  <li><button onClick={() => setSortBy('rating-high')}>Highest Rating</button></li>
-  <li><button onClick={() => setSortBy('price-high')}>Price High to Low</button></li>
-  <li><button onClick={() => setSortBy('price-low')}>Price Low to High</button></li>
-  <li><button onClick={() => setSortBy('reviews-high')}>Most Reviews</button></li>
-  <li><button onClick={() => setSortBy('reviews-low')}>Least Reviews</button></li>
-  <li><button onClick={() => setSortBy('discount-high')}>Discount High to Low</button></li>
-  <li><button onClick={() => setSortBy('discount-low')}>Discount Low to High</button></li>
-</ul>
+          <select className="sort_by_buttons" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="rating-high" className={`${sortBy === 'rating-high' ? 'active' : ''}`}>Highest Rating</option>
+            <option value="price-high" className={`${sortBy === 'price-high' ? 'active' : ''}`}>Price High to Low</option>
+            <option value="price-low" className={`${sortBy === 'price-low' ? 'active' : ''}`}>Price Low to High</option>
+            <option value="reviews-high" className={`${sortBy === 'reviews-high' ? 'active' : ''}`}>Most Reviews</option>
+            <option value="reviews-low" className={`${sortBy === 'reviews-low' ? 'active' : ''}`}>Least Reviews</option>
+            <option value="discount-high" className={`${sortBy === 'discount-high' ? 'active' : ''}`}>Discount High to Low</option>
+            <option value="discount-low" className={`${sortBy === 'discount-low' ? 'active' : ''}`}>Discount Low to High</option>
+          </select>
+
 
             <select onChange={(e) => handleFilterChange('Discount', parseInt(e.target.value))}>
               <option value="">Filter by Discount</option>
@@ -123,13 +114,14 @@ const CategoryPage = () => {
             <div>
               <h3>Sort By</h3>
               <ul className="sort_by_buttons">
-                <li><button onClick={() => setSortBy('rating-high')}>Highest Rating</button></li>
-                <li><button onClick={() => setSortBy('price-high')}>Price High to Low</button></li>
-                <li><button onClick={() => setSortBy('price-low')}>Price Low to High</button></li>
-                <li><button onClick={() => setSortBy('reviews-high')}>Most Reviews</button></li>
-                <li><button onClick={() => setSortBy('reviews-low')}>Least Reviews</button></li>
-                <li><button onClick={() => setSortBy('discount-high')}>Discount High to Low</button></li>
-                <li><button onClick={() => setSortBy('discount-low')}>Discount Low to High</button></li>
+              <li><button className={`${sortBy === 'rating-high' ? 'active' : ''}`} onClick={() => setSortBy('rating-high')}>Highest Rating</button></li>
+            <li><button className={`${sortBy === 'price-high' ? 'active' : ''}`} onClick={() => setSortBy('price-high')}>Price High to Low</button></li>
+            <li><button className={`${sortBy === 'price-low' ? 'active' : ''}`} onClick={() => setSortBy('price-low')}>Price Low to High</button></li>
+            <li><button className={`${sortBy === 'reviews-high' ? 'active' : ''}`} onClick={() => setSortBy('reviews-high')}>Most Reviews</button></li>
+            <li><button className={`${sortBy === 'reviews-low' ? 'active' : ''}`} onClick={() => setSortBy('reviews-low')}>Least Reviews</button></li>
+            <li><button className={`${sortBy === 'discount-high' ? 'active' : ''}`} onClick={() => setSortBy('discount-high')}>Discount High to Low</button></li>
+            <li><button className={`${sortBy === 'discount-low' ? 'active' : ''}`} onClick={() => setSortBy('discount-low')}>Discount Low to High</button></li>
+
               </ul>
             </div>
             <div>

@@ -23,7 +23,11 @@ a {
 .product-image {
   max-width: 200px;
   max-height: 200px;
-  margin-right: 10px;
+  margin: 15px;
+}
+.product-image:hover {
+  transform: scale(1.1); /* Increase the size by 10% on hover */
+  transition: transform 0.3s ease; /* Smooth transition */
 }
 
 .product-info {
@@ -38,7 +42,11 @@ a {
   font-weight: 400;
   color: black;
 }
-
+.product-title:hover{
+  color: #DB4444;
+  font-weight: 550;
+  font-size: medium;
+}
 .product-price {
   font-size: 18px;
   font-weight: 600;
@@ -68,7 +76,7 @@ a {
   text-decoration: line-through;
 }
 
-.discount {
+.category-product .discount {
   color: #FFAD33;
 }
 
@@ -83,7 +91,7 @@ a {
   margin-left: 5px;
 }
 
-button {
+.category-button {
   background-color: #FFAD33;
   border: none;
   color: white;
@@ -98,7 +106,8 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+
+.category-product button:hover {
   background-color: #ffc200;
 }
 

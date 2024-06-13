@@ -70,8 +70,10 @@ const CategoryProduct = ({ id, title, image, price, rating, mrp, reviews }) => {
           <p className="rating-text">({rating}) Rated by {reviews.length}</p>
         </div>
         <div>
-          <button onClick={addToFavourites}>{isInFavourites ? 'Remove From Favourites' : 'Add to Favourites'}</button>
-          <button onClick={!isInBasket ? addToBasket : goToBasket}>
+          <button className="category-button" onClick={addToFavourites}>
+            {isInFavourites ? 'Remove From Favourites' : 'Add to Favourites'}
+          </button>
+          <button className="category-button" onClick={!isInBasket ? addToBasket : goToBasket}>
             {!isInBasket ? "Add to Basket" : "Go to Basket"}
           </button>
         </div>

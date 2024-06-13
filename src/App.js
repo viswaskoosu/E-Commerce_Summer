@@ -16,7 +16,7 @@ import ProductDetail from './Pages/ProductDetail';
 import AccountPage from './Pages/Account';
 import ContactInfo from './Pages/ContactInfo';
 import PaymentMethods from './Pages/PaymentMethods';
-// import Products from './data';
+import Products from './data';
 import LoginSecurity from './Pages/LoginSecurity';
 import Addresses from './Pages/Addresses';
 import Payment from './Pages/Payment';
