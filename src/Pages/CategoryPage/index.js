@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Categories from '../../Categories/categories'; // Assuming Categories now has names
+import Categories from '../../Categories'; // Assuming Categories now has names
 import './CategoryPage.css';
 import Header from '../../Components/Header';
 import CategoryProduct from '../../Components/CategoryProduct';

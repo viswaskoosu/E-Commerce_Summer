@@ -1,4 +1,4 @@
-import Categories from "./Categories/categories";
+import Categories from "./Categories";
 
 const Products = [
 {
