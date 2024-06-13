@@ -277,9 +277,10 @@ body {
 }
 .checkout-product{
   width: 60%;
+  z-index: 1;
 }
 .subtotal{
-  margin-right: 50px;
+  margin-right: 80px;
 }
 @media (max-width: 770px) {
   .lower {
