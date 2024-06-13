@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const getReq = async (setIsLoading, url, data={}, headers={}) => {
   // return new Promise((resolve, reject) => {
 
@@ -44,3 +46,8 @@ export const postReq = async (setIsLoading, url, data={}) => {
   return responseData
 }
 
+export const displayError = (error) => {
+  if (error.response && error.response.data && error.response.data.error) {
+    toast.error(error.response.data.error);
+  }
+};

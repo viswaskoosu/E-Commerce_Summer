@@ -1,44 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './ProductDetail.css';
-import { useStateValue } from '../../Context/StateProvider';
-import { Products } from '../../data';
-import Rating from '@mui/material/Rating';
-import Header from '../../Components/Header';
-import { Stack, Modal, Box } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./ProductDetail.css";
+import { useStateValue } from "../../Context/StateProvider";
+import { Products } from "../../data";
+import Rating from "@mui/material/Rating";
+import Header from "../../Components/Header";
+import { Stack, Modal, Box } from "@mui/material";
+import { putReq, displayError } from "../../getReq.js";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingPage from "../../Components/LoadingPage";
 
 function ProductDetail() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [{ user, favouriteItems, products, basket }, dispatch] = useStateValue();
+  const [{ user, favouriteItems, products, basket }, dispatch] =
+    useStateValue();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
   useEffect(() => {
     const fetchedProduct = products.find(
       // (product) => product.id === parseInt(id)
       (product) => product.id === id
-
     );
     if (fetchedProduct) {
       setProduct(fetchedProduct);
-      const i = basket.find(obj => obj.id === id)
-      setQuantity(i? i.quantity: 1)
-      setIsInBasket(i? true: false);
-      setIsInFavourites(favouriteItems.some(item => item === id));
+      const i = basket.find((obj) => obj.id === id);
+      setQuantity(i ? i.quantity : 1);
+      setIsInBasket(i ? true : false);
+      setIsInFavourites(favouriteItems.some((item) => item === id));
     }
   }, [id, user, favouriteItems]);
 
   const addToBasket = () => {
-    dispatch({
-      type: "ADD_TO_BASKET",
-      id: id,
-      quantity: quantity
-    });
-    setIsInBasket(true);
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${quantity}`)
+    .then(() => {
+      dispatch({
+        type: "ADD_TO_BASKET",
+        id: id,
+        quantity: quantity
+      });
+      setIsInBasket(true)
+    })
+    .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) toast.error(error.response.data.error)
+        else toast.error('Error contacting server')
+    })
+
   };
   const goToBasket = () => {
     // dispatch({
@@ -46,19 +60,19 @@ function ProductDetail() {
     //   id: id
     // })
     // setIsInBasket(false)
-    navigate('/checkout')
-  }
+    navigate("/checkout");
+  };
   const increaseQuantity = () => {
     dispatch({
       type: 'INCREASE_QUANTITY',
       id: id,
     });
-    setQuantity(quantity + 1);
+      setQuantity(quantity + 1);
   };
 
   const decreaseQuantity = () => {
     dispatch({
-      type: 'DECREASE_QUANTITY',
+      type: "DECREASE_QUANTITY",
       id: id,
     });
     if (quantity > 1) {
@@ -67,11 +81,22 @@ function ProductDetail() {
   };
 
   const addToFavourites = () => {
-    dispatch({
-      type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      item: product.id
-    });
-    setIsInFavourites(!isInFavourites);
+    // console.log(user, isInFavourites)
+    putReq(
+      setIsLoading,
+      `/user/editfavourites?request=${isInFavourites ? "remove": "add"}&product=${id}`
+    )
+      .then(() => {
+        dispatch({
+          type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
+          id: product.id
+        });
+        setIsInFavourites(!isInFavourites);
+      })
+      .catch((error) => {
+        displayError(error);
+      });
+    
   };
 
   const handlePrevImage = () => {
@@ -93,17 +118,23 @@ function ProductDetail() {
   };
 
   const sortReviewsByDate = () => {
-    const sortedReviews = [...product.reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedReviews = [...product.reviews].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
     setProduct({ ...product, reviews: sortedReviews });
   };
 
   const sortReviewsByHighestRated = () => {
-    const sortedReviews = [...product.reviews].sort((a, b) => b.rating - a.rating);
+    const sortedReviews = [...product.reviews].sort(
+      (a, b) => b.rating - a.rating
+    );
     setProduct({ ...product, reviews: sortedReviews });
   };
 
   const sortReviewsByLowestRated = () => {
-    const sortedReviews = [...product.reviews].sort((a, b) => a.rating - b.rating);
+    const sortedReviews = [...product.reviews].sort(
+      (a, b) => a.rating - b.rating
+    );
     setProduct({ ...product, reviews: sortedReviews });
   };
 
@@ -111,9 +142,9 @@ function ProductDetail() {
     return <h2>Product not found</h2>;
   }
 
-  return (
+  return (isLoading? <LoadingPage/>:
     <>
-    {/* {isInFavourites.toString()} */}
+      {/* {isInFavourites.toString()} */}
       <Header />
       <div className="product_description">
         <div className="productDetail">
@@ -147,15 +178,22 @@ function ProductDetail() {
 
           <div className="productDetail_info">
             <p className="productDetail_title">{product.title}</p>
-            <p className='product_category'>Category: {product.category}</p>
+            <p className="product_category">Category: {product.category}</p>
             <div className="rating">
               <Stack spacing={1}>
-                <Rating name={`rating-${id}`} value={product.rating} precision={0.5} readOnly />
+                <Rating
+                  name={`rating-${id}`}
+                  value={product.rating}
+                  precision={0.5}
+                  readOnly
+                />
               </Stack>
-              <p className="rating-text">({product.reviews ? product.reviews.length : 0})</p>
+              <p className="rating-text">
+                ({product.reviews ? product.reviews.length : 0})
+              </p>
             </div>
             <p className="productDetail_price">
-            <strong>Price:{' '}</strong>
+              <strong>Price: </strong>
               <small>₹</small>
               <strong>{product.mrp}</strong>{" "}
               <strong
@@ -201,12 +239,12 @@ function ProductDetail() {
                 </span>
                 <button onClick={increaseQuantity}>+</button>
               </div>
-                <button
-                  className="productDetail_addToBasketButton"
-                  onClick={!isInBasket? addToBasket: goToBasket}
-                >
-                  {!isInBasket? "Add to Basket": "Go to Basket"}
-                </button>
+              <button
+                className="productDetail_addToBasketButton"
+                onClick={!isInBasket ? addToBasket : goToBasket}
+              >
+                {!isInBasket ? "Add to Basket" : "Go to Basket"}
+              </button>
             </div>
           </div>
         </div>
@@ -220,8 +258,7 @@ function ProductDetail() {
               ))}
             </ul>
           </div>
-          <div className="productDetail_buttons">
-          </div>
+          <div className="productDetail_buttons"></div>
         </div>
       </div>
       <div>
@@ -229,14 +266,25 @@ function ProductDetail() {
           <p className="reviews_title">Reviews:</p>
           <div className="review_sort">
             <button onClick={sortReviewsByDate}>Sort by Date</button>
-            <button onClick={sortReviewsByHighestRated}>Sort by Highest Rated</button>
-            <button onClick={sortReviewsByLowestRated}>Sort by Lowest Rated</button>
+            <button onClick={sortReviewsByHighestRated}>
+              Sort by Highest Rated
+            </button>
+            <button onClick={sortReviewsByLowestRated}>
+              Sort by Lowest Rated
+            </button>
           </div>
           {product.reviews.map((review, index) => (
             <div key={index} className="review">
-              <p><strong>{review.reviewer}</strong></p>
+              <p>
+                <strong>{review.reviewer}</strong>
+              </p>
               <div className="rating">
-                <Rating name={`rating-${id}-${index}`} value={review.rating} precision={0.5} readOnly />
+                <Rating
+                  name={`rating-${id}-${index}`}
+                  value={review.rating}
+                  precision={0.5}
+                  readOnly
+                />
                 <p>({review.rating})</p>
               </div>
               <p>{review.comment}</p>
@@ -245,7 +293,7 @@ function ProductDetail() {
           ))}
         </div>
       </div>
-      
+
       {/* Modal for Image Slider */}
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box className="modalBox">
