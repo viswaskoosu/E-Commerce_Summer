@@ -14,8 +14,7 @@ import LoadingPage from "../../Components/LoadingPage";
 function ProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [{ user, favouriteItems, products, basket }, dispatch] =
-    useStateValue();
+  const [{ user, favouriteItems, products, basket }, dispatch] =useStateValue();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);

@@ -8,8 +8,8 @@ import reducer, { initialState } from './reducer'; // Ensure correct import
 import { getReq } from './getReq';
 import axios from 'axios'
 import Products from './data'
-axios.get('http://localhost:4000/product/fetchproducts')
-axios.post('http://localhost:4000/product/uploaddummyproducts', {products: Products})
+// axios.get('http://localhost:4000/product/fetchproducts')
+// axios.post('http://localhost:4000/product/uploaddummyproducts', {products: Products})
 // Initialize localStorage for application state
 const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
 const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];

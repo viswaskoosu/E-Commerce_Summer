@@ -8,9 +8,8 @@ import Header from "../../Components/Header";
 
 const FavouritesPage = () => {
   const [{ favouriteItems, products }] = useStateValue();
-  const reversedFavourites = favouriteItems
-    ? [...favouriteItems].reverse()
-    : [];
+  const reversedFavourites = favouriteItems ? [...favouriteItems].reverse() : [];
+
   const truncateTitle = (title, maxLength) => {
     if (!title) return "";
     if (title.length > maxLength) {
@@ -30,9 +29,7 @@ const FavouritesPage = () => {
             <div className="empty-text">
               <p className="empty-head">It's empty here!</p>
               <p className="empty-desc">
-                "Don't let your wishlist collect dust. Add some items that bring
-                joy to your life and watch as they become a reality with just a
-                few clicks."
+                "Don't let your wishlist collect dust. Add some items that bring joy to your life and watch as they become a reality with just a few clicks."
               </p>
               <Link to="/">
                 <button className="shopping">Go Shopping</button>
@@ -42,10 +39,9 @@ const FavouritesPage = () => {
         ) : (
           <div className="favoritesPage_products">
             {reversedFavourites.map((item) => {
-               const product = products.find((obj) => obj.id === item);
-              {/* console.log(product); */}
-              if (!product) {return null;}
-               return (
+              const product = products.find((obj) => obj.id === item);
+              if (!product) return null;
+              return (
                 <div key={product.id} className="each_card">
                   <Product
                     id={product.id}

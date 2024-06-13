@@ -1,16 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
-// import error from "../imgs/error.png";
+import { Link } from "react-router-dom"; 
 import "./Error.css";
 import error from "./error.png";
-import Header from "../../Components/Header";
 
 function Error() {
   document.title = "404! Page not found";
 
   return (
     <>
-      {/* <Header /> */}
       <div className="main">
         <div className="error-image">
           <img src={error} alt="error" />
@@ -19,7 +16,6 @@ function Error() {
           <p className="big-error">404</p>
           <p className="medium-error">Something went</p>
           <p className="wrong">WRONG!</p>
-          {/* Use Link component to navigate to homepage */}
           <Link to="/" className="home">
             <button className="back-home">Back to Homepage</button>
           </Link>

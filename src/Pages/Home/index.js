@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header';
 import Carousel from '../../Components/carousel/carousel';
-import ResponsiveSlider from '../../Components/ResponsiveSlider';
 import './Home.css';
-import Categories from '../../Categories/categories';
+import Categories from '../../Categories/categories'; // Assuming Categories now has names
 import Footer from '../../Components/Footer';
 import LowerHeader from '../../Components/Header/LowerHeader';
 import { useStateValue } from "../../Context/StateProvider";
+import ResponsiveSlider from '../../Components/ResponsiveSlider';
 
 const Home = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(true);
@@ -29,7 +29,7 @@ const Home = () => {
     const groupedProducts = {};
 
     Categories.forEach(category => {
-      groupedProducts[category] = [];
+      groupedProducts[category.name] = [];
     });
 
     ProductsData.forEach(product => {
@@ -48,7 +48,6 @@ const Home = () => {
     navigate(`/categories/${selectedCategoryId}`);
   };
 
-  // Function to navigate to category page
   const handleViewAllClick = (categoryIndex) => {
     navigate(`/categories/${categoryIndex}`);
   };
@@ -65,7 +64,7 @@ const Home = () => {
                 <img
                   key={index}
                   src={`../../path/to/category${index + 1}.jpg`}
-                  alt={category}
+                  alt={category.name}
                   onClick={() => handleCategorySelect(index)}
                   className="category-image"
                 />
@@ -76,20 +75,26 @@ const Home = () => {
               <option value="">--Select Category--</option>
               {Categories.map((category, index) => (
                 <option key={index} value={index}>
-                  {category}
+                  {category.name}
                 </option>
               ))}
             </select>
           )}
         </div>
-        {/* Rest of your component */}
         <div className='products'>
-          {/* Product display */}
+          {Categories.map((category, index) => (
+            <div key={index}>
+              <h2>{category.name}</h2>
+              <ResponsiveSlider products={groupedProducts[category.name]} />
+              <button onClick={() => handleViewAllClick(index)}>View All</button>
+            </div>
+          ))}
         </div>
       </div>
       <Footer />
       <div className='LowerHeader'>{isSmallScreen && <LowerHeader />}</div>
     </>
   );
-}  
+};
+
 export default Home;
