@@ -1,38 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './CheckoutProduct.css';
 import { useStateValue } from '../../Context/StateProvider';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Rating, Stack } from '@mui/material';
 import { Link } from 'react-router-dom'; // Import Link for client-side routing
-
+import {putReq} from '../../getReq'
+import { ErrorRounded } from '@mui/icons-material';
+import LoadingPage from '../LoadingPage';
 function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   const [{ basket, favouriteItems }, dispatch] = useStateValue();
   // console.log(id)
+  const [isLoading, setIsLoading] = useState(false)
+  const index = basket.findIndex((obj) => obj.id===id)
+  useEffect(() => {
+    if (basket[index].id!==id) return
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${basket[index].quantity}`)
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.error){
+        alert(error.response.data.error)
+      }
+    })
+  }, [])
   const removeFromBasket = () => {
-    dispatch({
-      type: 'REMOVE_FROM_BASKET',
-      id: id,
-    });
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${0}`)
+    .then(() => {
+      dispatch({
+        type: 'REMOVE_FROM_BASKET',
+        id: id,
+      });
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.error){
+        alert(error.response.data.error)
+      }
+    })
   };
 
   const increaseQuantity = () => {
-    dispatch({
-      type: 'INCREASE_QUANTITY',
-      id: id,
-    });
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${basket[index].quantity+1}`)
+    .then(() => {
+      dispatch({
+        type: 'INCREASE_QUANTITY',
+        id: id,
+      });
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.error){
+        alert(error.response.data.error)
+      }
+    })
   };
 
   const decreaseQuantity = () => {
-    dispatch({
-      type: 'DECREASE_QUANTITY',
-      id: id,
-    });
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${basket[index].quantity-1}`)
+    .then(() => {
+      dispatch({
+        type: 'DECREASE_QUANTITY',
+        id: id,
+      });
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.error){
+        alert(error.response.data.error)
+      }
+    })
   };
 
   const toggleFavourite = () => {
     const isInBasket = basket.some(item => item.id === id);
-    const isFavourite = favouriteItems.some(item => item.id === id);
+    const isFavourite = favouriteItems.some(item => item === id);
 
     if (isFavourite) {
       dispatch({
@@ -61,7 +98,7 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
 
   const basketItem = basket.find(item => item.id === id);
   
-  return (
+  return (isLoading? <LoadingPage/>:
     <div className='checkoutProduct'>
       <Link to={`/product/${id}`} className='checkoutProduct_link'>
         <img className='checkoutProduct_image' src={image} alt='' />

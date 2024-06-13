@@ -6,7 +6,7 @@ import { Products } from "../../data";
 import Rating from "@mui/material/Rating";
 import Header from "../../Components/Header";
 import { Stack, Modal, Box } from "@mui/material";
-import { postReq } from "../../getReq.js";
+import { putReq } from "../../getReq.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "../../Components/LoadingPage";
@@ -39,7 +39,7 @@ function ProductDetail() {
   }, [id, user, favouriteItems]);
 
   const addToBasket = () => {
-    postReq(setIsLoading, `/user/addtobasket?product=${id}&quantity=${quantity}`)
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${quantity}`)
     .then(() => {
       dispatch({
         type: "ADD_TO_BASKET",
@@ -81,9 +81,10 @@ function ProductDetail() {
   };
 
   const addToFavourites = () => {
+    console.log(user, isInFavourites)
     dispatch({
       type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      item: product.id
+      id: product.id
     });
     setIsInFavourites(!isInFavourites);
   };
@@ -131,7 +132,7 @@ function ProductDetail() {
     return <h2>Product not found</h2>;
   }
 
-  return (
+  return (isLoading? <LoadingPage/>:
     <>
       {/* {isInFavourites.toString()} */}
       <Header />
