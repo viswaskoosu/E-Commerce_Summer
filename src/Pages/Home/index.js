@@ -61,37 +61,55 @@ const Home = () => {
       <Header />
       <div className="home">
         <Carousel />
-        <div className='category-images'>
+        <div className='category_images'>
+        <div className='view_all_category'>
           {!isSmallScreen ? (
-            <>
-              {Categories.map((category, index) => (
-                <img
-                  key={index}
-                  src={category.image}
-                  alt={category.name}
-                  onClick={() => handleCategoryImageClick(index)}
-                  className="category-image"
-                />
-              ))}
-            </>
+            <h2>Browse by Category</h2>
           ) : (
-            <select id="category-select" onChange={handleCategorySelect}>
-              <option value="">--Select Category--</option>
-              {Categories.map((category, index) => (
-                <option key={index} value={index}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            <></>
           )}
+          <select id="category-select" onChange={handleCategorySelect}>
+            <option value="">--View All Categories--</option>
+            {Categories.map((category, index) => (
+              <option key={index} value={index}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </div>
 
+        
+          {!isSmallScreen ? (
+            <>
+            <div className='categories'>
+            {Categories.map((category, index) => (
+                index > 7 ? (
+                  <></> 
+                ) : (
+                  <div key={index}>
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      onClick={() => handleCategoryImageClick(index)}
+                      className='category_image'
+                    />
+                    <p className='browse_category_name' onClick={() => handleCategoryImageClick(index)}>{category.name}</p>
+                  </div>
+                )
+          ))}
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+        
         <div className='products'>
           {Categories.map((category, index) => (
             <div key={index}>
-              <div className='category-header'>
+              <div className='category_header'>
                 <h2 className='category_name'>{category.name}</h2>
-                <h3 className='view-all' onClick={() => handleViewAllClick(index)}>View All</h3>
+                <h3 className='view-all' onClick={() => handleViewAllClick(index)}>View All Items</h3>
               </div>
               <ResponsiveSlider products={groupedProducts[category.name]} />
             </div>

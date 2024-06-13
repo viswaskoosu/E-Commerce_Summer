@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStateValue } from "../../Context/StateProvider";
 import { Link } from "react-router-dom";
 import "./OrderHistory.css";
 import Header from "../../Components/Header";
 
 function OrderHistory() {
-  const [{ orders }, dispatch] = useStateValue();
+  const [{ user, favouriteItems, products, basket,orders }, dispatch] =useStateValue();
   const [filter, setFilter] = useState("all");
 
   const handleFilterChange = (event) => {
@@ -17,10 +17,6 @@ function OrderHistory() {
       type: "ADD_TO_BASKET",
       item: {
         id: item.id,
-        title: item.title,
-        price: item.price,
-        image: item.image,
-        quantity: 1,
       },
     });
     window.location.href = `/checkout`;
@@ -65,6 +61,18 @@ function OrderHistory() {
 
   const filteredOrders = filterOrders(orders, filter);
 
+  useEffect(() => {
+    // Logging item titles using Products array
+    filteredOrders.forEach((order) => {
+      order.items.forEach((item) => {
+        const product = products.find((prod) => prod.id === item.id);
+        if (product) {
+          console.log(product.title);
+        }
+      });
+    });
+  }, [filteredOrders]); // Run effect whenever filteredOrders changes
+
   return (
     <>
       <Header />
@@ -103,27 +111,33 @@ function OrderHistory() {
                 <button>View order details</button>
                 <button>Invoice</button>
               </div>
-              {order.items.map((item) => (
-                <div key={item.id} className="orderHistory_item">
-                  <img src={item.image} alt={item.title} />
-                  <div className="orderHistory_info">
-                    <p>{item.title}</p>
-                    <p>Quantity: {item.quantity}</p>
-                    <p>Price: ₹{item.price}</p>
-                    <div className="orderHistory_itemActions">
-                      <button onClick={() => buyItAgain(item)}>
-                        Buy it again
-                      </button>
-                      <Link to={`/product/${item.id}`} className="product_link">
-                        <button>View your item</button>
-                      </Link>
-                      <button>Leave seller feedback</button>
-                      <button>Leave delivery feedback</button>
-                      <button>Write a product review</button>
+              {order.items.map((item) => {
+                const product = products.find((prod) => prod.id === item.id);
+                return (
+                  <div key={item.id} className="orderHistory_item">
+                    <img src={product.images[0]} alt={product.title} />
+                    <div className="orderHistory_info">
+                      <p>{product.title}</p>
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Price: ₹{item.price}</p>
+                      <div className="orderHistory_itemActions">
+                        <button onClick={() => buyItAgain(item)}>
+                          Buy it again
+                        </button>
+                        <Link
+                          to={`/product/${item.id}`}
+                          className="product_link"
+                        >
+                          <button>View your item</button>
+                        </Link>
+                        <button>Leave seller feedback</button>
+                        <button>Leave delivery feedback</button>
+                        <button>Write a product review</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ))
         )}

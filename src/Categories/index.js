@@ -1,43 +1,43 @@
 const Categories = [
   {
     name: "Building Panels & Cladding Materials",
-    image: './images/category0.jpg`' // index 0
+    image: 'https://alumtechbond.com/wp-content/uploads/2020/12/Lascelles-Blvd-2.jpg'
   },
   {
     name: "Building & Construction Machines",
-    image: './images/category1.jpg' // index 1
-  },
+    image: 'https://media.istockphoto.com/id/887465766/photo/road-construction-machinery-on-the-construction-of-highway.jpg?s=612x612&w=0&k=20&c=75DpFIj4gUJ7gPodIGAcKkpS2JScsoeQLGcGRxFRgLg='
+  },  
   {
     name: "PVC, FRP, HDPE & Other Plastic Pipes",
-    image: './images/category2.jpg`' // index 2
+    image: 'https://www.growbusinessforsure.com/Product_images/category_images/pvc_pipes.jpg' // index 2
   },
   {
     name: "Roofing and False ceiling",
-    image: './images/category3.jpg`' // index 3
+    image: 'https://www.nerolac.com/sites/default/files/2023-05/wooden-ceiling.webp' // index 3
   },
   {
     name: "Steel Bars, Rods, Plates & Sheets",
-    image: './images/category4.jpg`' // index 4
+    image: 'https://5.imimg.com/data5/QP/HU/MY-9117726/duplex-500x500.png' // index 4
   },
   {
     name: "Wood, Plywood, Veneer & Laminates",
-    image: './images/category5.jpg`' // index 5
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeC89hIa6i9DmD7xTOLgbbhkahopthgOGr5Q&s' // index 5
   },
   {
     name: "Power Tools",
-    image: './images/category6.jpg`' // index 6
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd_X07llVktgkANFYJQa_OolZxkkUaTWFDzw&s' // index 6
   },
   {
     name: "Outdoor Power Equipment",
-    image: './images/category7.jpg`' // index 7
+    image: 'https://media.istockphoto.com/id/1155772276/photo/outdoor-power-equipment-lawn-mower-showcase.jpg?s=612x612&w=0&k=20&c=Enm4oVTxvVuZo2NJIu8ixdbA4PrvmZk9BFALCI-J18s=' // index 7
   },
   {
     name: "Paints & Brushes",
-    image: './images/category8.jpg`' // index 8
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSthWevHgimKblYQY0xzuy2lr4n68fFVR1CSw&s' // index 8
   },
   {
     name: "Home requirements",
-    image: './images/category9.jpg`' // index 9
+    image: 'https://thumbs.dreamstime.com/b/set-accessories-installation-electrical-wiring-homes-electricity-industry-concept-145187378.jpg' // index 9
   }
 ];
 
