@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Categories from '../../Categories'; // Assuming Categories now has names
+import Categories from '../../Categories';
 import './CategoryPage.css';
 import Header from '../../Components/Header';
 import CategoryProduct from '../../Components/CategoryProduct';
@@ -11,14 +11,10 @@ const CategoryPage = () => {
   const [{ products: ProductsData }] = useStateValue();
   const [sortBy, setSortBy] = useState('rating-high');
   const [products, setProducts] = useState([]);
-  const getMaxPriceForCategory = () => {
-    const categoryProducts = ProductsData.filter(product => product.category === Categories[id].name);
-    const maxPrice = Math.max(...categoryProducts.map(product => product.price));
-    return Math.ceil(maxPrice / 100) * 100;
-  };
+  const [maxPrice, setMaxPrice] = useState(0);
   const [filters, setFilters] = useState({
     discount: [],
-    price: [0, getMaxPriceForCategory()]
+    price: [0, 0]
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -30,6 +26,13 @@ const CategoryPage = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    const categoryProducts = ProductsData.filter(product => product.category === Categories[id].name);
+    const maxPriceValue = Math.ceil(Math.max(...categoryProducts.map(product => product.price)) / 100) * 100;
+    setMaxPrice(maxPriceValue);
+    setFilters(prevFilters => ({ ...prevFilters, price: [0, maxPriceValue] }));
+  }, [ProductsData, id]);
 
   useEffect(() => {
     const fetchProducts = () => {
@@ -73,11 +76,16 @@ const CategoryPage = () => {
     fetchProducts();
   }, [id, ProductsData, sortBy, filters]);
 
-
-
   const handleFilterChange = (filterType, value) => {
     let newFilters = { ...filters };
-    newFilters[filterType] = value;
+    if (filterType === 'discount') {
+      const updatedDiscounts = newFilters.discount.includes(value)
+        ? newFilters.discount.filter(discount => discount !== value)
+        : [...newFilters.discount, value];
+      newFilters.discount = updatedDiscounts;
+    } else if (filterType === 'price') {
+      newFilters.price = value;
+    }
     setFilters(newFilters);
   };
 
@@ -128,22 +136,22 @@ const CategoryPage = () => {
               <ul>
                 <li>
                   <label>
-                    <input type="checkbox" onChange={() => handleFilterChange('discount', 10)} /> 10% or more
+                    <input type="checkbox" onChange={() => handleFilterChange('discount', 10)} checked={filters.discount.includes(10)} /> 10% or more
                   </label>
                 </li>
                 <li>
                   <label>
-                    <input type="checkbox" onChange={() => handleFilterChange('discount', 20)} /> 20% or more
+                    <input type="checkbox" onChange={() => handleFilterChange('discount', 20)} checked={filters.discount.includes(20)} /> 20% or more
                   </label>
                 </li>
                 <li>
                   <label>
-                    <input type="checkbox" onChange={() => handleFilterChange('discount', 30)} /> 30% or more
+                    <input type="checkbox" onChange={() => handleFilterChange('discount', 30)} checked={filters.discount.includes(30)} /> 30% or more
                   </label>
                 </li>
                 <li>
                   <label>
-                    <input type="checkbox" onChange={() => handleFilterChange('discount', 40)} /> 40% or more
+                    <input type="checkbox" onChange={() => handleFilterChange('discount', 40)} checked={filters.discount.includes(40)} /> 40% or more
                   </label>
                 </li>
                 <li>
@@ -152,7 +160,7 @@ const CategoryPage = () => {
                     <input
                       type="range"
                       min="0"
-                      max={getMaxPriceForCategory()}
+                      max={maxPrice}
                       value={filters.price[1]}
                       onChange={(e) => handleFilterChange('price', [0, parseInt(e.target.value)])}
                     />

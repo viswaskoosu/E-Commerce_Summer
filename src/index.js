@@ -21,6 +21,7 @@ root.render(
   <React.StrictMode>
     <StateProvider initialState={{ 
       // ...initialState,
+      payments: [],
       basket: savedBasket,
       favouriteItems: savedFavourites,
       user: {
