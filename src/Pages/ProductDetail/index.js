@@ -6,7 +6,7 @@ import { Products } from "../../data";
 import Rating from "@mui/material/Rating";
 import Header from "../../Components/Header";
 import { Stack, Modal, Box } from "@mui/material";
-import { putReq } from "../../getReq.js";
+import { putReq, displayError } from "../../getReq.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "../../Components/LoadingPage";
@@ -23,7 +23,7 @@ function ProductDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  
   useEffect(() => {
     const fetchedProduct = products.find(
       // (product) => product.id === parseInt(id)
@@ -81,12 +81,22 @@ function ProductDetail() {
   };
 
   const addToFavourites = () => {
-    console.log(user, isInFavourites)
-    dispatch({
-      type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
-      id: product.id
-    });
-    setIsInFavourites(!isInFavourites);
+    // console.log(user, isInFavourites)
+    putReq(
+      setIsLoading,
+      `/user/editfavourites?request=${isInFavourites ? "remove": "add"}&product=${id}`
+    )
+      .then(() => {
+        dispatch({
+          type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
+          id: product.id
+        });
+        setIsInFavourites(!isInFavourites);
+      })
+      .catch((error) => {
+        displayError(error);
+      });
+    
   };
 
   const handlePrevImage = () => {
