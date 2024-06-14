@@ -40,7 +40,7 @@ const signUpTheme = createTheme({
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
-  const [{ userLoggedIn }, dispatch] = useStateValue();
+  const [{ userLoggedIn , basket, favouriteItems}, dispatch] = useStateValue();
   if (userLoggedIn) {
     navigate("/account");
   }
@@ -110,6 +110,8 @@ export default function SignUp() {
       email: data.get("email"),
       password: data.get("password"),
       allowExtraEmails: data.get("allowExtraEmails") === "on",
+      basket: basket,
+      favouriteItems: favouriteItems
     };
     // console.log(userData);
     setIsLoading(true)
@@ -121,6 +123,10 @@ export default function SignUp() {
           // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("basket", JSON.stringify(response.data.basket));
+        for (let i = 0; i<response.data.basket; ++i){
+          response.data.basket[i].product = response.data.basket[i].id
+          delete response.data.basket[i].id
+        }
         toast.success("Signed up successfully");
         dispatch({
           type: "USER_LOGIN",
@@ -131,7 +137,7 @@ export default function SignUp() {
         })
         dispatch({
           type: 'SET_BASKET',
-          user: response.data.basket
+          basket: response.data.basket
         })
         dispatch({
           type: 'SET_FAVOURITE_ITEMS',
