@@ -29,7 +29,7 @@ import LoadingPage from './Components/LoadingPage';
 import axios from 'axios';
 import NewCardForm from './Components/PaymentMethods/NewCardForm';
 
-const stripePromise = loadStripe('your_stripe_publishable_key');
+console.log(window.innerWidth);
 
 function App() {
   const [, dispatch] = useStateValue();
@@ -77,7 +77,7 @@ function App() {
             <Route path="/loginSecurity" element={<LoginSecurity />} />
             <Route path="/payments" element={<Payment />} />
             <Route path="/addresses" element={<Addresses />} />
-            <Route path="/new-card-form" element={<Elements stripe={stripePromise}><NewCardForm /></Elements>} />
+            {/* <Route path="/new-card-form" element={<Elements stripe={stripePromise}><NewCardForm /></Elements>} /> */}
             <Route path="/error" element={<Error />} />
           </Routes>
         </div>

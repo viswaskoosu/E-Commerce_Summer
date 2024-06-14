@@ -1,20 +1,19 @@
-/* ResponsiveSlider.css */
 .slider-container {
-  margin: 20px; /* Add margin around the slider */
-  padding: 10px; /* Add padding inside the slider container */
-  max-width: calc(100vw - 40px); /* Ensure slider does not exceed window width minus margins */
+  margin: 20px;
+  padding: 10px;
+  max-width: calc(100vw - 40px);
 }
 
 .slider-item {
-  padding: 10px; /* Padding around each slide item */
-  display: flex; /* Ensure flex display for proper alignment */
-  justify-content: center; /* Center items within the slide */
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* Overwrite specific styles for slider context */
 .slider-item .product.card {
-  margin: 0; /* Reset margin for cards within the slider */
-  width: 100%; /* Ensure the card takes full width of the slide */
+  margin: 0;
+  width: 100%;
 }
 
 .slick-prev,
@@ -41,11 +40,6 @@
 .slick-next {
   right: 10px;
 }
-
-/* .slick-prev:hover,
-.slick-next:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-} */
 
 .slick-dots {
   position: absolute;

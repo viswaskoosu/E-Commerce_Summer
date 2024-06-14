@@ -54,7 +54,7 @@ const Home = () => {
   const handleCategoryImageClick = (categoryIndex) => {
     navigate(`/categories/${categoryIndex}`);
   };
-
+  const no_of_images = (window.innerWidth > 1536 ? 10 : 7)
 
   return (
     <>
@@ -83,7 +83,7 @@ const Home = () => {
             <>
             <div className='categories'>
             {Categories.map((category, index) => (
-                index > 7 ? (
+                index > no_of_images ? (
                   <></> 
                 ) : (
                   <div key={index}>
