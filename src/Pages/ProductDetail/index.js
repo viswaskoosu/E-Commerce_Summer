@@ -61,7 +61,7 @@ function ProductDetail() {
         if (error.response && error.response.data && error.response.data.error) toast.error(error.response.data.error)
         else toast.error('Error contacting server')
     })
-
+    // navigate('/checkout');
   };
   const goToBasket = () => {
     // dispatch({
@@ -243,7 +243,9 @@ function ProductDetail() {
               >
                 {isInFavourites ? "Remove from Favorites" : "Add to Favorites"}
               </button>
+              {isInBasket ? <></> :
               <div className="productDetail_quantityControl">
+
                 <button onClick={decreaseQuantity}>-</button>
                 <span
                   style={{
@@ -255,7 +257,7 @@ function ProductDetail() {
                   {quantity}
                 </span>
                 <button onClick={increaseQuantity}>+</button>
-              </div>
+              </div>}
               <button
                 className="productDetail_addToBasketButton"
                 onClick={!isInBasket ? addToBasket : goToBasket}
