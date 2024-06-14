@@ -14,7 +14,7 @@ import LoadingPage from "../../Components/LoadingPage";
 function ProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [{ user, favouriteItems, products, basket }, dispatch] =useStateValue();
+  const [{ user, favouriteItems, products, basket, userLoggedIn }, dispatch] =useStateValue();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isInBasket, setIsInBasket] = useState(false);
@@ -38,6 +38,15 @@ function ProductDetail() {
   }, [id, user, favouriteItems]);
 
   const addToBasket = () => {
+    if (!userLoggedIn){
+      dispatch({
+        type: "ADD_TO_BASKET",
+        id: id,
+        quantity: quantity
+      });
+      setIsInBasket(true)
+      return
+    }
     putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${quantity}`)
     .then(() => {
       dispatch({
@@ -48,6 +57,7 @@ function ProductDetail() {
       setIsInBasket(true)
     })
     .catch((error) => {
+        console.log(error)
         if (error.response && error.response.data && error.response.data.error) toast.error(error.response.data.error)
         else toast.error('Error contacting server')
     })
@@ -81,6 +91,14 @@ function ProductDetail() {
 
   const addToFavourites = () => {
     // console.log(user, isInFavourites)
+    if (!userLoggedIn){
+      dispatch({
+        type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
+        id: product.id
+      });
+      setIsInFavourites(!isInFavourites);
+      return
+    }
     putReq(
       setIsLoading,
       `/user/editfavourites?request=${isInFavourites ? "remove": "add"}&product=${id}`

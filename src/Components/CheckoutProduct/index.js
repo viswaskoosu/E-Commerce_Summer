@@ -11,13 +11,16 @@ import LoadingPage from "../LoadingPage";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function CheckoutProduct({ id, title, image, price, rating, reviews }) {
-  const [{ basket, favouriteItems }, dispatch] = useStateValue();
+  const [{ basket, favouriteItems , userLoggedIn}, dispatch] = useStateValue();
   // console.log(id)
   const [isLoading, setIsLoading] = useState(false);
   const index = basket.findIndex((obj) => obj.id === id);
 
   useEffect(() => {
     if (basket[index].id !== id) return;
+    if (!userLoggedIn){
+      return
+    }
     putReq(
       setIsLoading,
       `/user/editbasket?product=${id}&quantity=${basket[index].quantity}`
@@ -27,6 +30,13 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   }, []);
 
   const removeFromBasket = () => {
+    if (!userLoggedIn){
+      dispatch({
+        type: "REMOVE_FROM_BASKET",
+        id: id,
+      });
+      return
+    }
     putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${0}`)
       .then(() => {
         dispatch({
@@ -40,6 +50,13 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   };
 
   const increaseQuantity = () => {
+    if (!userLoggedIn){
+      dispatch({
+        type: "INCREASE_QUANTITY",
+        id: id,
+      });
+      return
+    }
     putReq(
       setIsLoading,
       `/user/editbasket?product=${id}&quantity=${basket[index].quantity + 1}`
@@ -56,6 +73,13 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   };
 
   const decreaseQuantity = () => {
+    if (!userLoggedIn){
+      dispatch({
+        type: "DECREASE_QUANTITY",
+        id: id,
+      });
+      return
+    }
     putReq(
       setIsLoading,
       `/user/editbasket?product=${id}&quantity=${basket[index].quantity - 1}`
@@ -76,6 +100,13 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
     const isFavourite = favouriteItems.some((item) => item === id);
 
     if (isFavourite) {
+      if (!userLoggedIn){
+        dispatch({
+          type: "REMOVE_FROM_FAVOURITES",
+          id: id,
+        });
+        return
+      }
       putReq(setIsLoading, `/user/editfavourites?request=remove&product=${id}`)
         .then(() => {
           dispatch({
@@ -89,6 +120,17 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
     } else {
       // let removedFromBasket = isInBasket ? false : true;
       if (isInBasket) {
+        if (!userLoggedIn){
+          dispatch({
+            type: "REMOVE_FROM_BASKET",
+            id: id,
+          })
+          dispatch({
+            type: "ADD_TO_FAVOURITES",
+            id: id,
+          });
+          return
+        }
         putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${0}`)
           .then(() => {
             dispatch({

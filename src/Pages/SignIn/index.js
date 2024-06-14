@@ -37,7 +37,7 @@ const theme = createTheme({
 function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [{ userLoggedIn }, dispatch] = useStateValue();
+  const [{ userLoggedIn, favouriteItems, basket }, dispatch] = useStateValue();
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -88,6 +88,8 @@ function SignIn() {
     const userData = {
       email: data.get("email"),
       password: data.get("password"),
+      favouriteItems: favouriteItems,
+      basket: basket,
     };
 
     setIsLoading(true);

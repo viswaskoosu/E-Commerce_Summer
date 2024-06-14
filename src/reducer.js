@@ -176,6 +176,21 @@ const reducer = (state, action) => {
             : item
         ),
       };
+    case "SET_QUANTITY":
+      const newBasket = state.basket.map((item) =>
+        item.id === action.id
+          ? { ...item, quantity: action.quantity }
+          : item
+      );
+      localStorage.setItem("basket", JSON.stringify(newBasket));
+      return {
+        ...state,
+        basket: state.basket.map((item) =>
+          item.id === action.id
+            ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
+            : item
+        ),
+      };
     case "EMPTY_BASKET":
       return {
         ...state,

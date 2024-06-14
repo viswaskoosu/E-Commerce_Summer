@@ -8,12 +8,19 @@ import Stack from "@mui/material/Stack";
 import { putReq, displayError } from "../../getReq";
 import LoadingPage from "../LoadingPage";
 function Product({ id, title, image, price, rating, category, mrp, reviews }) {
-  const [{ favouriteItems }, dispatch] = useStateValue();
+  const [{ favouriteItems, userLoggedIn }, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(false);
   const addToFavourites = () => {
     // console.log(favouriteItems)
     const isInFavourites = favouriteItems.some((item) => item === id);
     // console.log(isInFavourites)
+    if(!userLoggedIn){
+      dispatch({
+        type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
+        id: id,
+      });
+      return
+    }
     putReq(
       setIsLoading,
       `/user/editfavourites?request=${
