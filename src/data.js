@@ -1500,7 +1500,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Emma White",
         reviewer: getRandomId(),
         rating: 5,
         comment: "Great",
@@ -1537,7 +1536,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Emma Johnson",
         reviewer: getRandomId(),
         rating: 5,
         comment: "Beautiful tiles, excellent quality.",
@@ -1546,7 +1544,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "David Smith",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Good value for money, very satisfied.",
@@ -1581,7 +1578,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Anna Smith",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Looks great on my exterior walls, very pleased with the quality.",
@@ -1590,7 +1586,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "Michael Johnson",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Excellent choice for cladding, adds a modern touch.",
@@ -1625,7 +1620,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Natalie Peterson",
         reviewer: getRandomId(),
         rating: 5,
         comment: "Great set of tools, covers all my basic needs.",
@@ -1634,7 +1628,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "Lucas Hill",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Good quality tools for the price.",
@@ -1670,7 +1663,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "John Smith",
         reviewer: getRandomId(),
         rating: 5,
         comment: "Beautiful tiles, enhances the look of my roof.",
@@ -1679,7 +1671,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "Emily Davis",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Good quality tiles, happy with the purchase.",
@@ -1715,7 +1706,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Olivia White",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Looks elegant in my living room, highly recommended.",
@@ -1724,7 +1714,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "Daniel Johnson",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Good product, easy installation.",
@@ -1758,7 +1747,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer A",
         reviewer: getRandomId(),
         rating: 4.5,
         comment: "Excellent product, durable and looks great on our building.",
@@ -1792,7 +1780,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer A",
         reviewer: getRandomId(),
         rating: 4.5,
         comment: "Excellent product, durable and looks great on our building.",
@@ -1825,7 +1812,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer B",
         reviewer: getRandomId(),
         rating: 4.0,
         comment: "Good quality board, sturdy and easy to work with.",
@@ -1858,7 +1844,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer C",
         reviewer: getRandomId(),
         rating: 4.5,
         comment: "These pipes are great, haven't had any issues with them.",
@@ -1891,7 +1876,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer D",
         reviewer: getRandomId(),
         rating: 4.0,
         comment: "Good pipes, reliable and easy to install.",
@@ -1924,7 +1908,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer G",
         reviewer: getRandomId(),
         rating: 4.5,
         comment: "Excellent pipes, sturdy and reliable for our irrigation system.",
@@ -1957,7 +1940,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Customer H",
         reviewer: getRandomId(),
         rating: 4.2,
         comment: "Good quality pipes, helped improve our crop yield significantly.",
@@ -1992,7 +1974,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Emma Thompson",
         reviewer: getRandomId(),
         rating: 5,
         comment: "Love these paints, great quality and color selection.",
@@ -2001,7 +1982,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "David Miller",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Good value for money, paints are easy to work with.",
@@ -2036,7 +2016,6 @@ available: 40,
     reviews: [
       {
         id: getRandomId(),
-        reviewer: "Sophie Clark",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Nice quality brushes, perfect for my art projects.",
@@ -2045,7 +2024,6 @@ available: 40,
       },
       {
         id: getRandomId(),
-        reviewer: "Michael Anderson",
         reviewer: getRandomId(),
         rating: 4,
         comment: "Great value set, brushes are well-made and easy to clean.",
