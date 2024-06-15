@@ -123,6 +123,7 @@ export default function SignUp() {
           // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("basket", JSON.stringify(response.data.basket));
+        localStorage.setItem("orders", JSON.stringify(response.data.orders))
         toast.success("Signed up successfully");
         dispatch({
           type: "USER_LOGIN",

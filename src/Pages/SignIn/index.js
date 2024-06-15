@@ -99,6 +99,7 @@ function SignIn() {
         if (response.data.success) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("basket", JSON.stringify(response.data.basket));
+          localStorage.setItem("orders", JSON.stringify(response.data.orders))
           toast.success("Signed in successfully");
           dispatch({ type: "USER_LOGIN" });
           dispatch({ type: "SET_USER", user: response.data.user });
@@ -107,7 +108,7 @@ function SignIn() {
             type: "SET_FAVOURITE_ITEMS",
             favouriteItems: response.data.user.favouriteItems,
           });
-          dispatch({ type: "SET_ORDERS", orders: response.data.user.orders });
+          dispatch({ type: "SET_ORDERS", orders: response.data.orders });
           navigate("/");
         }
       })

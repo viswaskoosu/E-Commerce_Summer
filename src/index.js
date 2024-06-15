@@ -14,7 +14,7 @@ import Products from './data'
 const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
 const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];
 // const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
-const savedOrders = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).orders : [];
+const savedOrders = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [];
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
