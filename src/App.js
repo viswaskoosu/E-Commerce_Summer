@@ -29,31 +29,20 @@ import LoadingPage from './Components/LoadingPage';
 import axios from 'axios';
 import NewCardForm from './Components/PaymentMethods/NewCardForm';
 
-console.log(window.innerWidth);
-
 function App() {
   const [, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (window.location.pathname === '/error') return;
-    setIsLoading(true);
     axios
-      .get(`${process.env.REACT_APP_API_URL}/product/fetchproducts`)
-      .then((response) => {
-        dispatch({
-          type: 'SET_PRODUCTS',
-          products: response.data,
-        });
+      .post(`${process.env.REACT_APP_API_URL}/uploaddummyproducts`, { products: Products })
+      .then(response => {
+        console.log('Products uploaded successfully:', response.data);
       })
-      .catch(() => {
-        window.location.replace('/error');
-      })
-      .finally(() => {
-        setIsLoading(false);
+      .catch(error => {
+        console.error('Error uploading products:', error);
       });
-  }, [dispatch]);
-
+  }, []);
   return isLoading ? (
     <LoadingPage />
   ) : (

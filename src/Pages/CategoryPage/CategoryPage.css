@@ -13,6 +13,7 @@
   flex-wrap: wrap;
   list-style-type: none;
   padding: 0;
+  width: fit-content;
 }
 
 .sort_by_buttons li {
@@ -33,7 +34,6 @@
 .sort_by_buttons button:hover{
     background-color: white;
     color: #DB4444;
-    font-weight: 450;
 }
 .sort_by_buttons button.active {
   background-color: #FFAD33;
@@ -55,7 +55,7 @@
 .filters h3 {
   color: black;
   font-weight: 500;
-
+  margin: 0;
 }
 
 .filters ul {
@@ -70,7 +70,6 @@
 }
 .filters li:hover{
     color: #DB4444;
-    font-weight: 450;
 }
 .filters button,
 .filters input {
@@ -90,7 +89,6 @@
 
 .product-list h2:hover {
     /* color: #DB4444; */
-    font-weight: 550;
     cursor: pointer;
 
 }

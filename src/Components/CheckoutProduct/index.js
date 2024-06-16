@@ -50,6 +50,7 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   };
 
   const increaseQuantity = () => {
+    
     if (!userLoggedIn){
       dispatch({
         type: "INCREASE_QUANTITY",
