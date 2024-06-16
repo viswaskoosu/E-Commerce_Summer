@@ -15,3 +15,4 @@ need fix:
 5. checkoutproduct moving to wishlist needs handling.
 6. handling on favouriting on home page //solved
 7. error messages little ambiguity in checkout and editbasket i think.
+8. in review model, add product field
