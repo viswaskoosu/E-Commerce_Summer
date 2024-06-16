@@ -233,7 +233,7 @@ const reducer = (state, action) => {
           addresses: updatedAddresses,
         },
       };
-
+    
     case "DELETE_ADDRESS":
       const currentAddress =
         state.user.currentAddress !== -1 &&
@@ -248,6 +248,7 @@ const reducer = (state, action) => {
         JSON.stringify({
           ...state.user,
           addresses: filteredAddresses,
+          currentAddress: currentAddress
         })
       );
       return {
@@ -258,7 +259,15 @@ const reducer = (state, action) => {
           currentAddress: currentAddress,
         },
       };
-
+    case "SET_CURRENT_ADDRESS":
+      const index = state.user.addresses.findIndex(add => add.id===action.id)
+      return{
+        ...state,
+        user: {
+          ...state.user,
+          currentAddress: index
+        }
+      }
     // Order Actions
     case "ADD_ORDER":
       const newOrders = [...state.orders, action.order];
@@ -269,6 +278,8 @@ const reducer = (state, action) => {
       };
 
     case "COMPLETE_ORDER":
+      localStorage.setItem("orders", JSON.stringify( [...state.orders, action.order]));
+
       return {
         ...state,
         orders: [...state.orders, action.order],

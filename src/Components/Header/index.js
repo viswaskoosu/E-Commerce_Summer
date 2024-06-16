@@ -25,7 +25,6 @@ import axios from 'axios'
 import { postReq } from "../../getReq";
 const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
-  // console.log(user)
   const [state, dispatch] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(true);
   const [isSmallScreenForUpper1, setIsSmallScreenForUpper1] = useState(true);
@@ -39,7 +38,7 @@ const Header = () => {
     setSelectedAddress((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null)
   }, [user.addresses]);
 
-
+  // console.log(selectedAddress)
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
   const handleAddressChange = (address) => {
@@ -58,6 +57,10 @@ const Header = () => {
       <Box 
         onClick={() => {
           postReq(setIsLoading, `/user/editaddress?request=currentaddress&address=${address.id}`)
+          dispatch({
+            type: "SET_CURRENT_ADDRESS",
+            id: address.id
+          })
         }} 
         style={{ fontFamily: 'Poppins' }}
       >
@@ -80,6 +83,7 @@ const Header = () => {
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("basket");
+    localStorage.removeItem("orders");
     setSelectedAddress(null)
     dispatch({
       type: "USER_LOGOUT",

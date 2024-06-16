@@ -13,4 +13,5 @@ need fix:
 3. suggesstion maybe: store token as state also. (after delete token, unless u refresh the page you can access server)
 4. global error handling in app.js when product fetch from server failed. //solved. but need special error page
 5. checkoutproduct moving to wishlist needs handling.
-6. handling on favouriting on home page
+6. handling on favouriting on home page //solved
+7. error messages little ambiguity in checkout and editbasket i think.

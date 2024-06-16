@@ -13,12 +13,11 @@ function Checkout() {
   // const uniqueItems = [
   //   ...new Map(basket.map((item) => [item.id, item])).values(),
   // ];
-  console.log(basket,"1")
   const uniqueItems = basket.map((item) => {return {id:item.id, quantity: item.quantity}})
   for (let i = 0; i<uniqueItems.length; ++i){
     uniqueItems[i] = {...uniqueItems[i], ...products.find((obj) => obj.id===uniqueItems[i].id)}
   }
-  console.log(uniqueItems,'uniqueItems')
+  // console.log(uniqueItems,'uniqueItems')
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {

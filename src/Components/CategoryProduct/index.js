@@ -3,32 +3,52 @@ import './CategoryProduct.css';
 import { Rating, Stack } from '@mui/material';
 import { useStateValue } from '../../Context/StateProvider';
 import { useNavigate } from 'react-router-dom';
+import {putReq, displayError} from '../../getReq'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingPage from "../../Components/LoadingPage";
 
 const CategoryProduct = ({ id, title, image, price, rating, mrp, reviews }) => {
   const discount = Math.round(((mrp - price) / mrp) * 100);
-  const [{ user, favouriteItems, products, basket }, dispatch] = useStateValue();
+  const [{ user, favouriteItems, products, basket , userLoggedIn}, dispatch] = useStateValue();
   const [isInBasket, setIsInBasket] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isInFavourites, setIsInFavourites] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchedProduct = products.find((product) => product.id === id);
     if (fetchedProduct) {
       const basketItem = basket.find(obj => obj.id === id);
-      setQuantity(basketItem ? basketItem.quantity : 1);
+      setQuantity(basketItem ? basketItem.quantity : 1); // useless
       setIsInBasket(!!basketItem);
       setIsInFavourites(favouriteItems.some(item => item === id));
     }
   }, [id, user, favouriteItems, basket, products]);
 
   const addToBasket = () => {
-    dispatch({
-      type: "ADD_TO_BASKET",
-      id: id,
-      quantity: 1
-    });
-    setIsInBasket(true);
+    if (!userLoggedIn){
+      dispatch({
+        type: "ADD_TO_BASKET",
+        id: id,
+        quantity: 1
+      });
+      setIsInBasket(true)
+      return
+    }
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${1}`)
+    .then(() => {
+      dispatch({
+        type: "ADD_TO_BASKET",
+        id: id,
+        quantity: 1
+      });
+      setIsInBasket(true)
+    })
+    .catch((error) => {
+        displayError(error)
+    })
   };
 
   const goToBasket = () => {
@@ -36,21 +56,32 @@ const CategoryProduct = ({ id, title, image, price, rating, mrp, reviews }) => {
   };
 
   const addToFavourites = () => {
-    if (!isInFavourites) {
+    if (!userLoggedIn){
       dispatch({
-        type: 'ADD_TO_FAVOURITES',
+        type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
         id: id
       });
-    } else {
-      dispatch({
-        type: 'REMOVE_FROM_FAVOURITES',
-        id: id,
-      });
+      setIsInFavourites(!isInFavourites);
+      return
     }
-    setIsInFavourites(!isInFavourites);
+    putReq(
+      setIsLoading,
+      `/user/editfavourites?request=${isInFavourites ? "remove": "add"}&product=${id}`
+    )
+      .then(() => {
+        dispatch({
+          type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
+          id: id
+        });
+        setIsInFavourites(!isInFavourites);
+      })
+      .catch((error) => {
+        displayError(error);
+      });
   };
 
   return (
+    isLoading? <LoadingPage/>: 
     <div className='category-product'>
       <a href={`/product/${id}`}><img className='product-image' src={image} alt={title} /></a>
       <div className='product-info'>
