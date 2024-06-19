@@ -35,14 +35,14 @@ function App() {
 
   useEffect(() => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/uploaddummyproducts`, { products: Products })
+      .post('http://localhost:4000/uploaddummyproducts', { products: Products })
       .then(response => {
         console.log('Products uploaded successfully:', response.data);
       })
       .catch(error => {
         console.error('Error uploading products:', error);
       });
-  }, []);
+  }, [dispatch]);
   return isLoading ? (
     <LoadingPage />
   ) : (
