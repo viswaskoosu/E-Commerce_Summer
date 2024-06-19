@@ -6,20 +6,19 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Rating, Stack } from "@mui/material";
 import { Link } from "react-router-dom"; // Import Link for client-side routing
 import { putReq, displayError } from "../../getReq";
-import { ErrorRounded } from "@mui/icons-material";
 import LoadingPage from "../LoadingPage";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 function CheckoutProduct({ id, title, image, price, rating, reviews }) {
-  const [{ basket, favouriteItems , userLoggedIn}, dispatch] = useStateValue();
-  // console.log(id)
+  const [{ basket, favouriteItems, userLoggedIn }, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(false);
   const index = basket.findIndex((obj) => obj.id === id);
 
   useEffect(() => {
-    if (basket[index].id !== id) return;
-    if (!userLoggedIn){
-      return
+    if (basket[index]?.id !== id) return;
+    if (!userLoggedIn) {
+      return;
     }
     putReq(
       setIsLoading,
@@ -30,14 +29,14 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   }, []);
 
   const removeFromBasket = () => {
-    if (!userLoggedIn){
+    if (!userLoggedIn) {
       dispatch({
         type: "REMOVE_FROM_BASKET",
         id: id,
       });
-      return
+      return;
     }
-    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${0}`)
+    putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=0`)
       .then(() => {
         dispatch({
           type: "REMOVE_FROM_BASKET",
@@ -50,12 +49,12 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   };
 
   const increaseQuantity = () => {
-    if (!userLoggedIn){
+    if (!userLoggedIn) {
       dispatch({
         type: "INCREASE_QUANTITY",
         id: id,
       });
-      return
+      return;
     }
     putReq(
       setIsLoading,
@@ -73,12 +72,16 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
   };
 
   const decreaseQuantity = () => {
-    if (!userLoggedIn){
+    if (basket[index].quantity === 1) {
+      removeFromBasket();
+      return;
+    }
+    if (!userLoggedIn) {
       dispatch({
         type: "DECREASE_QUANTITY",
         id: id,
       });
-      return
+      return;
     }
     putReq(
       setIsLoading,
@@ -100,12 +103,12 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
     const isFavourite = favouriteItems.some((item) => item === id);
 
     if (isFavourite) {
-      if (!userLoggedIn){
+      if (!userLoggedIn) {
         dispatch({
           type: "REMOVE_FROM_FAVOURITES",
           id: id,
         });
-        return
+        return;
       }
       putReq(setIsLoading, `/user/editfavourites?request=remove&product=${id}`)
         .then(() => {
@@ -118,20 +121,19 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
           displayError(error);
         });
     } else {
-      // let removedFromBasket = isInBasket ? false : true;
       if (isInBasket) {
-        if (!userLoggedIn){
+        if (!userLoggedIn) {
           dispatch({
             type: "REMOVE_FROM_BASKET",
             id: id,
-          })
+          });
           dispatch({
             type: "ADD_TO_FAVOURITES",
             id: id,
           });
-          return
+          return;
         }
-        putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=${0}`)
+        putReq(setIsLoading, `/user/editbasket?product=${id}&quantity=0`)
           .then(() => {
             dispatch({
               type: "REMOVE_FROM_BASKET",
@@ -150,6 +152,27 @@ function CheckoutProduct({ id, title, image, price, rating, reviews }) {
               .catch((error) => {
                 displayError(error);
               });
+          })
+          .catch((error) => {
+            displayError(error);
+          });
+      } else {
+        if (!userLoggedIn) {
+          dispatch({
+            type: "ADD_TO_FAVOURITES",
+            id: id,
+          });
+          return;
+        }
+        putReq(
+          setIsLoading,
+          `/user/editfavourites?request=add&product=${id}`
+        )
+          .then(() => {
+            dispatch({
+              type: "ADD_TO_FAVOURITES",
+              id: id,
+            });
           })
           .catch((error) => {
             displayError(error);
