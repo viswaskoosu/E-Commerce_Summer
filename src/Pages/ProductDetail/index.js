@@ -36,10 +36,8 @@ function ProductDetail() {
     if (fetchedProduct) {
       setProduct(fetchedProduct);
       const i = basket.find(obj => obj.id === id);
-      setQuantity(i ? i.quantity : 1);
       setIsInBasket(i ? true : false);
       setIsInFavourites(favouriteItems.some(item => item === id));
-      // Check if user has reviewed the product
       const userReview = fetchedProduct.reviews.find(review => review.reviewer === user.id);
       if (userReview) {
         setReviewState({
