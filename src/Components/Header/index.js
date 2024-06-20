@@ -31,12 +31,12 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   // console.log((user && user.currentAddress && user.currentAddress!==-1))
   const [searchQuery, setSearchQuery] = useState('');
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = () => {
     if (searchQuery.trim() !== '') {
       navigate(`/search-results/${encodeURIComponent(searchQuery)}`);
     }
   };
+  
   const [selectedAddress, setSelectedAddress] = useState((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null);
   const [isLoading, setIsLoading] = useState(false) //useless
   const navigate = useNavigate();
@@ -180,25 +180,27 @@ const Header = () => {
             minWidth: 0,
           }}
         >
-                    <form onSubmit={handleSearch}>
-            <InputBase
-              placeholder="Search for Products, Brands and More"
-              inputProps={{ "aria-label": "search" }}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{
-                color: "inherit",
-                backgroundColor: "white",
-                borderRadius: 1,
-                pl: 2,
-                pr: 2,
-                width: "100%",
-              }}
-            />
-            {/* <IconButton type="submit" sx={{ p: "10px", ml: 1 }}>
-              <SearchIcon />
-            </IconButton>   */}
-          </form>
+<InputBase
+  placeholder="Search for Products, Brands and More"
+  inputProps={{ "aria-label": "search" }}
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  onKeyPress={(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent default behavior of the Enter key
+      handleSearch(); 
+    }
+  }}
+  sx={{
+    color: "inherit",
+    backgroundColor: "white",
+    borderRadius: 1,
+    pl: 2,
+    pr: 2,
+    width: "100%",
+  }}
+/>
+
           <IconButton type="submit" sx={{ p: "10px", ml: 1 }} onClick={handleSearch}>
             <SearchIcon />
           </IconButton>

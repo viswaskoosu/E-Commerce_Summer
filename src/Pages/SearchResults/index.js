@@ -4,18 +4,16 @@ import './SearchResults.css';
 import Header from '../../Components/Header';
 import CategoryProduct from '../../Components/CategoryProduct';
 import { useStateValue } from '../../Context/StateProvider';
-import Categories from '../../Categories';
 
 const SearchResults = () => {
   const { query } = useParams();
   const [{ products: ProductsData }] = useStateValue();
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('rating-high');
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [filters, setFilters] = useState({
     discount: [],
-    price: [0, 0]
+    price: [0, 0],
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -29,81 +27,70 @@ const SearchResults = () => {
   }, []);
 
   useEffect(() => {
-    const searchProducts = () => {
-      const filteredProducts = ProductsData.filter(product =>
-        product.title.toLowerCase().includes(query.toLowerCase())
-      );
-      setProducts(filteredProducts);
-      setFilteredProducts(filteredProducts); // Initialize filtered products with all products
+    const calculateMaxPrice = (products) => {
+      const maxPrice = products.reduce((max, product) => (product.price > max ? product.price : max), 0);
+      return Math.ceil(maxPrice / 100) * 100;
     };
 
-    searchProducts();
-  }, [query, ProductsData]);
+    const searchProducts = () => {
+      let filtered = ProductsData.filter((product) =>
+        product.title.toLowerCase().includes(query.toLowerCase()) ||
+        product.category.toLowerCase().includes(query.toLowerCase())
+      );
 
-  useEffect(() => {
-    const maxPriceValue = Math.ceil(Math.max(...products.map(product => product.price)) / 100) * 100;
-    setMaxPrice(maxPriceValue);
-    setFilters(prevFilters => ({ ...prevFilters, price: [0, maxPriceValue] }));
-  }, [products]);
+      const maxPrice = calculateMaxPrice(filtered);
+      setMaxPrice(maxPrice);
+      setFilters((prevFilters) => ({ ...prevFilters, price: [0, maxPrice] }));
 
-  useEffect(() => {
-    const applyFilters = () => {
-      let filtered = products.filter(product => {
-        // Apply discount filter if set
-        if (filters.discount.length > 0) {
+      // Apply filters
+      if (filters.discount.length > 0) {
+        filtered = filtered.filter((product) => {
           const discountPercentage = getDiscountPercentage(product.price, product.mrp);
-          if (!filters.discount.some(option => discountPercentage >= option)) {
-            return false;
-          }
-        }
-        // Apply price range filter
+          return filters.discount.some((option) => discountPercentage >= option);
+        });
+      }
+
+      filtered = filtered.filter((product) => {
         return product.price >= filters.price[0] && product.price <= filters.price[1];
       });
+
+      // Apply sorting
+      filtered.sort((a, b) => {
+        switch (sortBy) {
+          case 'rating-high':
+            return b.rating - a.rating;
+          case 'price-high':
+            return b.price - a.price;
+          case 'price-low':
+            return a.price - b.price;
+          case 'reviews-high':
+            return b.reviews.length - a.reviews.length;
+          case 'reviews-low':
+            return a.reviews.length - b.reviews.length;
+          case 'discount-high':
+            return getDiscountPercentage(b.price, b.mrp) - getDiscountPercentage(a.price, a.mrp);
+          case 'discount-low':
+            return getDiscountPercentage(a.price, a.mrp) - getDiscountPercentage(b.price, b.mrp);
+          default:
+            return 0;
+        }
+      });
+
       setFilteredProducts(filtered);
     };
 
-    applyFilters();
-  }, [filters, products]);
+    searchProducts();
+  }, [query, ProductsData, sortBy, filters]);
 
-  useEffect(() => {
-    const sortProducts = () => {
-      let sortedProducts = [...filteredProducts];
-      switch (sortBy) {
-        case 'rating-high':
-          sortedProducts.sort((a, b) => b.rating - a.rating);
-          break;
-        case 'price-high':
-          sortedProducts.sort((a, b) => b.price - a.price);
-          break;
-        case 'price-low':
-          sortedProducts.sort((a, b) => a.price - b.price);
-          break;
-        case 'reviews-high':
-          sortedProducts.sort((a, b) => b.reviews.length - a.reviews.length);
-          break;
-        case 'reviews-low':
-          sortedProducts.sort((a, b) => a.reviews.length - b.reviews.length);
-          break;
-        case 'discount-high':
-          sortedProducts.sort((a, b) => getDiscountPercentage(b.price, b.mrp) - getDiscountPercentage(a.price, a.mrp));
-          break;
-        case 'discount-low':
-          sortedProducts.sort((a, b) => getDiscountPercentage(a.price, a.mrp) - getDiscountPercentage(b.price, b.mrp));
-          break;
-        default:
-          break;
-      }
-      setFilteredProducts(sortedProducts);
-    };
-
-    sortProducts();
-  }, [sortBy, filteredProducts]);
+  const handleSortChange = (option) => {
+    setSortBy(option);
+  };
 
   const handleFilterChange = (filterType, value) => {
     let newFilters = { ...filters };
     if (filterType === 'discount') {
       const updatedDiscounts = newFilters.discount.includes(value)
-        ? newFilters.discount.filter(discount => discount !== value)
+        ? newFilters.discount.filter((discount) => discount !== value)
         : [...newFilters.discount, value];
       newFilters.discount = updatedDiscounts;
     } else if (filterType === 'price') {
@@ -123,7 +110,7 @@ const SearchResults = () => {
       <div className="category-container">
         {isMobile ? (
           <div className="mobile-filters">
-            <select className="sort_by_buttons" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <select className="sort_by_buttons" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
               <option value="rating-high" className={`${sortBy === 'rating-high' ? 'active' : ''}`}>Highest Rating</option>
               <option value="price-high" className={`${sortBy === 'price-high' ? 'active' : ''}`}>Price High to Low</option>
               <option value="price-low" className={`${sortBy === 'price-low' ? 'active' : ''}`}>Price Low to High</option>
@@ -139,14 +126,6 @@ const SearchResults = () => {
               <option value="30">30% or more</option>
               <option value="40">40% or more</option>
             </select>
-            <input
-              type="range"
-              min="0"
-              max={maxPrice}
-              value={filters.price[1]}
-              onChange={(e) => handleFilterChange('price', [0, parseInt(e.target.value)])}
-            />
-            <span>Price up to {filters.price[1]}</span>
           </div>
         ) : (
           <div className="filters">
@@ -203,19 +182,25 @@ const SearchResults = () => {
         )}
         <div className="product-list">
           <h2>Search Results for "{query}"</h2>
-          {filteredProducts.map(product => (
-            <div className='category-items' key={product.id}>
-              <CategoryProduct
-                id={product.id}
-                title={product.title}
-                image={product.images[0]}
-                price={product.price}
-                rating={product.rating}
-                mrp={product.mrp}
-                reviews={product.reviews}
-              />
-            </div>
-          ))}
+          <div className='each_card'>
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div className='category-items' key={product.id}>
+                  <CategoryProduct
+                    id={product.id}
+                    title={product.title}
+                    image={product.images[0]}
+                    price={product.price}
+                    rating={product.rating}
+                    mrp={product.mrp}
+                    reviews={product.reviews}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No products matching "{query}".</p>
+            )}
+          </div>
         </div>
       </div>
     </div>
