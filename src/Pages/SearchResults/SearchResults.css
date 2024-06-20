@@ -85,7 +85,7 @@
 .product-list h2 {
   color: black;
   /* font-size: larger; */
-  /* font-weight: 500; */
+  font-weight: 500;
 }
 
 .product-list h2:hover {

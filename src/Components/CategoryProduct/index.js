@@ -92,7 +92,7 @@ const CategoryProduct = ({ id, title, image, price, rating, mrp, reviews }) => {
           <br />
           <span className='mrp1'>M.R.P: </span>
           <span className='mrp2'>₹{mrp}</span>
-          <span className='discount'>({discount}% off)</span>
+          {discount>0?<span className='discount'>({discount}% off)</span>:<></>}
         </p>
         <div className="rating">
           <Stack spacing={1}>
