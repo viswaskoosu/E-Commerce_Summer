@@ -96,7 +96,7 @@ function SignIn() {
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/login`, userData)
       .then((response) => {
-        if (response.data.success) {
+        // if (response.data.success) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("basket", JSON.stringify(response.data.basket));
           localStorage.setItem("orders", JSON.stringify(response.data.orders))
@@ -110,7 +110,7 @@ function SignIn() {
           });
           dispatch({ type: "SET_ORDERS", orders: response.data.orders });
           navigate("/");
-        }
+        // }
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
