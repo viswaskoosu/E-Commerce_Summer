@@ -119,7 +119,7 @@ export default function SignUp() {
       .post(`${process.env.REACT_APP_API_URL}/user/signup`, userData)
       .then((response) => {
         // console.log(response.data)
-        if (response.data.success)
+        // if (response.data.success)
           // Cookies.set("token", response.data.token)
           localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("basket", JSON.stringify(response.data.basket));
