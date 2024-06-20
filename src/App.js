@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import Header from './Components/Header';
-import Footer from './Components/Footer';
-import Home from './Pages/Home';
-import { StateProvider, useStateValue } from './Context/StateProvider';
-import reducer, { initialState } from './reducer';
-import Checkout from './Pages/Checkout';
-import SignUp from './Pages/SignUp';
-import SignIn from './Pages/SignIn';
-import ForgotPassword from './Pages/ForgotPassword';
-import FavoritesPage from './Pages/FavouritePage';
-import OrderHistory from './Pages/OrderHistory';
-import ProductDetail from './Pages/ProductDetail';
-import AccountPage from './Pages/Account';
-import ContactInfo from './Pages/ContactInfo';
-import PaymentMethods from './Components/PaymentMethods';
-import Products from './data';
-import LoginSecurity from './Pages/LoginSecurity';
-import Addresses from './Pages/Addresses';
-import Payment from './Pages/Payment';
-import Error from './Pages/Error';
-import { ToastContainer } from 'react-toastify';
-import CategoryPage from './Pages/CategoryPage';
-import LoadingPage from './Components/LoadingPage';
-import axios from 'axios';
-import NewCardForm from './Components/PaymentMethods/NewCardForm';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import Home from "./Pages/Home";
+import { StateProvider, useStateValue } from "./Context/StateProvider";
+import reducer, { initialState } from "./reducer";
+import Checkout from "./Pages/Checkout";
+import SignUp from "./Pages/SignUp";
+import SignIn from "./Pages/SignIn";
+import ForgotPassword from "./Pages/ForgotPassword";
+import FavoritesPage from "./Pages/FavouritePage";
+import OrderHistory from "./Pages/OrderHistory";
+import ProductDetail from "./Pages/ProductDetail";
+import AccountPage from "./Pages/Account";
+import ContactInfo from "./Pages/ContactInfo";
+import PaymentMethods from "./Components/PaymentMethods";
+import Products from "./data";
+import LoginSecurity from "./Pages/LoginSecurity";
+import Addresses from "./Pages/Addresses";
+import Payment from "./Pages/Payment";
+import Error from "./Pages/Error";
+import { ToastContainer } from "react-toastify";
+import CategoryPage from "./Pages/CategoryPage";
+import LoadingPage from "./Components/LoadingPage";
+import axios from "axios";
+import NewCardForm from "./Components/PaymentMethods/NewCardForm";
 
 console.log(window.innerWidth);
 
@@ -36,18 +36,21 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (window.location.pathname === '/error') return;
+    if (window.location.pathname === "/error") {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     axios
       .get(`${process.env.REACT_APP_API_URL}/product/fetchproducts`)
       .then((response) => {
         dispatch({
-          type: 'SET_PRODUCTS',
+          type: "SET_PRODUCTS",
           products: response.data,
         });
       })
       .catch(() => {
-        window.location.replace('/error');
+        window.location.replace("/error");
       })
       .finally(() => {
         setIsLoading(false);
