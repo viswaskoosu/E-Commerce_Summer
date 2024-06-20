@@ -184,37 +184,36 @@ function ProductDetail() {
 
   const submitReview = () => {
     const userId = user.id;
-
     const newReview = {
       id: Math.random().toString(36).substr(2, 9),
       rating: reviewRating,
       comment: reviewComment,
-      date: new Date().toISOString().slice(0, 10),
+      date: new Date().toISOString().slice(0, 10), 
       reviewer: userId,
     };
-
     if (hasUserReviewed) {
       const updatedReviews = product.reviews.map((review) =>
         review.reviewer === userId ? { ...review, ...newReview } : review
       );
-      setProduct({ ...product, reviews: updatedReviews });
+      setProduct({ ...product, reviews: updatedReviews }); 
     } else {
       const updatedReviews = [newReview, ...product.reviews];
-      setProduct({ ...product, reviews: updatedReviews });
+      setProduct({ ...product, reviews: updatedReviews }); 
       setReviewState({
         ...reviewState,
         hasUserReviewed: true,
         userReview: newReview,
       });
     }
-
     setReviewState({
       ...reviewState,
       hasUserReviewed: true,
       isWritingReview: false,
     });
-    console.log(product.reviews)
+  
+    console.log(product.reviews); 
   };
+  
 
   const handleEditReview = (review) => {
     setReviewState({
@@ -275,7 +274,7 @@ function ProductDetail() {
           </div>
           <div className="productDetail_info">
             <h2 className="productDetail_title">{product.title}</h2>
-            <p className="productDetail_price">Price: ${product.price}</p>
+            <p className="productDetail_price">Price: ₹{product.price}</p>
             <p className="productDetail_category">Category: {product.category}</p>
 
             <div className="specifications">
@@ -348,7 +347,8 @@ function ProductDetail() {
         {hasUserReviewed && userReview && (
           <div className="review">
             <p>
-              <strong>{user.name}</strong>{" "}
+              <strong>{user.displayName}</strong>
+              {console.log(user.displayName)}
               <button onClick={() => handleEditReview(userReview)}>
                 Edit Review
               </button>
