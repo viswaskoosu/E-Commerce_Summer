@@ -25,7 +25,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 20px;
+  margin: 20px;
 }
 
 .imagePreview {
@@ -182,20 +182,22 @@
 }
 
 .productDetail_quantityControl button {
-  background-color: #FFAD33;
-  color: white;
+  background-color: white;
+  color: rgb(77, 70, 70);
   border: none;
   padding: 10px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 35px;
   border-radius: 50%;
   margin: 0 5px;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  align-items: center;
 }
 
 .productDetail_quantityControl button:hover {
-  background-color: #e08d00;
-  transform: scale(1.1);
+  background-color: #fffefc;
+  color: black;
+  transform: scale(1.5);
 }
 
 .productDetail_description {
@@ -242,11 +244,14 @@
   margin-left: 5px;
 }
 
-.review_sort {
-  margin-bottom: 10px;
+.reviews-section {
+  margin: 5px;;
 }
 
-.review_sort button {
+.review-sort-options span {
+margin-right: 10px;
+}
+  .reviews-section button {
   background-color: #FFAD33;
   color: white;
   border: none;
@@ -256,9 +261,10 @@
   margin-right: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 10px;
 }
 
-.review_sort button:hover {
+.reviews-section button:hover {
   background-color: #e08d00;
   transform: scale(1.05);
 }
@@ -304,6 +310,65 @@
   width: 90%;
   max-width: 800px;
   outline: none;
+}
+.reviewTextarea {
+  width: 100%; /* Adjust as needed */
+  width: 300px;
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 100px; /* Set a minimum height */
+  max-height: 300px;
+  padding: 8px; /* Adjust padding as needed */
+  font-size: 14px; /* Adjust font size as needed */
+  border: 1px solid #ccc; /* Example border style */
+  border-radius: 4px; /* Example border radius */
+}
+.modalBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures buttons stick to the bottom */
+  width: 60%;
+  height: 70%; /* Ensure modal takes full height */
+}
+
+.modalContent {
+  flex: 1; /* Grow to take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  padding: 20px;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content:space-evenly;
+  gap: 10px; /* Space between buttons */
+  padding: 10px 20px;
+}
+.modalButtons button {
+  background-color: #FFAD33;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.modalButtons button:hover {
+  background-color: #e08d00;
+  transform: scale(1.05);
+}
+
+.reviewTextarea {
+  flex: 1; /* Take remaining space in modalContent */
+  resize: vertical;
+  min-height: 100px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .modalImage {
