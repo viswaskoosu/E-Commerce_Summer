@@ -28,6 +28,7 @@ import CategoryPage from './Pages/CategoryPage';
 import LoadingPage from './Components/LoadingPage';
 import axios from 'axios';
 import NewCardForm from './Components/PaymentMethods/NewCardForm';
+import SearchResults from './Pages/SearchResults';
 
 console.log(window.innerWidth);
 
@@ -77,6 +78,8 @@ function App() {
             <Route path="/loginSecurity" element={<LoginSecurity />} />
             <Route path="/payments" element={<Payment />} />
             <Route path="/addresses" element={<Addresses />} />
+        <Route path="/search-results/:query" element={<SearchResults />} /> {/* New Route for SearchResults */}
+
             {/* <Route path="/new-card-form" element={<Elements stripe={stripePromise}><NewCardForm /></Elements>} /> */}
             <Route path="/error" element={<Error />} />
           </Routes>
