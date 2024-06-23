@@ -261,6 +261,13 @@ const reducer = (state, action) => {
       };
     case "SET_CURRENT_ADDRESS":
       const index = state.user.addresses.findIndex(add => add.id===action.id)
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...state.user,
+          currentAddress: index
+        })
+      );
       return{
         ...state,
         user: {
