@@ -36,13 +36,12 @@ const Header = () => {
       navigate(`/search-results/${encodeURIComponent(searchQuery)}`);
     }
   };
-  
   const [selectedAddress, setSelectedAddress] = useState((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null);
   const [isLoading, setIsLoading] = useState(false) //useless
   const navigate = useNavigate();
   useEffect(() => {
     setSelectedAddress((user && user.currentAddress!==undefined && user.currentAddress!==-1)? user.addresses[user.currentAddress] : null)
-  }, [user.addresses]);
+  }, [user.addresses, user.currentAddress]);
 
   // console.log(selectedAddress)
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);

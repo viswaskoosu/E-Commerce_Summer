@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import "./Addresses.css"; // Ensure this CSS file is in the correct path
 import { useStateValue } from "../../Context/StateProvider";
 import Header from "../../Components/Header";
-import {postReq} from '../../getReq'
-import LoadingPage from '../../Components/LoadingPage'
-import 'react-toastify/dist/ReactToastify.css'
-import {toast} from 'react-toastify'
+import { postReq } from "../../getReq";
+import LoadingPage from "../../Components/LoadingPage";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 const countries = [
   "India",
   "United States",
@@ -89,16 +89,19 @@ function Addresses() {
           type: "DELETE_ADDRESS",
           addressId: addressId,
         });
-        toast.success('Deleted successfully')
+        toast.success("Deleted successfully");
       })
       .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error){
-          toast.error(error.response.data.error)
-        }else{
-          toast.error("Error contacting server")
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error("Error contacting server");
         }
-      })
-    
+      });
   };
 
   const handleSave = () => {
@@ -109,71 +112,79 @@ function Addresses() {
     }
 
     if (currentAddress) {
-      const addressObject = {address: newAddress}
+      const addressObject = { address: newAddress };
       // console.log(currentAddress.id, newAddress.id)
-      postReq(setIsLoading, '/user/editaddress?request=update', addressObject)
-      .then(() => {
-        dispatch({
-          type: "EDIT_ADDRESS",
-          address: { ...newAddress, id: currentAddress.id },//both ids are same.
+      postReq(setIsLoading, "/user/editaddress?request=update", addressObject)
+        .then(() => {
+          dispatch({
+            type: "EDIT_ADDRESS",
+            address: { ...newAddress, id: currentAddress.id }, //both ids are same.
+          });
+          toast.success("Edited successfully");
+        })
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            toast.error(error.response.data.error);
+          } else {
+            toast.error("Error contacting server");
+          }
+        })
+        .finally(() => {
+          setEditMode(false);
+          setCurrentAddress({ ...newAddress }); // doubt in this line... (nithin added)
+          setNewAddress({
+            name: "",
+            street: "",
+            city: "",
+            state: "",
+            zip: "",
+            country: "India",
+          });
+          setErrors({});
+          setManualCountry(false);
         });
-        toast.success('Edited successfully')
-      })
-      .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error){
-          toast.error(error.response.data.error)
-        }else{
-          toast.error("Error contacting server")
-        }
-      })
-      .finally(() => {
-        setEditMode(false);
-        setCurrentAddress({...newAddress}) // doubt in this line... (nithin added)
-        setNewAddress({
-          name: "",
-          street: "",
-          city: "",
-          state: "",
-          zip: "",
-          country: "India",
-        });
-        setErrors({});
-        setManualCountry(false);
-      })    
     } else {
       const newAddressWithId = { ...newAddress, id: Date.now().toString() };
-      const addressObject = {address: newAddressWithId}
+      const addressObject = { address: newAddressWithId };
 
-      postReq(setIsLoading, '/user/editaddress?request=add', addressObject)
-      .then(() => {
-        dispatch({
-          type: "ADD_ADDRESS",
-          address: newAddressWithId,
+      postReq(setIsLoading, "/user/editaddress?request=add", addressObject)
+        .then(() => {
+          dispatch({
+            type: "ADD_ADDRESS",
+            address: newAddressWithId,
+          });
+          toast.success("Added successfully");
+        })
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            toast.error(error.response.data.error);
+          } else {
+            toast.error("Error contacting server");
+          }
+        })
+        .finally(() => {
+          setEditMode(false);
+          setCurrentAddress({ ...newAddress });
+          setNewAddress({
+            name: "",
+            street: "",
+            city: "",
+            state: "",
+            zip: "",
+            country: "India",
+          });
+          setErrors({});
+          setManualCountry(false);
         });
-        toast.success('Added successfully')
-      })
-      .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error){
-          toast.error(error.response.data.error)
-        }else{
-          toast.error("Error contacting server")
-        }
-      })
-      .finally(() => {
-        setEditMode(false);
-        setCurrentAddress({...newAddress})
-        setNewAddress({
-          name: "",
-          street: "",
-          city: "",
-          state: "",
-          zip: "",
-          country: "India",
-        });
-        setErrors({});
-        setManualCountry(false);
-      })    
-    }  
+    }
   };
 
   const handlePinChange = (e) => {
@@ -204,7 +215,16 @@ function Addresses() {
     }
     setErrors((prevErrors) => ({ ...prevErrors, country: "" }));
   };
-
+  const changeCurrentAddress = (addressId) => {
+    postReq(
+      setIsLoading,
+      `/user/editaddress?request=currentaddress&address=${addressId}`
+    );
+    dispatch({
+      type: "SET_CURRENT_ADDRESS",
+      id: addressId,
+    });
+  };
   return !userLoggedIn ? (
     <div>404 not found</div>
   ) : (
@@ -315,6 +335,14 @@ function Addresses() {
             {user.addresses && user.addresses.length > 0 ? (
               user.addresses.map((address) => (
                 <div key={address.id} className="address_item">
+                  <button
+                    className="set_default_button"
+                    onClick={() => {
+                      changeCurrentAddress(address.id);
+                    }}
+                  >
+                    Set Default
+                  </button>
                   <p>{address.name}</p>
                   <p>{address.street}</p>
                   <p>
