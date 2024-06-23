@@ -14,7 +14,7 @@ function ContactInfo() {
 
   useEffect(() => {
     if (!userLoggedIn) {
-      navigate('/error');
+      navigate("/error");
     }
   }, [userLoggedIn, navigate]);
 
@@ -26,38 +26,60 @@ function ContactInfo() {
     <>
       <Header />
       <div className="contactInfo">
-        <Typography variant="h2" align="center" gutterBottom style={{ fontFamily: 'Poppins' }}>
+        <Typography
+          variant="h2"
+          align="center"
+          gutterBottom
+          style={{ fontFamily: "Poppins" }}
+        >
           Welcome, {user.displayName}!
         </Typography>
         <Paper elevation={3} className="infoContainer">
-          <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: 'Poppins', color: '#333' }}>
+          <Typography
+            variant="h3"
+            align="center"
+            gutterBottom
+            style={{ fontFamily: "Poppins", color: "#333" }}
+          >
             Contact Information
           </Typography>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={1}>
-              <EmailIcon style={{ fontSize: 28, color: '#666' }} />
+              <EmailIcon style={{ fontSize: 28, color: "#666" }} />
             </Grid>
             <Grid item xs={11}>
-              <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
+              <Typography
+                variant="body1"
+                style={{ fontFamily: "Poppins", fontSize: 18 }}
+              >
                 <strong>Email:</strong> {user.email}
               </Typography>
             </Grid>
             <Grid item xs={1}>
-              <PhoneIcon style={{ fontSize: 28, color: '#666' }} />
+              <PhoneIcon style={{ fontSize: 28, color: "#666" }} />
             </Grid>
             <Grid item xs={11}>
-              <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
-                <strong>Phone Number:</strong> {user.phone?`${user.phone}` : "Not provided"}
+              <Typography
+                variant="body1"
+                style={{ fontFamily: "Poppins", fontSize: 18 }}
+              >
+                <strong>Phone Number:</strong>{" "}
+                {user.phone ? `${user.phone}` : "Not provided"}
               </Typography>
             </Grid>
             <Grid item xs={1}>
-              <LocationOnIcon style={{ fontSize: 28, color: '#666' }} />
+              <LocationOnIcon style={{ fontSize: 28, color: "#666" }} />
             </Grid>
             <Grid item xs={11}>
-              <Typography variant="body1" style={{ fontFamily: 'Poppins', fontSize: 18 }}>
+              <Typography
+                variant="body1"
+                style={{ fontFamily: "Poppins", fontSize: 18 }}
+              >
                 <strong>Address:</strong>{" "}
-                {user.address
-                  ? `${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.zip}, ${user.address.country}`
+                {user.addresses.length !== 0
+                  ? user.currentAddress !== -1
+                    ? `${user.addresses[user.currentAddress].street}, ${user.addresses[user.currentAddress].city}, ${user.addresses[user.currentAddress].state}, ${user.addresses[user.currentAddress].zip}, ${user.addresses[user.currentAddress].country}`
+                    : "Select Address"
                   : "Not provided"}
               </Typography>
             </Grid>

@@ -56,5 +56,7 @@ export const postReq = async (setIsLoading, url, data={}) => {
 export const displayError = (error) => {
   if (error.response && error.response.data && error.response.data.error) {
     toast.error(error.response.data.error);
+  }else{
+    toast.error('ERROR IN SERVER')
   }
 };
