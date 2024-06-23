@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Home from './Pages/Home';

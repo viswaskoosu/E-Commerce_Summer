@@ -10,12 +10,18 @@ const SearchResults = () => {
   const [{ products: ProductsData }] = useStateValue();
   const [sortBy, setSortBy] = useState('rating-high');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  // const calculateMaxPrice = (ProductsData) => {
+  //   const maxPrice = ProductsData.reduce((max, product) => (product.price > max ? product.price : max), 0);
+  //   return Math.ceil(maxPrice / 100) * 100;
+  // };
   const [maxPrice, setMaxPrice] = useState(0);
   const [filters, setFilters] = useState({
     discount: [],
     price: [0, 0],
   });
+  const [searchPrice, setSearchPrice] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,15 +38,16 @@ const SearchResults = () => {
       return Math.ceil(maxPrice / 100) * 100;
     };
 
+    setMaxPrice(calculateMaxPrice(ProductsData));
+  }, [ProductsData]);
+
+  useEffect(() => {
     const searchProducts = () => {
       let filtered = ProductsData.filter((product) =>
         product.title.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase())
+        product.category.toLowerCase().includes(query.toLowerCase()) ||
+        product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
       );
-
-      const maxPrice = calculateMaxPrice(filtered);
-      setMaxPrice(maxPrice);
-      setFilters((prevFilters) => ({ ...prevFilters, price: [0, maxPrice] }));
 
       // Apply filters
       if (filters.discount.length > 0) {
@@ -76,11 +83,19 @@ const SearchResults = () => {
         }
       });
 
-      setFilteredProducts(filtered);
+      const uniqueFilteredProducts = filtered.filter((product, index, self) =>
+        index === self.findIndex((p) => p.id === product.id)
+      );
+
+      setFilteredProducts(uniqueFilteredProducts);
     };
 
     searchProducts();
   }, [query, ProductsData, sortBy, filters]);
+
+  useEffect(() => {
+    setSearchPrice(maxPrice);
+  }, [maxPrice, filteredProducts]);
 
   const handleSortChange = (option) => {
     setSortBy(option);

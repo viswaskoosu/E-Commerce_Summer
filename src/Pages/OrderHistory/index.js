@@ -5,8 +5,21 @@ import "./OrderHistory.css";
 import Header from "../../Components/Header";
 
 function OrderHistory() {
-  const [{ user, favouriteItems, products, basket,orders }, dispatch] =useStateValue();
+  const [{ user, favouriteItems, products, basket, orders }, dispatch] = useStateValue();
   const [filter, setFilter] = useState("all");
+  const [loadingProducts, setLoadingProducts] = useState(true); // State for loading products
+
+  useEffect(() => {
+    // Simulate fetching products (replace with actual fetching logic)
+    const fetchProducts = async () => {
+      // Replace with actual fetch logic
+      // Example: const fetchedProducts = await fetchProductsFromServer();
+      // dispatch({ type: 'SET_PRODUCTS', products: fetchedProducts });
+      setLoadingProducts(false); // Set loading to false after fetching
+    };
+
+    fetchProducts();
+  }, [dispatch]); // Ensure useEffect runs only once after mount
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -62,16 +75,23 @@ function OrderHistory() {
   const filteredOrders = filterOrders(orders, filter);
 
   useEffect(() => {
-    // Logging item titles using Products array
-    filteredOrders.forEach((order) => {
-      order.items.forEach((item) => {
-        const product = products.find((prod) => prod.id === item.id);
-        if (product) {
-          console.log(product.title);
-        }
+    if (!loadingProducts) {
+      // Logging item titles using Products array
+      filteredOrders.forEach((order) => {
+        order.items.forEach((item) => {
+          const product = products.find((prod) => prod.id === item.id);
+          if (product) {
+            console.log(product.title);
+          }
+        });
       });
-    });
-  }, [filteredOrders]); // Run effect whenever filteredOrders changes
+    }
+  }, [filteredOrders, products, loadingProducts]); // Run effect whenever filteredOrders, products, or loadingProducts changes
+
+  // Render loading state while products are being fetched
+  if (loadingProducts) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -113,6 +133,9 @@ function OrderHistory() {
               </div>
               {order.items.map((item) => {
                 const product = products.find((prod) => prod.id === item.id);
+                if (!product) {
+                  return null; // Add a null check to avoid rendering if product is undefined
+                }
                 return (
                   <div key={item.id} className="orderHistory_item">
                     <img src={product.images[0]} alt={product.title} />
