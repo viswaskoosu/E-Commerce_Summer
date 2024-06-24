@@ -17,7 +17,7 @@ const CategoryPage = () => {
     price: [0, 0]
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+console.log(maxPrice)
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);

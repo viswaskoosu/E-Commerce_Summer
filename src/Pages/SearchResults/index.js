@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Categories from '../../Categories';
 import './SearchResults.css';
 import Header from '../../Components/Header';
 import CategoryProduct from '../../Components/CategoryProduct';
@@ -9,11 +10,11 @@ const SearchResults = () => {
   const { query } = useParams();
   const [{ products: ProductsData }] = useStateValue();
   const [sortBy, setSortBy] = useState('rating-high');
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [maxPrice, setMaxPrice] = useStateValue(0);
+  const [products, setProducts] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(0);
   const [filters, setFilters] = useState({
     discount: [],
-    price: [0, 0],
+    price: [0, 0]
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -25,37 +26,38 @@ const SearchResults = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  const calculateMaxPrice = (products) => {
-    const maxPrice = products.reduce((max, product) => (product.price > max ? product.price : max), 0);
-    
-    return Math.ceil(maxPrice / 100) * 100;
-  };
-    useEffect(() => {
-      setMaxPrice(calculateMaxPrice(ProductsData));
-  }, [ProductsData]);
 
   useEffect(() => {
-    const searchProducts = () => {
-      let filtered = ProductsData.filter((product) =>
+    const filtered = ProductsData.filter((product) =>
+      product.title.toLowerCase().includes(query.toLowerCase()) ||
+      product.category.toLowerCase().includes(query.toLowerCase()) ||
+      product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+    );
+    const maxPriceValue = Math.ceil(Math.max(...filtered.map(product => product.price)) / 100) * 100;
+    setMaxPrice(maxPriceValue);
+    setFilters(prevFilters => ({ ...prevFilters, price: [0, maxPriceValue] }));
+  }, [query, ProductsData]);
+
+  useEffect(() => {
+    const fetchProducts = () => {
+      let filteredProducts = ProductsData.filter((product) =>
         product.title.toLowerCase().includes(query.toLowerCase()) ||
         product.category.toLowerCase().includes(query.toLowerCase()) ||
         product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
       );
 
-      // Apply filters
       if (filters.discount.length > 0) {
-        filtered = filtered.filter((product) => {
+        filteredProducts = filteredProducts.filter(product => {
           const discountPercentage = getDiscountPercentage(product.price, product.mrp);
-          return filters.discount.some((option) => discountPercentage >= option);
+          return filters.discount.some(option => discountPercentage >= option);
         });
       }
 
-      filtered = filtered.filter((product) => {
+      filteredProducts = filteredProducts.filter(product => {
         return product.price >= filters.price[0] && product.price <= filters.price[1];
       });
 
-      // Apply sorting
-      filtered.sort((a, b) => {
+      filteredProducts.sort((a, b) => {
         switch (sortBy) {
           case 'rating-high':
             return b.rating - a.rating;
@@ -76,29 +78,21 @@ const SearchResults = () => {
         }
       });
 
-      const uniqueFilteredProducts = filtered.filter((product, index, self) =>
-        index === self.findIndex((p) => p.id === product.id)
-      );
-
-      setFilteredProducts(uniqueFilteredProducts);
+      setProducts(filteredProducts);
     };
 
-    searchProducts();
+    fetchProducts();
   }, [query, ProductsData, sortBy, filters]);
-
-  const handleSortChange = (option) => {
-    setSortBy(option);
-  };
 
   const handleFilterChange = (filterType, value) => {
     let newFilters = { ...filters };
     if (filterType === 'discount') {
       const updatedDiscounts = newFilters.discount.includes(value)
-        ? newFilters.discount.filter((discount) => discount !== value)
+        ? newFilters.discount.filter(discount => discount !== value)
         : [...newFilters.discount, value];
       newFilters.discount = updatedDiscounts;
     } else if (filterType === 'price') {
-      newFilters.price = value;
+      newFilters.price = [filters.price[0], value]; // Correctly update the price range
     }
     setFilters(newFilters);
   };
@@ -107,13 +101,14 @@ const SearchResults = () => {
     const discount = ((mrp - price) / mrp) * 100;
     return Math.round(discount);
   };
+
   return (
     <div className='category-page'>
       <Header />
       <div className="category-container">
         {isMobile ? (
           <div className="mobile-filters">
-            <select className="sort_by_buttons" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+            <select className="sort_by_buttons" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="rating-high" className={`${sortBy === 'rating-high' ? 'active' : ''}`}>Highest Rating</option>
               <option value="price-high" className={`${sortBy === 'price-high' ? 'active' : ''}`}>Price High to Low</option>
               <option value="price-low" className={`${sortBy === 'price-low' ? 'active' : ''}`}>Price Low to High</option>
@@ -176,7 +171,7 @@ const SearchResults = () => {
                       min="0"
                       max={maxPrice}
                       value={filters.price[1]}
-                      onChange={(e) => handleFilterChange('price', [0, parseInt(e.target.value)])}
+                      onChange={(e) => handleFilterChange('price', parseInt(e.target.value))}
                     />
                   </label>
                 </li>
@@ -185,25 +180,21 @@ const SearchResults = () => {
           </div>
         )}
         <div className="product-list">
-          <h2>Search Results for "{query}"</h2>
+          <h2>Search Results</h2>
           <div className='each_card'>
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <div className='category-items' key={product.id}>
-                  <CategoryProduct
-                    id={product.id}
-                    title={product.title}
-                    image={product.images[0]}
-                    price={product.price}
-                    rating={product.rating}
-                    mrp={product.mrp}
-                    reviews={product.reviews}
-                  />
-                </div>
-              ))
-            ) : (
-              <p>No products matching "{query}".</p>
-            )}
+            {products.map(product => (
+              <div className='category-items' key={product.id}>
+                <CategoryProduct
+                  id={product.id}
+                  title={product.title}
+                  image={product.images[0]}
+                  price={product.price}
+                  rating={product.rating}
+                  mrp={product.mrp}
+                  reviews={product.reviews}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -1,0 +1,85 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 100px;
+  }
+  
+  .heading {
+    color: #FFAD33;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .contact-info, .contact-form {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  
+  .icon {
+    color: #FFAD33;
+    margin-right: 10px;
+  }
+  
+  p {
+    color: #333333;
+  }
+  
+  .contact-form h3 {
+    color: #000000;
+    margin-bottom: 10px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input.error {
+    border-color: red;
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FFAD33;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button:disabled {
+    background-color: #E6952C;
+  }
+  
+  @media (max-width: 600px) {
+    .grid {
+      flex-direction: column;
+    }
+  }
+  
