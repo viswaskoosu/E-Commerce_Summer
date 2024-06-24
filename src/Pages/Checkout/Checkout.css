@@ -1,14 +1,14 @@
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #f6f5f5;
-  overflow-x: hidden; /* Remove horizontal scroll bar */
+  overflow-x: hidden; 
 }
 
 .checkout {
   background-color: #f6f5f5;
   margin: 7px;
   display: flex;
-  flex-direction: column; /* Change to column for better mobile layout */
+  flex-direction: column; 
 }
 
 .checkout_title {

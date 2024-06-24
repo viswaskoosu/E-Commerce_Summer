@@ -10,18 +10,12 @@ const SearchResults = () => {
   const [{ products: ProductsData }] = useStateValue();
   const [sortBy, setSortBy] = useState('rating-high');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // const calculateMaxPrice = (ProductsData) => {
-  //   const maxPrice = ProductsData.reduce((max, product) => (product.price > max ? product.price : max), 0);
-  //   return Math.ceil(maxPrice / 100) * 100;
-  // };
   const [maxPrice, setMaxPrice] = useState(0);
   const [filters, setFilters] = useState({
     discount: [],
     price: [0, 0],
   });
-  const [searchPrice, setSearchPrice] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,14 +25,12 @@ const SearchResults = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  useEffect(() => {
-    const calculateMaxPrice = (products) => {
-      const maxPrice = products.reduce((max, product) => (product.price > max ? product.price : max), 0);
-      return Math.ceil(maxPrice / 100) * 100;
-    };
-
-    setMaxPrice(calculateMaxPrice(ProductsData));
+  const calculateMaxPrice = (products) => {
+    const maxPrice = products.reduce((max, product) => (product.price > max ? product.price : max), 0);
+    return Math.ceil(maxPrice / 100) * 100;
+  };
+    useEffect(() => {
+      setMaxPrice(calculateMaxPrice(ProductsData));
   }, [ProductsData]);
 
   useEffect(() => {
@@ -92,10 +84,6 @@ const SearchResults = () => {
 
     searchProducts();
   }, [query, ProductsData, sortBy, filters]);
-
-  useEffect(() => {
-    setSearchPrice(maxPrice);
-  }, [maxPrice, filteredProducts]);
 
   const handleSortChange = (option) => {
     setSortBy(option);
