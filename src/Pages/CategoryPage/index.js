@@ -157,6 +157,7 @@ const CategoryPage = () => {
                 <li>
                   <label>
                     Price up to {filters.price[1]}
+                    <br></br>
                     <input
                       type="range"
                       min="0"

@@ -10,7 +10,7 @@ const SearchResults = () => {
   const [{ products: ProductsData }] = useStateValue();
   const [sortBy, setSortBy] = useState('rating-high');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [maxPrice, setMaxPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useStateValue(0);
   const [filters, setFilters] = useState({
     discount: [],
     price: [0, 0],
@@ -27,6 +27,7 @@ const SearchResults = () => {
   }, []);
   const calculateMaxPrice = (products) => {
     const maxPrice = products.reduce((max, product) => (product.price > max ? product.price : max), 0);
+    
     return Math.ceil(maxPrice / 100) * 100;
   };
     useEffect(() => {
@@ -106,7 +107,6 @@ const SearchResults = () => {
     const discount = ((mrp - price) / mrp) * 100;
     return Math.round(discount);
   };
-
   return (
     <div className='category-page'>
       <Header />
@@ -170,6 +170,7 @@ const SearchResults = () => {
                 <li>
                   <label>
                     Price up to {filters.price[1]}
+                    <br></br>
                     <input
                       type="range"
                       min="0"
