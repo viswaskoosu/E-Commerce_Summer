@@ -7,19 +7,19 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { putReq, displayError } from "../../getReq";
 import LoadingPage from "../LoadingPage";
-function Product({ id, title, image, price, rating, category, mrp, reviews }) {
+
+function Product({ id, title, image, price, rating, category, mrp }) {
   const [{ favouriteItems, userLoggedIn }, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(false);
+
   const addToFavourites = () => {
-    // console.log(favouriteItems)
     const isInFavourites = favouriteItems.some((item) => item === id);
-    // console.log(isInFavourites)
-    if(!userLoggedIn){
+    if (!userLoggedIn) {
       dispatch({
         type: isInFavourites ? "REMOVE_FROM_FAVOURITES" : "ADD_TO_FAVOURITES",
         id: id,
       });
-      return
+      return;
     }
     putReq(
       setIsLoading,
@@ -40,11 +40,7 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
 
   const truncateTitle = (title, maxLength) => {
     if (!title) return "";
-
-    if (title.length > maxLength) {
-      return title.substring(0, maxLength) + "...";
-    }
-    return title;
+    return title.length > maxLength ? title.substring(0, maxLength) + "..." : title;
   };
 
   const discountPercentage = Math.round(((mrp - price) * 100) / mrp);
@@ -52,17 +48,17 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
   return (
     <div className="card">
       <div className="card-img-data">
-        {/* {isLoading ? (
+        {isLoading ? (
           <div className="card-img">
             <LoadingPage />
           </div>
-        ) : ( */}
-          <img src={image} alt={title} className="card-img" />
-        {/* )} */}
-        {discountPercentage>0 ?(<p className="price-off">({discountPercentage}% OFF)</p>):<></>}
-        <a href={`/product/${id}`} className="product_link">
-          <button className="view">View product</button>
-        </a>
+        ) : (
+          <div className="img_space"><img src={image} alt={title} className="card-img" /></div>
+        )}
+        {discountPercentage > 0 && (
+          <p className="price-off">({discountPercentage}% OFF)</p>
+        )}
+
         <IconContext.Provider value={{ size: "1.5rem" }}>
           <p className="add-list" onClick={addToFavourites}>
             {favouriteItems.some((item) => item === id) ? (
@@ -73,17 +69,15 @@ function Product({ id, title, image, price, rating, category, mrp, reviews }) {
           </p>
         </IconContext.Provider>
       </div>
+      <a href={`/product/${id}`} className="product_link">
+          <button className="view">View product</button>
+        </a>
       <div className="card-data">
         <p className="card-title">{truncateTitle(title, 50)}</p>
         <p className="card-category">{category}</p>
         <div className="rating">
           <Stack spacing={1}>
-            <Rating
-              name={`rating-${id}`}
-              value={rating}
-              precision={0.5}
-              readOnly
-            />
+            <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
           </Stack>
           <p className="rating-text">({rating})</p>
         </div>
