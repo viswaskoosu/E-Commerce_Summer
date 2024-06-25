@@ -7,9 +7,10 @@ import Header from "../../Components/Header";
 import { Link } from "react-router-dom";
 import image from './emptycart.png';
 import Delivery from "./delivery.png";
+import { displayError } from "../../getReq";
 
 function Checkout() {
-  const [{ basket, products }] = useStateValue();
+  const [{ basket, products },dispatch] = useStateValue();
   // const uniqueItems = [
   //   ...new Map(basket.map((item) => [item.id, item])).values(),
   // ];
@@ -30,7 +31,13 @@ function Checkout() {
       setScrollPosition(0);
     }, 100);
   };
+const clearBasket=()=>{
+      dispatch({
+        type: "EMPTY_BASKET",
 
+      });
+      return
+  };
   return (
     <>
       <Header />
@@ -66,6 +73,7 @@ function Checkout() {
                 <img src={Delivery} className="delivery" alt="" />
               </div>
               <h2 className="checkout_title">Your Cart</h2>
+              <button onClick={clearBasket}>Clear All</button>
               <div  className="lower">
               <div className="checkout-product">
               {uniqueItems.map((item) =>(

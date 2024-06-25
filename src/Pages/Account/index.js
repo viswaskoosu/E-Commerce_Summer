@@ -3,15 +3,21 @@ import './AccountPage.css';
 import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
 import Default from './default.png';
-import USER from './user.png';
-import contact from './contact.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStateValue } from '../../Context/StateProvider';
+import PersonIcon from '@mui/icons-material/Person';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import PaymentIcon from '@mui/icons-material/Payment';
+import HomeIcon from '@mui/icons-material/Home';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import SecurityIcon from '@mui/icons-material/Security';
 
 function AccountPage() {
   const [{ user }, dispatch] = useStateValue();
   const [image, setImage] = useState(""); 
   const navigate = useNavigate();
+
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("basket");
@@ -19,8 +25,9 @@ function AccountPage() {
     dispatch({
       type: "USER_LOGOUT",
     });
-    navigate('/')
+    navigate('/');
   };
+
   const checkDP = () => {
     if (user && user.photoURL && user.photoURL.includes("https")) {
       setImage(user.photoURL);
@@ -36,9 +43,11 @@ function AccountPage() {
     checkDP();
   }, [user]);
 
+  const iconStyle = { color: '#FFAD33' };
+
   return (
     <>
-    <Header/>
+      <Header />
       <div className="profile-section" style={{ height: user ? 'fit-content' : '70vh' }}>
         <div className={`account-section ${user ? 'animate' : ''}`}>
           <div className="top-section">
@@ -49,11 +58,8 @@ function AccountPage() {
               <img src={image} className="profile-img" alt="Profile" />
               <p className="profile-name">{user ? `${user.displayName}` : ""}</p>
               <p className="profile-email">{user ? `${user.email}` : ""}</p>
-              <button
-                onClick={logout}
-                className="signout-btn"
-              >
-                Sign out
+              <button onClick={logout} className="signout-btn">
+                <ExitToAppIcon style={iconStyle} /> Sign out
               </button>
             </div>
             <div className="right-account-section">
@@ -65,34 +71,37 @@ function AccountPage() {
                 <div className="personal-name">
                   <div className="name-section">
                     <p className="name-data">Name</p>
-                    <img src={USER} className="user-photo" alt="User Icon" />
+                    <PersonIcon style={iconStyle} className="user-photo" />
                   </div>
                   <p className="users-name">{user ? `${user.displayName}` : ""}</p>
                 </div>
                 <Link to="/loginSecurity" className="accountPage_section">
-                  <div>
+                  <div className='flex-row-space-between'>
                     <h3>Login & Security</h3>
-                    <p>Edit login, name, and mobile number</p>
+                    <SecurityIcon style={iconStyle} /> 
                   </div>
-                </Link>
+                    <p>Edit login, name, and mobile number</p>
+                    </Link>
                 <Link to='/contactinfo' className="accountPage_section">
                   <div className="contact-info">
                     <div className="mail-section">
                       <p className="mail-data">Contact Information</p>
-                      <img src={contact} className="mail-photo" alt="Contact Icon" />
+                      <ContactMailIcon style={iconStyle} className="mail-photo" />
                     </div>
                     <div>
                       <p>{user.email ? `${user.email}` : "Please update your Email "}</p>
-                      <p> {user.phone ? `${user.phone}` : "Please update your Mobile Number"}</p>
+                      <p>{user.phone ? `${user.phone}` : "Please update your Mobile Number"}</p>
                       <p>{user && user.addresses.length > 0 ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].state}, ${user.addresses[0].zip}, ${user.addresses[0].country}` : ""}</p>
                     </div>
                   </div>
                 </Link>
 
                 <Link to="/paymentmethods" className="accountPage_section">
-                  <div>
-                    <h3>Payment Methods</h3>
-                    {user && user.paymentMethods?.length > 0 ? (
+                  <div className='flex-row-space-between'>
+                  <h3> Payment Methods</h3>
+                  <PaymentIcon style={iconStyle} />
+                  </div>
+                  {user && user.paymentMethods?.length > 0 ? (
                       <ul className="accountPage_list">
                         {user.paymentMethods.map((method) => (
                           <li key={method.id}>
@@ -103,21 +112,23 @@ function AccountPage() {
                     ) : (
                       <p>No payment methods saved.</p>
                     )}
-                  </div>
+
                 </Link>
                 
                 <Link to="/addresses" className="accountPage_section">
-                  <div>
-                    <h3>Your Addresses</h3>
+                  <div className='flex-row-space-between'>
+                    <h3> Your Addresses</h3>
+                    <HomeIcon style={iconStyle} />
+                  </div>
                     <p>Edit addresses and add</p>
-                  </div>
-                </Link>
+                    </Link>
                 <Link to="/contactUs" className="accountPage_section">
-                  <div>
-                    <h3>Contact Us</h3>
-                    <p>Get in touch with us</p>
+                <div className='flex-row-space-between'>
+                <h3>Contact Us</h3>
+                <SupportAgentIcon style={iconStyle} /> 
                   </div>
-                </Link>
+                    <p>Get in touch with us</p>
+                    </Link>
               </div>
             </div>
           </div>

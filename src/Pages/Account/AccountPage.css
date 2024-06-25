@@ -13,7 +13,10 @@ body, html {
   align-items: center;
   width: 100%;
 }
-
+.flex-row-space-between{
+  display: flex;
+  justify-content: space-between;
+}
 .account-section {
   width: 64%;
   background-color: #fff;

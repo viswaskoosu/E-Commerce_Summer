@@ -2,49 +2,57 @@ import React, { useState } from 'react';
 import { useStateValue } from '../../Context/StateProvider';
 import { useNavigate } from 'react-router-dom';
 import './Subtotal.css';
-import {postReq, displayError} from '../../getReq'
-import LoadingPage from '../LoadingPage'
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { postReq, displayError } from '../../getReq';
+import LoadingPage from '../LoadingPage';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Subtotal() {
     const [{ basket, products, userLoggedIn }, dispatch] = useStateValue();
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const placeOrder = () => {
-        if (!userLoggedIn){
-            toast.error('Please Login to place order!')
-            return
+        if (!userLoggedIn) {
+            toast.error('Please Login to place order!');
+            return;
         }
         const order = {
             id: Date.now().toString(),
             date: new Date(),
             items: basket,
-            total: getBasketTotal(basket)
+            total: getBasketTotal(basket),
+            deliveryDate: Date.now(),
+            deliveryStatus: -1,
         };
-        // console.log(order.total)
         const serverOrder = {
             basket: basket,
-            orderAmount: getBasketTotal(basket)
-        }
+            orderAmount: getBasketTotal(basket),
+        };
+        setIsLoading(true);
         postReq(setIsLoading, '/user/checkout', serverOrder)
-        .then(() => {
-            dispatch({
-                type: 'ADD_ORDER',
-                order: order,
+            .then(() => {
+                dispatch({
+                    type: 'ADD_ORDER',
+                    order: order,
+                });
+                dispatch({
+                    type: 'EMPTY_BASKET',
+                });
+                navigate('/payments', { totalAmount: getBasketTotal(basket) }); // Pass totalAmount to Payments component
+            })
+            .catch((error) => {
+                displayError(error);
             });
-            dispatch({
-                type: 'EMPTY_BASKET',
-            });
-            navigate('/payments');
-        })
-        .catch((error) => {
-            displayError(error)
-        })
     };
 
     const getBasketTotal = (basket) =>
-        basket?.reduce((amount, item) => {const itemPrice = products.find((obj) => obj.id===item.id).price;  return (itemPrice * item.quantity + amount)}, 0);
+        basket?.reduce(
+            (amount, item) =>
+                amount +
+                products.find((obj) => obj.id === item.id).price * item.quantity,
+            0
+        );
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-IN', {
@@ -53,7 +61,7 @@ function Subtotal() {
         }).format(amount);
     };
 
-    return isLoading? <LoadingPage/>:(
+    return isLoading ? <LoadingPage /> : (
         <div className='subtotal1'>
             <p className='subtotal_text'>
                 Subtotal ({basket.length} items): <strong>{formatCurrency(getBasketTotal(basket))}</strong>

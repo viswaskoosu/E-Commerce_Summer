@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Home from './Pages/Home';
@@ -29,6 +27,7 @@ import LoadingPage from './Components/LoadingPage';
 import axios from 'axios';
 import NewCardForm from './Components/PaymentMethods/NewCardForm';
 import SearchResults from './Pages/SearchResults';
+import ContactUs from './Pages/ContactUs';
 
 console.log(window.innerWidth);
 
@@ -77,6 +76,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/contactinfo" element={<ContactInfo />} />
+            <Route path="/contactUs" element={<ContactUs />} />
             <Route path="/paymentmethods" element={<Payment />} />
             <Route path="/loginSecurity" element={<LoginSecurity />} />
             <Route path="/payments" element={<Payment />} />

@@ -341,7 +341,8 @@ function Addresses() {
                       changeCurrentAddress(address.id);
                     }}
                   >
-                    Set Default
+{
+  address.id === user.addresses[user.currentAddress].id ? 'Default Address' : 'Set as Default'}
                   </button>
                   <p>{address.name}</p>
                   <p>{address.street}</p>
