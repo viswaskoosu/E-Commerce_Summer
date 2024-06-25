@@ -22,6 +22,8 @@ function Subtotal() {
             date: new Date(),
             items: basket,
             total: getBasketTotal(basket),
+            deliveryDate: Date.now(),
+            deliveryStatus: -1,
         };
         const serverOrder = {
             basket: basket,

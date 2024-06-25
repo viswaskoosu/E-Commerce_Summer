@@ -3,11 +3,15 @@ import { useStateValue } from "../../Context/StateProvider";
 import { Link } from "react-router-dom";
 import "./OrderHistory.css";
 import Header from "../../Components/Header";
+import { displayError, putReq } from "../../getReq";
+import { toast } from "react-toastify";
 
 function OrderHistory() {
-  const [{ user, favouriteItems, products, basket, orders }, dispatch] = useStateValue();
+  const [{ user, favouriteItems, products, basket, orders, userLoggedIn }, dispatch] = useStateValue();
   const [filter, setFilter] = useState("all");
   const [loadingProducts, setLoadingProducts] = useState(true); // State for loading products
+  const [isInBasket, setIsInBasket] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Simulate fetching products (replace with actual fetching logic)
@@ -26,13 +30,34 @@ function OrderHistory() {
   };
 
   const buyItAgain = (item) => {
-    dispatch({
-      type: "ADD_TO_BASKET",
-      item: {
+    const isAlreadyInBasket = basket.some((basketItem) => basketItem.id === item.id);
+    if (isAlreadyInBasket) {
+      toast.error("Item already in basket");
+      return;
+    }
+    if (!userLoggedIn) {
+      dispatch({
+        type: "ADD_TO_BASKET",
         id: item.id,
-      },
-    });
-    window.location.href = `/checkout`;
+        quantity: 1,
+        price: item.price,
+      });
+      setIsInBasket(true);
+      return;
+    }
+    putReq(setIsLoading, `/user/editbasket?product=<span class="math-inline">\{item\.id\}&quantity\=</span>{1}`)
+      .then(() => {
+        dispatch({
+          type: "ADD_TO_BASKET",
+          id: item.id,
+          quantity: 1,
+          price: item.price,
+        });
+        setIsInBasket(true);
+      })
+      .catch((error) => {
+        displayError(error);
+      });
   };
 
   const filterOrders = (orders, filter) => {
@@ -79,6 +104,8 @@ function OrderHistory() {
       // Logging item titles using Products array
       filteredOrders.forEach((order) => {
         order.items.forEach((item) => {
+          
+
           const product = products.find((prod) => prod.id === item.id);
           if (product) {
             console.log(product.title);
@@ -92,8 +119,24 @@ function OrderHistory() {
   if (loadingProducts) {
     return <div>Loading...</div>;
   }
-
-  return (
+  const OrderStatus=(order)=> {
+    const deliveryStatusText = order.deliveryStatus === 1 ? (
+      <p>Delivered: {new Date(order.deliveryDate).toLocaleDateString()}</p>
+    ) : (
+      order.deliveryStatus === 0 ? (
+        <p>Shipped</p>
+      ) : (
+        <p>Not yet shipped</p>
+      )
+    );
+  
+    return (
+      <div>
+        {deliveryStatusText}
+      </div>
+    );
+  };
+    return (
     <>
       <Header />
       <div className="orderHistory">
@@ -118,18 +161,13 @@ function OrderHistory() {
               <p>ORDER PLACED: {new Date(order.date).toLocaleDateString()}</p>
               <p>TOTAL: ₹{(order.total || 0).toFixed(2)}</p>
               <p>SHIP TO: {order.recipient}</p>
-              <p>ORDER #: {order.id}</p>
-              <p>
-                Delivered:{" "}
-                {order.deliveryDate
-                  ? new Date(order.deliveryDate).toLocaleDateString()
-                  : "Pending"}
-              </p>
+              <p>ORDER ID: {order.id}</p>
+              {OrderStatus(order)}
               <p>Package was handed to resident</p>
               <div className="orderHistory_actions">
-                <button>Track package</button>
+                {/* <button>Track package</button>
                 <button>View order details</button>
-                <button>Invoice</button>
+                <button>Invoice</button> */}
               </div>
               {order.items.map((item) => {
                 const product = products.find((prod) => prod.id === item.id);
@@ -153,9 +191,9 @@ function OrderHistory() {
                         >
                           <button>View your item</button>
                         </Link>
-                        <button>Leave seller feedback</button>
-                        <button>Leave delivery feedback</button>
-                        <button>Write a product review</button>
+                        {/* <button>Leave seller feedback</button>
+                        <button>Leave delivery feedback</button> */}
+                        {/* <button>Write a product review</button> */}
                       </div>
                     </div>
                   </div>

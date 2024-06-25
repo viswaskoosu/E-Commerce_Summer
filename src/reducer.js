@@ -108,11 +108,11 @@ const reducer = (state, action) => {
       else {
         localStorage.setItem(
           "basket",
-          JSON.stringify([...state.basket, { id: action.id, quantity: action.quantity }])
+          JSON.stringify([...state.basket, { id: action.id, quantity: action.quantity, price: action.price }]),
         );
         return {
           ...state,
-          basket: [...state.basket, { id: action.id, quantity: action.quantity }],
+          basket: [...state.basket, { id: action.id, quantity: action.quantity, price: action.price }],
         };
       }
 
@@ -191,11 +191,13 @@ const reducer = (state, action) => {
             : item
         ),
       };
-    case "EMPTY_BASKET":
-      return {
-        ...state,
-        basket: [],
-      };
+      case "EMPTY_BASKET":
+        localStorage.removeItem("basket"); // Clear basket from localStorage
+        return {
+          ...state,
+          basket: [],
+        };
+      
     case "ADD_ADDRESS":
       const newAddresses = [...state.user.addresses, action.address];
       // localStorage.setItem('addresses', JSON.stringify(newAddresses));

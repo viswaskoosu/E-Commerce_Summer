@@ -32,7 +32,8 @@ const CategoryProduct = ({ id, title, image, price, rating, mrp, reviews }) => {
       dispatch({
         type: "ADD_TO_BASKET",
         id: id,
-        quantity: 1
+        quantity: 1,
+        price: price
       });
       setIsInBasket(true)
       return
@@ -42,7 +43,8 @@ const CategoryProduct = ({ id, title, image, price, rating, mrp, reviews }) => {
       dispatch({
         type: "ADD_TO_BASKET",
         id: id,
-        quantity: 1
+        quantity: 1,
+        price: price
       });
       setIsInBasket(true)
     })
