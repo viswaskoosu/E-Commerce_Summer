@@ -9,6 +9,8 @@ import LoadingPage from "../../Components/LoadingPage";
 import Rating from "@mui/material/Rating";
 import Header from "../../Components/Header";
 import { Modal, Box } from "@mui/material";
+import {getReq, postReq} from '../../getReq'
+import axios from 'axios'
 
 function ProductDetail() {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ function ProductDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [reviews, setReviews] = useState([])
   const [reviewState, setReviewState] = useState({
     userReview: null,
     hasUserReviewed: false,
@@ -28,7 +31,6 @@ function ProductDetail() {
     reviewComment: "",
     isWritingReview: false,
   });
-
   const { userReview, hasUserReviewed, reviewRating, reviewComment, isWritingReview } = reviewState;
 
   useEffect(() => {
@@ -38,27 +40,68 @@ function ProductDetail() {
       const i = basket.find(obj => obj.id === id);
       setIsInBasket(i ? true : false);
       setIsInFavourites(favouriteItems.some(item => item === id));
-      const userReview = fetchedProduct.reviews.find(review => review.reviewer === user.id);
-      if (userReview) {
-        setReviewState({
-          ...reviewState,
-          userReview: userReview,
-          hasUserReviewed: true,
-          reviewRating: userReview.rating,
-          reviewComment: userReview.comment,
-        });
-      } else {
-        setReviewState({
-          ...reviewState,
-          userReview: null,
-          hasUserReviewed: false,
-          reviewRating: 5,
-          reviewComment: "",
-        });
-      }
+      // const userReview = fetchedProduct.reviews.find(review => review.reviewer === user.id);
+      // // console.log(fetchedProduct.reviews)
+      // if (userReview) {
+      //   setReviewState({
+      //     ...reviewState,
+      //     userReview: userReview,
+      //     hasUserReviewed: true,
+      //     reviewRating: userReview.rating,
+      //     reviewComment: userReview.comment,
+      //   });
+      // } else {
+      //   setReviewState({
+      //     ...reviewState,
+      //     userReview: null,
+      //     hasUserReviewed: false,
+      //     reviewRating: 5,
+      //     reviewComment: "",
+      //   });
+      // }
     }
   }, [id, user, favouriteItems, products, basket]);
-
+  useEffect(() => {
+    if (userLoggedIn){
+      getReq(setIsLoading, `/product/fetchreviews?product=${id}`)
+      .then((responseData) => {
+        setReviews(responseData.reviews)
+        if (responseData.userReview) {
+            setReviewState({
+              ...reviewState,
+              userReview: responseData.userReview,
+              hasUserReviewed: true,
+              reviewRating: responseData.userReview.rating,
+              reviewComment: responseData.userReview.comment,
+            });
+          } else {
+            setReviewState({
+              ...reviewState,
+              userReview: null,
+              hasUserReviewed: false,
+              reviewRating: 5,
+              reviewComment: "",
+            });
+          }
+      })
+      .catch(() => {
+        toast.error('Error in server')
+      })
+    }else{
+      setIsLoading(true)
+      axios.get(`${process.env.REACT_APP_API_URL}/product/fetchreviews?product=${id}`)
+      .then((response) => {
+        console.log(response.data)
+        setReviews(response.data.reviews)
+      })
+      .catch(() => {
+        toast.error('Error in server')
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+    }
+  }, [userLoggedIn, product])
   const addToBasket = () => {
     if (!userLoggedIn) {
       dispatch({
@@ -154,65 +197,106 @@ function ProductDetail() {
   };
 
   const sortReviewsByDate = () => {
-    const sortedReviews = [...product.reviews].sort((a, b) => {
-      if (a.reviewer === user.id) return -1; // User's review always comes first
-      if (b.reviewer === user.id) return 1;
+    const sortedReviews = [...reviews].sort((a, b) => {
+      // if (a.reviewer === user.id) return -1; // User's review always comes first
+      // if (b.reviewer === user.id) return 1;
       return new Date(b.date) - new Date(a.date);
     });
-    setProduct({ ...product, reviews: sortedReviews });
+    // setProduct({ ...product, reviews: sortedReviews });
+    setReviews(sortedReviews)
+
   };
 
   const sortReviewsByHighestRated = () => {
-    const sortedReviews = [...product.reviews].sort((a, b) => {
-      if (a.reviewer === user.id) return -1; // User's review always comes first
-      if (b.reviewer === user.id) return 1;
+    const sortedReviews = [...reviews].sort((a, b) => {
+      // if (a.reviewer === user.id) return -1; // User's review always comes first
+      // if (b.reviewer === user.id) return 1;
       return b.rating - a.rating;
     });
-    setProduct({ ...product, reviews: sortedReviews });
+
+    setReviews(sortedReviews)
+    // setProduct({ ...product, reviews: sortedReviews });
   };
 
   const sortReviewsByLowestRated = () => {
-    const sortedReviews = [...product.reviews].sort((a, b) => {
-      if (a.reviewer === user.id) return -1; // User's review always comes first
-      if (b.reviewer === user.id) return 1;
+    const sortedReviews = [...reviews].sort((a, b) => {
+      // if (a.reviewer === user.id) return -1; // User's review always comes first
+      // if (b.reviewer === user.id) return 1;
       return a.rating - b.rating;
     });
-    setProduct({ ...product, reviews: sortedReviews });
+    console.log(sortedReviews)
+    setReviews(sortedReviews)
+    // setProduct({ ...product, reviews: sortedReviews });
   };
 
   const submitReview = () => {
-    const userId = user.id;
     const newReview = {
-      id: Math.random().toString(36).substr(2, 9),
+      // id: Math.random().toString(36).substr(2, 9),
       rating: reviewRating,
       comment: reviewComment,
-      date: new Date().toISOString().slice(0, 10), 
-      reviewer: userId,
+      date: new Date().toISOString(), 
+      // reviewer: userId,
+      reviewer: user.displayName
     };
     if (hasUserReviewed) {
-      const updatedReviews = product.reviews.map((review) =>
-        review.reviewer === userId ? { ...review, ...newReview } : review
+      // console.log(reviews)
+      const updatedReviews = reviews.map((review) =>
+        review.id === userReview.id ? newReview : review
       );
-      setProduct({ ...product, reviews: updatedReviews }); 
+      postReq(setIsLoading, '/review/editreview?request=EDIT', {...newReview, id: userReview.id, product:id})
+      .then((responseData) => {
+        setReviews(updatedReviews)
+        setReviewState({
+          ...reviewState,
+          userReview: {...userReview, ...newReview, date: responseData.date},
+          hasUserReviewed: true,
+          isWritingReview: false,
+        });
+      })
+      .catch((e) => {
+        setReviewState({
+          ...reviewState,
+          isWritingReview: false,
+        });
+        displayError(e)
+      })
+      // setReviews(updatedReviews)
+      // setProduct({ ...product, reviews: updatedReviews }); 
+
     } else {
-      const updatedReviews = [newReview, ...product.reviews];
-      setProduct({ ...product, reviews: updatedReviews }); 
-      setReviewState({
-        ...reviewState,
-        hasUserReviewed: true,
-        userReview: newReview,
-      });
+      postReq(setIsLoading, '/review/editreview?request=ADD', {...newReview, product:id})
+      .then(() => {
+        setReviews([...reviews, newReview])
+        toast.success('Added review')
+        setReviewState({
+          ...reviewState,
+          userReview: newReview,
+          hasUserReviewed: true,
+          isWritingReview: false,
+        });
+      })
+      .catch((e) => {
+        setReviewState({
+          ...reviewState,
+          isWritingReview: false,
+        });
+        displayError(e)
+      })
+      // setReviews([...reviews, newReview])
+      // const updatedReviews = [newReview, ...product.reviews];
+      // setProduct({ ...product, reviews: updatedReviews }); 
+      // setReviewState({
+      //   ...reviewState,
+      //   hasUserReviewed: true,
+      //   userReview: newReview,
+      // });
     }
-    setReviewState({
-      ...reviewState,
-      hasUserReviewed: true,
-      isWritingReview: false,
-    });
+    
   
-    console.log(product.reviews); 
+    // console.log(product.reviews); 
   };
   
-
+console.log(reviews)
   const handleEditReview = (review) => {
     setReviewState({
       ...reviewState,
@@ -224,15 +308,23 @@ function ProductDetail() {
 
   const handleDeleteReview = (reviewToDelete) => {
     if (window.confirm('Are you sure you want to delete this review?')) {
-      const updatedReviews = product.reviews.filter(
-        (review) => review.id !== reviewToDelete.id || review.reviewer !== user.id
+      const updatedReviews = reviews.filter(
+        (review) => review.id !== reviewToDelete.id
       );
-      setProduct({ ...product, reviews: updatedReviews });
-      setReviewState({
-        ...reviewState,
-        hasUserReviewed: false,
-        userReview: null,
-      });
+      postReq(setIsLoading, '/review/editreview?request=DELETE', {id: reviewToDelete.id})
+      .then(() => {
+        setReviews(updatedReviews)
+        // setProduct({ ...product, reviews: updatedReviews });
+        setReviewState({
+          ...reviewState,
+          hasUserReviewed: false,
+          userReview: null,
+        });
+      })
+      .catch((e) => {
+        displayError(e)
+      })
+        
     }
   };
 
@@ -346,7 +438,7 @@ function ProductDetail() {
           <div className="review">
             <p>
               <strong>{user.displayName}</strong>
-              {console.log(user.displayName)}
+              {/* {console.log(user.displayName)} */}
               <button onClick={() => handleEditReview(userReview)}>
                 Edit Review
               </button>
@@ -376,13 +468,14 @@ function ProductDetail() {
           <button onClick={sortReviewsByLowestRated}>Lowest Rated</button>
         </div>
 
-        {product.reviews.map((review, index) => {
-          const canEdit = userLoggedIn && review.reviewer === user.id;
+        {reviews.map((review, index) => {
+          const canEdit = userLoggedIn && userReview && review.id === userReview.id;
+          if (canEdit) return <></>
           return (
             <div key={index} className="review">
               <p>
                 <strong>{review.reviewer}</strong>{" "}
-                {canEdit && (
+                {/* {canEdit && (
                   <>
                     <button onClick={() => handleEditReview(review)}>
                       Edit Review
@@ -393,7 +486,7 @@ function ProductDetail() {
                   <button onClick={() => handleDeleteReview(review)}>
                     Delete Review
                   </button>
-                )}
+                )} */}
               </p>
               <div className="rating">
                 <Rating

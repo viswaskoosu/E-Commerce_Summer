@@ -8,7 +8,8 @@ export const getReq = async (setIsLoading, url, data={}, headers={}) => {
   if (!localStorage.getItem('user')) throw new Error('Unauthorized')
   setIsLoading(true)
   let responseData = {}
-   await axios.get(process.env.REACT_APP_API_URL+url, data, {
+   await axios.get(process.env.REACT_APP_API_URL+url,{
+    params: data,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')).token}`
