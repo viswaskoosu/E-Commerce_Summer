@@ -163,7 +163,6 @@ function OrderHistory() {
               <p>SHIP TO: {order.recipient}</p>
               <p>ORDER ID: {order.id}</p>
               {OrderStatus(order)}
-              <p>Package was handed to resident</p>
               <div className="orderHistory_actions">
                 {/* <button>Track package</button>
                 <button>View order details</button>

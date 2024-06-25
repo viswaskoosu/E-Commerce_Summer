@@ -83,17 +83,16 @@ function AccountPage() {
                     <p>Edit login, name, and mobile number</p>
                     </Link>
                 <Link to='/contactinfo' className="accountPage_section">
-                  <div className="contact-info">
-                    <div className="mail-section">
-                      <p className="mail-data">Contact Information</p>
-                      <ContactMailIcon style={iconStyle} className="mail-photo" />
+                <div className='flex-row-space-between'>
+                    <h3>Contact Information</h3>
+                    <ContactMailIcon style={iconStyle} className="mail-photo" />
                     </div>
                     <div>
                       <p>{user.email ? `${user.email}` : "Please update your Email "}</p>
                       <p>{user.phone ? `${user.phone}` : "Please update your Mobile Number"}</p>
                       <p>{user && user.addresses.length > 0 ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].state}, ${user.addresses[0].zip}, ${user.addresses[0].country}` : ""}</p>
                     </div>
-                  </div>
+
                 </Link>
 
                 <Link to="/paymentmethods" className="accountPage_section">

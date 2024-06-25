@@ -1,15 +1,9 @@
 
-.favouritesPage .card {
-  margin: 0; 
-}
+
 .wishlist-head{
   font-size: larger;
 }
-.each_card .view {
-  right: 100%;
-  left:-50%;
-  bottom: 50%;
-}
+
 .empty-list{
   display: flex;
   flex-direction: row;
@@ -28,17 +22,12 @@
   }
   
 }
-.favorites .card{
-  margin-left: 0px; 
-  margin-top: 0px;
-  margin: 0;
+.favoritesPage{
+  align-items: center;
 }
 .favoritesPage_products {
   display: flex;
   flex-direction: row;
   justify-content:flex-start;
-  width: 100%;
   flex-wrap: wrap;
-  align-self: center;
-  margin-left: 10vh;
 }

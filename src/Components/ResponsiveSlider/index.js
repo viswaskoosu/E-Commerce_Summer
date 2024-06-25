@@ -11,20 +11,22 @@ const ResponsiveSlider = ({ products }) => {
 
   const calculateSlides = (width) => {
     const minSlides = 1;
-    const maxSlides = 7;
+    const maxSlides = 6;
     const minWidth = 564;
     const maxWidth = 1620;
-
-    if (width < minWidth) {
+    let slidesToShow = Math.round(minSlides + ((maxSlides - minSlides) * (width - minWidth)) / (maxWidth - minWidth));
+    let slidesToScroll = Math.max(slidesToShow - 1, 1);
+    if(width<670){
+      slidesToShow=2;
+      slidesToScroll=1;
+   }
+    else if (width < minWidth) {
       return { slidesToShow: minSlides, slidesToScroll: minSlides };
     }
 
-    if (width > maxWidth) {
+    else if (width > maxWidth) {
       return { slidesToShow: maxSlides, slidesToScroll: maxSlides - 1 };
     }
-
-    const slidesToShow = Math.round(minSlides + ((maxSlides - minSlides) * (width - minWidth)) / (maxWidth - minWidth) -1);
-    const slidesToScroll = Math.max(slidesToShow - 1, 1);
 
     return { slidesToShow, slidesToScroll };
   };
@@ -49,9 +51,10 @@ const ResponsiveSlider = ({ products }) => {
     slidesToShow,
     slidesToScroll,
     autoplay: false,
+
   };
 
-  if (!Array.isArray(products)) {
+  if (!Array.isArray(products) || products.length === 0) {
     return null;
   }
 
