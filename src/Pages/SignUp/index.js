@@ -107,7 +107,7 @@ export default function SignUp() {
 
     const userData = {
       name: data.get("firstName") + " " + data.get("lastName"),
-      email: data.get("email"),
+      email: data.get("email").toLowerCase(),
       password: data.get("password"),
       allowExtraEmails: data.get("allowExtraEmails") === "on",
       basket: basket,
