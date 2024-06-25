@@ -86,7 +86,7 @@ function SignIn() {
     if (checkForm(data)) return;
 
     const userData = {
-      email: data.get("email"),
+      email: data.get("email").toLowerCase(),
       password: data.get("password"),
       favouriteItems: favouriteItems,
       basket: basket,
