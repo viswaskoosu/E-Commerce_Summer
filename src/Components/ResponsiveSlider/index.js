@@ -16,15 +16,20 @@ const ResponsiveSlider = ({ products }) => {
     const maxWidth = 1620;
     let slidesToShow = Math.round(minSlides + ((maxSlides - minSlides) * (width - minWidth)) / (maxWidth - minWidth));
     let slidesToScroll = Math.max(slidesToShow - 1, 1);
-    if(width<670){
-      slidesToShow=2;
-      slidesToScroll=1;
-   }
-    else if (width < minWidth) {
+    if (width <= 400) {
+      slidesToShow = 2;
+      slidesToScroll = 1;
+    } else if (width <= 500) {
+      slidesToShow = 3;
+      slidesToScroll = 2;
+    } else if (width < 630) {
+      slidesToShow = 2;
+      slidesToScroll = 1;
+    } else if (width < 890) {
+      slidesToShow = 3;
+    } else if (width < minWidth) {
       return { slidesToShow: minSlides, slidesToScroll: minSlides };
-    }
-
-    else if (width > maxWidth) {
+    } else if (width > maxWidth) {
       return { slidesToShow: maxSlides, slidesToScroll: maxSlides - 1 };
     }
 
@@ -45,13 +50,13 @@ const ResponsiveSlider = ({ products }) => {
   }, []);
 
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: true, // Keep dots for navigation if desired
+    infinite: true, // Optional: enable infinite looping
     speed: 500,
     slidesToShow,
     slidesToScroll,
     autoplay: false,
-
+    arrows: false, // Hide Previous and Next arrows
   };
 
   if (!Array.isArray(products) || products.length === 0) {
@@ -61,7 +66,7 @@ const ResponsiveSlider = ({ products }) => {
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        {products.map(product => (
+        {products.map((product) => (
           <div className="slider-item" key={product.id}>
             <Product
               id={product.id}

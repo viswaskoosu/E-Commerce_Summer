@@ -39,6 +39,14 @@ function Product({ id, title, image, price, rating, category, mrp }) {
   };
 
   const truncateTitle = (title, maxLength) => {
+    const width = window.innerWidth;
+    if(width<890 && width>500){
+      maxLength=44
+    }
+    console.log(width)
+    if(width<=500){
+      maxLength=20
+    }
     if (!title) return "";
     return title.length > maxLength ? title.substring(0, maxLength) + "..." : title;
   };
@@ -74,11 +82,16 @@ function Product({ id, title, image, price, rating, category, mrp }) {
         </a>
       <div className="card-data">
         <p className="card-title">{truncateTitle(title, 50)}</p>
-        <p className="card-category">{category}</p>
         <div className="rating">
-          <Stack spacing={1}>
-            <Rating name={`rating-${id}`} value={rating} precision={0.5} readOnly />
-          </Stack>
+        <Stack spacing={1} className="rating-stars custom-rating-stars">
+          <Rating
+            name={`rating-${id}`}
+            value={rating}
+            precision={0.5}
+            readOnly // Add readOnly prop here
+
+          />
+        </Stack>
           <p className="rating-text">({rating})</p>
         </div>
         <div className="card-price">

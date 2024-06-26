@@ -14,6 +14,12 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+@media (max-width: 880px) {
+  #category-select {
+    font-size: 10px;
+  }
+}
+
 .category_images{
   margin: 10px;
 }
