@@ -4,7 +4,7 @@ import { useStateValue } from "../../Context/StateProvider";
 import Header from "../../Components/Header";
 import { postReq } from "../../getReq";
 import LoadingPage from "../../Components/LoadingPage";
-import "react toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 const countries = [
   "India",
