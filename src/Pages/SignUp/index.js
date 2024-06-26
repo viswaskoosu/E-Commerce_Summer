@@ -16,10 +16,11 @@ import { Link as RouterLink, useNavigate } from "react-router-dom"; // Import Li
 import axios from "axios";
 import Header from "../../Components/Header";
 import { useStateValue } from "../../Context/StateProvider";
-import {toast} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "../../Components/LoadingPage";
-
+import { displayError } from "../../getReq";
+import OTPInput from "./OTP";
 // Create a custom theme with the desired color scheme
 const signUpTheme = createTheme({
   palette: {
@@ -38,32 +39,39 @@ const signUpTheme = createTheme({
 
 // }
 export default function SignUp() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [{ userLoggedIn , basket, favouriteItems}, dispatch] = useStateValue();
+  const [{ userLoggedIn, basket, favouriteItems }, dispatch] = useStateValue();
   if (userLoggedIn) {
     navigate("/account");
   }
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailForOtp, setEmailForOtp] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
+  const [otpMode, setOtpMode] = useState(false);
+  const [otp, setOtp] = useState("");
   const removeErrorMessage = (e) => {
     if (e.target.id === "email") {
+      setEmailForOtp(e.target.value);
+      setEmail(e.target.value);
       setEmailError(false);
     }
     if (e.target.id === "firstName") {
+      setFirstName(e.target.value);
       setFirstNameError(false);
     }
     if (e.target.id === "lastName") {
+      setLastName(e.target.value);
       setLastNameError(false);
     }
     if (e.target.id === "password") {
+      setPassword(e.target.value);
       setPasswordError(false);
     }
   };
@@ -111,39 +119,40 @@ export default function SignUp() {
       password: data.get("password"),
       allowExtraEmails: data.get("allowExtraEmails") === "on",
       basket: basket,
-      favouriteItems: favouriteItems
+      favouriteItems: favouriteItems,
+      otp: otp,
     };
     // console.log(userData);
-    setIsLoading(true)
+    setIsLoading(true);
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/signup`, userData)
       .then((response) => {
         // console.log(response.data)
         // if (response.data.success)
-          // Cookies.set("token", response.data.token)
-          localStorage.setItem("user", JSON.stringify(response.data.user));
+        // Cookies.set("token", response.data.token)
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("basket", JSON.stringify(response.data.basket));
-        localStorage.setItem("orders", JSON.stringify(response.data.orders))
+        localStorage.setItem("orders", JSON.stringify(response.data.orders));
         toast.success("Signed up successfully");
         dispatch({
           type: "USER_LOGIN",
         });
         dispatch({
-          type: 'SET_USER',
-          user: response.data.user
-        })
+          type: "SET_USER",
+          user: response.data.user,
+        });
         dispatch({
-          type: 'SET_BASKET',
-          basket: response.data.basket
-        })
+          type: "SET_BASKET",
+          basket: response.data.basket,
+        });
         dispatch({
-          type: 'SET_FAVOURITE_ITEMS',
-          favouriteItems: response.data.user.favouriteItems
-        })
+          type: "SET_FAVOURITE_ITEMS",
+          favouriteItems: response.data.user.favouriteItems,
+        });
         dispatch({
-          type: 'SET_ORDERS',
-          orders: response.data.user.orders
-        })
+          type: "SET_ORDERS",
+          orders: response.data.user.orders,
+        });
         navigate("/");
       })
       .catch((error) => {
@@ -156,11 +165,23 @@ export default function SignUp() {
         } else toast.error("Couldn't sign up (Server error)");
       })
       .finally(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       });
     // Redirect or handle form submission logic here
   };
-
+  const sendOtp = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/user/sendotp`, {
+        email: emailForOtp,
+      })
+      .then(() => {
+        toast.success("OTP SENT. Check Mail");
+        setOtpMode(true);
+      })
+      .catch((e) => {
+        displayError(e);
+      });
+  };
   return userLoggedIn ? (
     <>404 not found</>
   ) : isLoading ? (
@@ -200,6 +221,7 @@ export default function SignUp() {
                     fullWidth
                     id="firstName"
                     label="First Name"
+                    value={firstName}
                     autoFocus
                     error={firstNameError}
                     helperText={firstNameError}
@@ -214,6 +236,7 @@ export default function SignUp() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="family-name"
+                    value={lastName}
                     error={lastNameError}
                     helperText={lastNameError}
                     onChange={removeErrorMessage}
@@ -227,6 +250,7 @@ export default function SignUp() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    value={email}
                     inputProps={{
                       type: "email",
                     }}
@@ -243,6 +267,7 @@ export default function SignUp() {
                     label="Password"
                     type="password"
                     id="password"
+                    value={password}
                     autoComplete="new-password"
                     error={passwordError}
                     helperText={passwordError}
@@ -259,7 +284,7 @@ export default function SignUp() {
                 </Grid>
               </Grid>
               <Button
-                type="submit"
+                onClick={sendOtp}
                 fullWidth
                 variant="contained"
                 sx={{
@@ -270,8 +295,36 @@ export default function SignUp() {
                 }}
                 // onClick={signUp}
               >
-                Sign Up
+                {otpMode ? "Resend OTP" : "Send OTP"}
               </Button>
+              {otpMode ? (
+                <>
+                  <OTPInput
+                    separator={<span></span>}
+                    otp={otp}
+                    setOtp={setOtp}
+                    length={6}
+                  />
+                  {/* <span>Entered value: {otp}</span> */}
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      bgcolor: signUpTheme.palette.primary.main,
+                      color: signUpTheme.palette.textPrimary.main,
+                    }}
+                    // onClick={signUp}
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
+
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link
