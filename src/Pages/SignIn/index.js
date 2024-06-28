@@ -108,7 +108,7 @@ function SignIn() {
             type: "SET_FAVOURITE_ITEMS",
             favouriteItems: response.data.user.favouriteItems,
           });
-          dispatch({ type: "SET_ORDERS", orders: response.data.orders });
+          // dispatch({ type: "SET_ORDERS", orders: response.data.orders });
           navigate("/");
         // }
       })

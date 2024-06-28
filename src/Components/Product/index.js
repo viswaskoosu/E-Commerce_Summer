@@ -43,7 +43,7 @@ function Product({ id, title, image, price, rating, category, mrp }) {
     if(width<890 && width>500){
       maxLength=44
     }
-    console.log(width)
+    // console.log(width)
     if(width<=500){
       maxLength=20
     }

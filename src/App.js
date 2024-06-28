@@ -28,8 +28,8 @@ import axios from 'axios';
 import NewCardForm from './Components/PaymentMethods/NewCardForm';
 import SearchResults from './Pages/SearchResults';
 import ContactUs from './Pages/ContactUs';
-
-console.log(window.innerWidth);
+import {getReq} from  './getReq'
+// console.log(window.innerWidth);
 
 function App() {
   const [, dispatch] = useStateValue();
@@ -48,6 +48,17 @@ function App() {
           type: "SET_PRODUCTS",
           products: response.data,
         });
+        getReq(setIsLoading, `/user/fetchuser`)
+        .then((responseData) => {
+          // console.log(responseData)
+          dispatch({
+            type: "SET_USER",
+            user: responseData
+          })
+        })
+        .catch(() => {
+          window.location.replace("/error");
+        })
       })
       .catch(() => {
         window.location.replace("/error");

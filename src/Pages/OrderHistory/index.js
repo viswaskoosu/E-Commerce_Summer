@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useStateValue } from "../../Context/StateProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./OrderHistory.css";
 import Header from "../../Components/Header";
-import { displayError, putReq } from "../../getReq";
+import { displayError, putReq, getReq } from "../../getReq";
 import { toast } from "react-toastify";
-
+import LoadingPage from "../../Components/LoadingPage";
+import "react-toastify/dist/ReactToastify.css";
 function OrderHistory() {
-  const [{ user, favouriteItems, products, basket, orders, userLoggedIn }, dispatch] = useStateValue();
+  const navigate = useNavigate()
+  const [{ user, favouriteItems, products, basket, userLoggedIn }, dispatch] = useStateValue();
   const [filter, setFilter] = useState("all");
   const [loadingProducts, setLoadingProducts] = useState(true); // State for loading products
   const [isInBasket, setIsInBasket] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [filteredOrders, setFilteredOrders] = useState([])
   useEffect(() => {
     // Simulate fetching products (replace with actual fetching logic)
+    getReq(setIsLoading, '/user/fetchorders')
+    .then(responseData =>{
+      const newOrders = filterOrders(responseData, "all")
+      console.log(newOrders)
+      setFilteredOrders(newOrders)
+    })
+    .catch(() => {
+      navigate('/error')
+    })
     const fetchProducts = async () => {
       // Replace with actual fetch logic
       // Example: const fetchedProducts = await fetchProductsFromServer();
@@ -30,7 +41,8 @@ function OrderHistory() {
   };
 
   const buyItAgain = (item) => {
-    const isAlreadyInBasket = basket.some((basketItem) => basketItem.id === item.id);
+    console.log(item)
+    const isAlreadyInBasket = basket.some((basketItem) => basketItem.id === item.product);
     if (isAlreadyInBasket) {
       toast.error("Item already in basket");
       return;
@@ -38,18 +50,18 @@ function OrderHistory() {
     if (!userLoggedIn) {
       dispatch({
         type: "ADD_TO_BASKET",
-        id: item.id,
+        id: item.product,
         quantity: 1,
         price: item.price,
       });
       setIsInBasket(true);
       return;
     }
-    putReq(setIsLoading, `/user/editbasket?product=<span class="math-inline">\{item\.id\}&quantity\=</span>{1}`)
+    putReq(setIsLoading, `/user/editbasket?product=${item.product}&quantity=1`)
       .then(() => {
         dispatch({
           type: "ADD_TO_BASKET",
-          id: item.id,
+          id: item.product,
           quantity: 1,
           price: item.price,
         });
@@ -62,81 +74,79 @@ function OrderHistory() {
 
   const filterOrders = (orders, filter) => {
     const now = new Date();
-    let filteredOrders;
+    let newOrders =[];
 
     switch (filter) {
       case "3months":
-        filteredOrders = orders.filter(
-          (order) => now - new Date(order.date) <= 90 * 24 * 60 * 60 * 1000
+        newOrders = orders.filter(
+          (order) => now - new Date(order.orderDate) <= 90 * 24 * 60 * 60 * 1000
         );
         break;
       case "6months":
-        filteredOrders = orders.filter(
-          (order) => now - new Date(order.date) <= 180 * 24 * 60 * 60 * 1000
+        newOrders = orders.filter(
+          (order) => now - new Date(order.orderDate) <= 180 * 24 * 60 * 60 * 1000
         );
         break;
       case "1year":
-        filteredOrders = orders.filter(
-          (order) => now - new Date(order.date) <= 365 * 24 * 60 * 60 * 1000
+        newOrders = orders.filter(
+          (order) => now - new Date(order.orderDate) <= 365 * 24 * 60 * 60 * 1000
         );
         break;
       case "2years":
-        filteredOrders = orders.filter(
-          (order) => now - new Date(order.date) <= 2 * 365 * 24 * 60 * 60 * 1000
+        newOrders = orders.filter(
+          (order) => now - new Date(order.orderDate) <= 2 * 365 * 24 * 60 * 60 * 1000
         );
         break;
       case "5years":
-        filteredOrders = orders.filter(
-          (order) => now - new Date(order.date) <= 5 * 365 * 24 * 60 * 60 * 1000
+        newOrders = orders.filter(
+          (order) => now - new Date(order.orderDate) <= 5 * 365 * 24 * 60 * 60 * 1000
         );
         break;
       default:
-        filteredOrders = orders;
+        newOrders = orders;
     }
-
-    return filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort orders by date in descending order
+    
+    return newOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // Sort orders by date in descending order
   };
 
-  const filteredOrders = filterOrders(orders, filter);
+  // console.log(filteredOrders)
+  // useEffect(() => {
+  //   if (!loadingProducts) {
+  //     // Logging item titles using Products array
+  //     filteredOrders.forEach((order) => {
+  //       order.cartItems.forEach((item) => {
+        
+  //         const product = products.find((prod) => prod.id === item.product);
+  //         if (product) {
+  //           console.log(product.title);
+  //         }
+  //       });
+  //     });
+  //   }
+  // }, [filteredOrders, products, loadingProducts]); // Run effect whenever filteredOrders, products, or loadingProducts changes
 
-  useEffect(() => {
-    if (!loadingProducts) {
-      // Logging item titles using Products array
-      filteredOrders.forEach((order) => {
-        order.items.forEach((item) => {
-          
-
-          const product = products.find((prod) => prod.id === item.id);
-          if (product) {
-            console.log(product.title);
-          }
-        });
-      });
-    }
-  }, [filteredOrders, products, loadingProducts]); // Run effect whenever filteredOrders, products, or loadingProducts changes
-
-  // Render loading state while products are being fetched
-  if (loadingProducts) {
-    return <div>Loading...</div>;
-  }
-  const OrderStatus=(order)=> {
-    const deliveryStatusText = order.deliveryStatus === 1 ? (
-      <p>Delivered: {new Date(order.deliveryDate).toLocaleDateString()}</p>
+  // // Render loading state while products are being fetched
+  // if (loadingProducts) {
+  //   return <div>Loading...</div>;
+  // }
+  const OrderStatus=(item)=> {
+    const deliveryStatusText = item.orderStatus === 1 ? (
+      <>Delivered: {item.deliveryDate? new Date(item.deliveryDate).toLocaleDateString(): ""}</>
     ) : (
-      order.deliveryStatus === 0 ? (
-        <p>Shipped</p>
+      item.orderStatus === 0 ? (
+        <>Shipped</>
       ) : (
-        <p>Not yet shipped</p>
+        <>Not yet shipped</>
       )
     );
   
     return (
-      <div>
+      <>
         {deliveryStatusText}
-      </div>
+      </>
     );
   };
-    return (
+    return (isLoading? <LoadingPage/>:
     <>
       <Header />
       <div className="orderHistory">
@@ -158,34 +168,37 @@ function OrderHistory() {
           filteredOrders.map((order, index) => (
             <div key={order.id} className="orderHistory_order">
               <h3>Order {index + 1}</h3>
-              <p>ORDER PLACED: {new Date(order.date).toLocaleDateString()}</p>
-              <p>TOTAL: ₹{(order.total || 0).toFixed(2)}</p>
-              <p>SHIP TO: {order.recipient}</p>
+              <p>ORDER PLACED: {new Date(order.orderDate).toLocaleDateString()}</p>
+              <p>TOTAL: ₹{(order.orderAmount || 0).toFixed(2)}</p>
+              {/* <p>SHIP TO: {order.shippingAddress?.toString()}</p> */}
+              <p>SHIPPED TO: {`${order.shippingAddress?.street}, ${order.shippingAddress?.city}, ${order.shippingAddress?.state}, ${order.shippingAddress?.country}, ${order.shippingAddress?.zip}`}</p>
+
               <p>ORDER ID: {order.id}</p>
-              {OrderStatus(order)}
+              {/* {OrderStatus(order)} */}
               <div className="orderHistory_actions">
                 {/* <button>Track package</button>
                 <button>View order details</button>
                 <button>Invoice</button> */}
               </div>
-              {order.items.map((item) => {
-                const product = products.find((prod) => prod.id === item.id);
+              {order.cartItems.map((item) => {
+                const product = products.find((prod) => prod.id === item.product);
                 if (!product) {
                   return null; // Add a null check to avoid rendering if product is undefined
                 }
                 return (
-                  <div key={item.id} className="orderHistory_item">
+                  <div key={item.product} className="orderHistory_item" style={{backgroundColor: item.orderStatus===0? '#b3ffb3': '#f4f4f4'}}>
                     <img src={product.images[0]} alt={product.title} />
                     <div className="orderHistory_info">
                       <p>{product.title}</p>
                       <p>Quantity: {item.quantity}</p>
-                      <p>Price: ₹{item.price}</p>
+                      <p>Price: ₹{product.price}</p>
+                        <p>Delivery Status: {OrderStatus(item)}</p>
                       <div className="orderHistory_itemActions">
-                        <button onClick={() => buyItAgain(item)}>
+                        <button onClick={() => buyItAgain({...item, price: product.price})}>
                           Buy it again
                         </button>
                         <Link
-                          to={`/product/${item.id}`}
+                          to={`/product/${item.product}`}
                           className="product_link"
                         >
                           <button>View your item</button>
