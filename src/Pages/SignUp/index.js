@@ -170,6 +170,7 @@ export default function SignUp() {
     // Redirect or handle form submission logic here
   };
   const sendOtp = () => {
+    setIsLoading(true)
     axios
       .post(`${process.env.REACT_APP_API_URL}/user/sendotp`, {
         email: emailForOtp,
@@ -180,7 +181,10 @@ export default function SignUp() {
       })
       .catch((e) => {
         displayError(e);
-      });
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   };
   return userLoggedIn ? (
     <>404 not found</>
