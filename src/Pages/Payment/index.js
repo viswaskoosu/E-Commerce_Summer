@@ -12,7 +12,6 @@ function Payments() {
   const [{basket, products, user, userLoggedIn }, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const totalAmount = 100;
   const existingPaymentMethods = user?.paymentMethods || [];
   const [currentAddress, setCurrentAddress] = useState(null);
 
@@ -28,6 +27,8 @@ function Payments() {
           products.find((obj) => obj.id === item.id).price * item.quantity,
       0
   );
+  const totalAmount = basket? getBasketTotal(basket): 0;
+
   const placeOrder = () => {
     if (!userLoggedIn) {
         toast.error('Please Login to place order!');
