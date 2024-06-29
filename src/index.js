@@ -11,11 +11,14 @@ import Products from './data'
 // axios.get('http://localhost:4000/product/fetchproducts')
 // axios.post('http://localhost:4000/product/uploaddummyproducts', {products: Products})
 // Initialize localStorage for application state
-const savedBasket = localStorage.getItem('basket') ? JSON.parse(localStorage.getItem('basket')) : [];
-const savedFavourites = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];
+const userLoggedIn = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token? true: false
+console.log(userLoggedIn)
+const savedBasket = !userLoggedIn && JSON.parse(localStorage.getItem('user')) && JSON.parse(localStorage.getItem('user')).basket? JSON.parse(localStorage.getItem('user')).basket : [];
+const savedFavourites = !userLoggedIn && JSON.parse(localStorage.getItem('user')) && JSON.parse(localStorage.getItem('user')).favouriteItems ? JSON.parse(localStorage.getItem('user')).favouriteItems : [];
 // const savedAddresses = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).addresses : [];
 // const savedOrders = localStorage.getItem('orders') ? JSON.parse(localStorage.getItem('orders')) : [];
-const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
+// const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
+console.log(savedBasket, savedFavourites)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -27,9 +30,10 @@ root.render(
       user: {
         // ...initialState.user,
         // addresses: savedAddresses,
-        ...user
+        // ...user
+        addresses: []
       },
-      userLoggedIn: localStorage.getItem('user')? true: false,
+      userLoggedIn: userLoggedIn,
       // orders: savedOrders,
       products: []
     }} reducer={reducer}>

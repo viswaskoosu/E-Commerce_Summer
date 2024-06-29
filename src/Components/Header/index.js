@@ -25,6 +25,7 @@ import axios from 'axios'
 import { postReq } from "../../getReq";
 const Header = () => {
   const [{ basket, favouriteItems, user, userLoggedIn }] = useStateValue();
+  // console.log(user)
   const [state, dispatch] = useStateValue();
   const [isSmallScreen, setIsSmallScreen] = useState(true);
   const [isSmallScreenForUpper1, setIsSmallScreenForUpper1] = useState(true);

@@ -104,15 +104,24 @@ const reducer = (state, action) => {
         //   ...state,
         //   basket: updatedBasket,
         // };
-      } 
-      else {
-        localStorage.setItem(
-          "basket",
-          JSON.stringify([...state.basket, { id: action.id, quantity: action.quantity, price: action.price }]),
-        );
+      } else {
+        if (!state.userLoggedIn) {
+          const localUser = JSON.parse(localStorage.getItem("user"))
+            ? JSON.parse(localStorage.getItem("user"))
+            : {};
+          //  console.log(localUser)
+          localUser.basket = [
+            ...state.basket,
+            { id: action.id, quantity: action.quantity, price: action.price },
+          ];
+          localStorage.setItem("user", JSON.stringify(localUser));
+        }
         return {
           ...state,
-          basket: [...state.basket, { id: action.id, quantity: action.quantity, price: action.price }],
+          basket: [
+            ...state.basket,
+            { id: action.id, quantity: action.quantity, price: action.price },
+          ],
         };
       }
 
@@ -120,7 +129,14 @@ const reducer = (state, action) => {
       const updatedBasket = state.basket.filter(
         (item) => item.id !== action.id
       );
-      localStorage.setItem("basket", JSON.stringify(updatedBasket));
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.basket = updatedBasket;
+        localStorage.setItem("user", JSON.stringify(localUser));
+      }
+      // localStorage.setItem("basket", JSON.stringify(updatedBasket));
       return {
         ...state,
         basket: updatedBasket,
@@ -130,44 +146,71 @@ const reducer = (state, action) => {
       const increasedBasket = state.basket.map((item) =>
         item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
       );
-      localStorage.setItem("basket", JSON.stringify(increasedBasket));
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.basket = updatedBasket;
+        localStorage.setItem("user", JSON.stringify(localUser));
+      }
+      // localStorage.setItem("basket", JSON.stringify(increasedBasket));
       return {
         ...state,
         basket: increasedBasket,
       };
 
-      case "ADD_TO_FAVOURITES":
+    case "ADD_TO_FAVOURITES": {
       const newFavourites = [...state.favouriteItems, action.id];
-      const newUser = state.user;
+      // const newUser = state.user;
       // console.log(state)
-      newUser.favouriteItems = newFavourites;
-      localStorage.setItem("user", JSON.stringify(newUser));
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.favouriteItems = newFavourites;
+        // newUser.favouriteItems = newFavourites;
+        localStorage.setItem("user", JSON.stringify(localUser));
+      }
       return {
         ...state,
         favouriteItems: newFavourites,
       };
-
+    }
     case "REMOVE_FROM_FAVOURITES": {
       // const updatedFavourites = state.favouriteItems.filter(item => item.id !== action.id);
       const updatedFavourites = state.favouriteItems.filter(
         (item) => item !== action.id
       );
-      const newUser = state.user;
-      newUser.favouriteItems = updatedFavourites;
-      localStorage.setItem("user", JSON.stringify(newUser));
+      // const newUser = state.user;
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.favouriteItems = updatedFavourites;
+        // newUser.favouriteItems = updatedFavourites;
+        localStorage.setItem("user", JSON.stringify(JSON.stringify(localUser)));
+      }
       return {
         ...state,
         favouriteItems: updatedFavourites,
       };
     }
 
-    case "DECREASE_QUANTITY":
+    case "DECREASE_QUANTITY": {
       const decreasedBasket = state.basket.map((item) =>
         item.id === action.id
           ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
           : item
       );
-      localStorage.setItem("basket", JSON.stringify(decreasedBasket));
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.basket = decreasedBasket;
+        localStorage.setItem("user", JSON.stringify(JSON.stringify(localUser)));
+      }
+      // localStorage.setItem("basket", JSON.stringify(decreasedBasket));
+
       return {
         ...state,
         basket: state.basket.map((item) =>
@@ -176,38 +219,48 @@ const reducer = (state, action) => {
             : item
         ),
       };
-    case "SET_QUANTITY":
+    }
+    case "SET_QUANTITY": {
       const newBasket = state.basket.map((item) =>
-        item.id === action.id
-          ? { ...item, quantity: action.quantity }
-          : item
+        item.id === action.id ? { ...item, quantity: action.quantity } : item
       );
-      localStorage.setItem("basket", JSON.stringify(newBasket));
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.basket = newBasket;
+        localStorage.setItem("user", JSON.stringify(JSON.stringify(localUser)));
+      }
+      // localStorage.setItem("basket", JSON.stringify(newBasket));
       return {
         ...state,
-        basket: state.basket.map((item) =>
-          item.id === action.id
-            ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
-            : item
-        ),
+        basket: newBasket,
       };
-      case "EMPTY_BASKET":
-        localStorage.removeItem("basket"); // Clear basket from localStorage
-        return {
-          ...state,
-          basket: [],
-        };
-      
+    }
+    case "EMPTY_BASKET": {
+      // localStorage.removeItem("basket"); // Clear basket from localStorage
+      if (!state.userLoggedIn) {
+        const localUser = JSON.parse(localStorage.getItem("user"))
+          ? JSON.parse(localStorage.getItem("user"))
+          : {};
+        localUser.basket = [];
+        localStorage.setItem("user", JSON.stringify(JSON.stringify(localUser)));
+      }
+      return {
+        ...state,
+        basket: [],
+      };
+    }
     case "ADD_ADDRESS":
       const newAddresses = [...state.user.addresses, action.address];
       // localStorage.setItem('addresses', JSON.stringify(newAddresses));
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...state.user,
-          addresses: newAddresses,
-        })
-      );
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     ...state.user,
+      //     addresses: newAddresses,
+      //   })
+      // );
       return {
         ...state,
         user: {
@@ -221,13 +274,13 @@ const reducer = (state, action) => {
         address.id === action.address.id ? action.address : address
       );
       // localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...state.user,
-          addresses: updatedAddresses,
-        })
-      );
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     ...state.user,
+      //     addresses: updatedAddresses,
+      //   })
+      // );
       return {
         ...state,
         user: {
@@ -235,7 +288,7 @@ const reducer = (state, action) => {
           addresses: updatedAddresses,
         },
       };
-    
+
     case "DELETE_ADDRESS":
       const currentAddress =
         state.user.currentAddress !== -1 &&
@@ -245,14 +298,14 @@ const reducer = (state, action) => {
       const filteredAddresses = state.user.addresses.filter(
         (address) => address.id !== action.addressId
       );
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...state.user,
-          addresses: filteredAddresses,
-          currentAddress: currentAddress
-        })
-      );
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     ...state.user,
+      //     addresses: filteredAddresses,
+      //     currentAddress: currentAddress
+      //   })
+      // );
       return {
         ...state,
         user: {
@@ -262,32 +315,34 @@ const reducer = (state, action) => {
         },
       };
     case "SET_CURRENT_ADDRESS":
-      const index = state.user.addresses.findIndex(add => add.id===action.id)
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...state.user,
-          currentAddress: index
-        })
+      const index = state.user.addresses.findIndex(
+        (add) => add.id === action.id
       );
-      return{
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     ...state.user,
+      //     currentAddress: index
+      //   })
+      // );
+      return {
         ...state,
         user: {
           ...state.user,
-          currentAddress: index
-        }
-      }
+          currentAddress: index,
+        },
+      };
     // Order Actions
     case "ADD_ORDER":
       const newOrders = [...state.orders, action.order];
-      localStorage.setItem("orders", JSON.stringify(newOrders));
+      // localStorage.setItem("orders", JSON.stringify(newOrders));
       return {
         ...state,
         orders: newOrders,
       };
 
     case "COMPLETE_ORDER":
-      localStorage.setItem("orders", JSON.stringify( [...state.orders, action.order]));
+      // localStorage.setItem("orders", JSON.stringify( [...state.orders, action.order]));
 
       return {
         ...state,

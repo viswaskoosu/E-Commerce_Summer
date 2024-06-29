@@ -52,7 +52,7 @@ function OrderHistory() {
         type: "ADD_TO_BASKET",
         id: item.product,
         quantity: 1,
-        price: item.price,
+        // price: item.price,
       });
       setIsInBasket(true);
       return;
@@ -63,7 +63,7 @@ function OrderHistory() {
           type: "ADD_TO_BASKET",
           id: item.product,
           quantity: 1,
-          price: item.price,
+          // price: item.price,
         });
         setIsInBasket(true);
       })

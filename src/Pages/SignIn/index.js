@@ -97,9 +97,9 @@ function SignIn() {
       .post(`${process.env.REACT_APP_API_URL}/user/login`, userData)
       .then((response) => {
         // if (response.data.success) {
-          localStorage.setItem("user", JSON.stringify(response.data.user));
-          localStorage.setItem("basket", JSON.stringify(response.data.basket));
-          localStorage.setItem("orders", JSON.stringify(response.data.orders))
+          localStorage.setItem("user", JSON.stringify({token: response.data.user.token}));
+          // localStorage.setItem("basket", JSON.stringify(response.data.basket));
+          // localStorage.setItem("orders", JSON.stringify(response.data.orders))
           toast.success("Signed in successfully");
           dispatch({ type: "USER_LOGIN" });
           dispatch({ type: "SET_USER", user: response.data.user });

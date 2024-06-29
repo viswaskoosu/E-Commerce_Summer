@@ -49,10 +49,10 @@ function Payments() {
     setIsLoading(true);
     postReq(setIsLoading, '/user/placeorder', serverOrder)
         .then((responseData) => {
-            dispatch({
-                type: 'ADD_ORDER',
-                order: {...order, id: responseData.id},
-            });
+            // dispatch({
+            //     type: 'ADD_ORDER',
+            //     order: {...order, id: responseData.id},
+            // });
             dispatch({
                 type: 'EMPTY_BASKET',
             });

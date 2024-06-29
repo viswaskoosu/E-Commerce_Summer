@@ -130,8 +130,8 @@ export default function SignUp() {
         // console.log(response.data)
         // if (response.data.success)
         // Cookies.set("token", response.data.token)
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        localStorage.setItem("basket", JSON.stringify(response.data.basket));
+        localStorage.setItem("user", JSON.stringify({token: response.data.user.token}));
+        // localStorage.setItem("basket", JSON.stringify(response.data.basket));
         // localStorage.setItem("orders", JSON.stringify(response.data.orders));
         toast.success("Signed up successfully");
         dispatch({
