@@ -49,7 +49,7 @@ function App() {
           products: response.data,
         });
         if (localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).token) {
-          console.log("HI");
+          // console.log("HI");
           axios
             .get(`${process.env.REACT_APP_API_URL}/user/fetchuser`, {
               headers: {
